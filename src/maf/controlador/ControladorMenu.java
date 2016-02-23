@@ -13,6 +13,7 @@ import maf.vista.Acerca;
 import maf.vista.Dialogo;
 import maf.vista.DialogoAltaFactura;
 import maf.vista.DialogoGestion;
+import maf.vista.DialogoListaFacturas;
 
 /**
  * Descripcion ...
@@ -47,6 +48,10 @@ public class ControladorMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de menú capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
+
+        ControladorGestion gestor = this.seleccionarControlador(sAccion);
+        
+
         switch (sAccion) {
             case "SALIR":
                 if (Core.preguntar("Desea Salir")) {
@@ -61,23 +66,35 @@ public class ControladorMenu implements ActionListener {
                 break;
 
             case "NUEVA_FACTURA":
-                ControladorGestion controladorFactura = new ControladorGestion();
-                controladorFactura.setModelo("maf.modelo.Factura");
-                controladorFactura.creaNuevoObjeto();
-                controladorFactura.getObjetoGestionado().inicializar();
+                //ControladorGestion controladorFactura = new ControladorGestion();
+                //controladorFactura.setModelo("maf.modelo.Factura");
+                gestor.creaNuevoObjeto();
+                gestor.getObjetoGestionado().inicializar();
 
-                Dialogo nuevaFactura = new DialogoAltaFactura(this.ventana, true, controladorFactura);
+                Dialogo nuevaFactura = new DialogoAltaFactura(this.ventana, true, gestor);
                 nuevaFactura.setTituloVentana(sAccion);
-                controladorFactura.setVista(nuevaFactura);
+                gestor.setVista(nuevaFactura);
                 nuevaFactura.inicializar();
                 nuevaFactura.mostrar();
                 break;
 
+            case "LISTAR_FACTURAS":
+                //ControladorGestion controladorListadoFactura = new ControladorGestion();
+                //controladorListadoFactura.setModelo("maf.modelo.Factura");
+                gestor.creaNuevoObjeto();
+                gestor.getObjetoGestionado().inicializar();
+
+                Dialogo listaFactura = new DialogoListaFacturas(this.ventana, true, gestor);
+                listaFactura.setTituloVentana(sAccion);
+                gestor.setVista(listaFactura);
+                listaFactura.inicializar();
+                listaFactura.mostrar();
+                break;
 
             case "PERSONA":
             case "CLIENTE":
             case "PRODUCTO":
-                ControladorGestion gestor = this.seleccionarControlador(sAccion);
+                //ControladorGestion gestor = this.seleccionarControlador(sAccion);
                 //Genero una vista de Gestion
                 Dialogo vGestor = new DialogoGestion(null, true);
                 //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
@@ -104,10 +121,13 @@ public class ControladorMenu implements ActionListener {
 
     private ControladorGestion seleccionarControlador(String sAccion) {
         for (ControladorGestion c : this.gestores) {
-            if (sAccion.toUpperCase().equals(c.getNombre().toUpperCase())) {
+            if (sAccion.toUpperCase().contains(c.getNombre().toUpperCase())) {
                 return c;
             }
         }
         return null;
     }
+    
+    
+    
 }
