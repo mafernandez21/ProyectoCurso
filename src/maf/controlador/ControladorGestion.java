@@ -266,7 +266,7 @@ public class ControladorGestion implements IControladorGestion {
             case "BAJA":
                 //Reservo la VISTA_GESTION
                 this.setVistaAux((Dialogo) this.getVista());
-                //Genero una VISTA_ALTA
+                //Genero una VISTA_BAJA
                 Dialogo vBaja = new DialogoGestionBaja(null, true);
                 //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_ALTA
                 vBaja.setControlador(this);
@@ -321,6 +321,8 @@ public class ControladorGestion implements IControladorGestion {
             case "CANCELAR":
                 this.getVista().cerrar();
                 break;
+            case "VER":
+                
             default:
                 Core.mostrarMensajeError("La función " + sAccion + " no está implementada");
                 break;
