@@ -16,7 +16,6 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import maf.core.Core;
 import maf.modelo.interfaces.IVista;
-import maf.vista.PanelContenedorBotones;
 
 /**
  * Descripcion ...
@@ -25,7 +24,7 @@ import maf.vista.PanelContenedorBotones;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class Dialogo extends JDialog implements IVista {
+public abstract class Dialogo extends JDialog implements IVista {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private ActionListener controlador;
@@ -40,21 +39,13 @@ public class Dialogo extends JDialog implements IVista {
     private JPanel panelDerecho;
     private JPanel panelInferior;
     private PanelContenedor Atributos[];
-    private PanelContenedorBotones Botones;
+    private PanelBotones Botones;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public Dialogo(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
-        this.ventanaPrincipal=ventanaPrincipal;
-        this.panelPrincipal = new JPanel();
-        this.panelSuperior = new JPanel();
-        this.panelIzquierdo = new JPanel();
-        this.panelDerecho = new JPanel();
-        this.panelCentral = new JPanel();
-        this.panelInferior = new JPanel();
-        this.hmDatos = new HashMap();
-        this.hmMetaDatos = new HashMap();
+        this.ventanaPrincipal = ventanaPrincipal;
     }
     //</editor-fold>
 
@@ -115,17 +106,28 @@ public class Dialogo extends JDialog implements IVista {
         this.Atributos = Atributos;
     }
 
-    public PanelContenedorBotones getBotones() {
+    public PanelBotones getBotones() {
         return Botones;
     }
 
-    public void setBotones(PanelContenedorBotones Botones) {
+    public void setBotones(PanelBotones Botones) {
         this.Botones = Botones;
     }
 
     //</editor-fold>
+    
     @Override
     public void inicializar() {
+
+        this.panelPrincipal = new JPanel();
+        this.panelSuperior = new JPanel();
+        this.panelIzquierdo = new JPanel();
+        this.panelDerecho = new JPanel();
+        this.panelCentral = new JPanel();
+        this.panelInferior = new JPanel();
+        this.hmDatos = new HashMap();
+        this.hmMetaDatos = new HashMap();
+
         this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
         this.addWindowListener(new WindowAdapter() {
             @Override
@@ -149,7 +151,7 @@ public class Dialogo extends JDialog implements IVista {
         this.panelPrincipal.add(this.panelDerecho, BorderLayout.EAST);
         this.panelPrincipal.add(this.panelCentral, BorderLayout.CENTER);
         this.panelPrincipal.add(this.panelInferior, BorderLayout.SOUTH);
-        
+
         this.add(this.panelPrincipal);
         this.pack();
     }
@@ -178,6 +180,9 @@ public class Dialogo extends JDialog implements IVista {
         return this.hmMetaDatos;
     }
 
+    @Override
+    public abstract void recuperarDatosDeCampos();
+    
     @Override
     public void setDatos(HashMap hmDatos) {
         if (hmDatos != null) {

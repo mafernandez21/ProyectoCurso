@@ -120,8 +120,8 @@ public class Factura extends ObjetoBase {
     }
 
     @Override
-    public void setDatos(HashMap hmDatos) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean setDatos(HashMap hmDatos) {
+        return true;//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override

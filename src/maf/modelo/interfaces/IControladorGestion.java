@@ -64,7 +64,7 @@ public interface IControladorGestion extends ActionListener{
     /**
      * Carga los datos en un objeto del modelo.
      */
-    public void setDatosAObjeto();
+    public boolean setDatosAObjeto();
 
     //</editor-fold>
     

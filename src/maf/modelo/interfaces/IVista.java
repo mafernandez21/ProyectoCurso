@@ -23,10 +23,14 @@ public interface IVista {
 
     public HashMap getMetaDatos();
 
+    public void recuperarDatosDeCampos();
+    
     public void setDatos(HashMap hmDatos);
 
     public HashMap getDatos();
 
+    public void ConstruirVista();
+    
     public void setTituloVentana(String sTitulo);
 
     public void centrar();

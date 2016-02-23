@@ -42,7 +42,7 @@ public abstract class ObjetoBase {
      */
     protected abstract void setUpValoresDefault();
 
-    public abstract void setDatos(HashMap hmDatos);
+    public abstract boolean setDatos(HashMap hmDatos);
 
     public abstract HashMap getDatos();
     //</editor-fold>

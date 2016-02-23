@@ -5,8 +5,8 @@
  */
 package maf.vista;
 
-import java.awt.event.ActionListener;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 
 /**
  * Descripcion ...
@@ -15,71 +15,82 @@ import javax.swing.JFrame;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class DialogoGestion extends Dialogo{
+public class DialogoGestion extends Dialogo {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
+    PanelContenedorTexto txtFiltro;
     PanelContenedorGrilla panelGrilla;
-    PanelContenedorBotones panelDeBotones;
+    PanelBotones panelBotonFiltro;
+    JPanel panel;
+    PanelBotones panelBotonesComandos;
     FormularioPrincipal ventanaPrincipal;
-    ActionListener controlador;
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Constructores">
-    public DialogoGestion(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
+    public DialogoGestion(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
-        this.controlador=controlador;
-        this.panelGrilla=new PanelContenedorGrilla();
-        this.panelDeBotones=new PanelContenedorBotones();
+        this.txtFiltro = new PanelContenedorTexto();
+        this.panelGrilla = new PanelContenedorGrilla();
+        this.panelBotonFiltro = new PanelBotones();
+        this.panel=new JPanel();
+        this.panelBotonesComandos = new PanelBotones();
     }
     //</editor-fold>
-    
+
     @Override
-    public void inicializar(){
+    public void inicializar() {
         super.inicializar();
+
+        this.txtFiltro.inicializar();
+        this.txtFiltro.setValor("");
+        this.txtFiltro.setEtiqueta("Filtro");
+                
+        String sFiltro[]=new String[1];
+        sFiltro[0] = "Filtrar";
+        this.panelBotonFiltro.inicializar(this.getControlador(), sFiltro, true);
+
+        this.txtFiltro.add(this.panelBotonFiltro);
+
+        this.getPanelCentral().add(this.txtFiltro);
         
         this.panelGrilla.inicializar();
-        this.panelGrilla.getTxtFiltro().setText("");
-        this.panelGrilla.setEtiqueta("Filtro");
+        
+        this.panelGrilla.add(this.txtFiltro);
         this.getPanelCentral().add(this.panelGrilla);
-        
-        String botones[]=new String[5];
-        botones[0]="Alta";
-        botones[1]="Baja";
-        botones[2]="Modificar";
-        botones[3]="Ver";
-        botones[4]="Volver";
-        this.panelDeBotones.inicializar(this.controlador,botones, false);
-        
-        this.getPanelDerecho().add(this.panelDeBotones);
+
+        String sBotones[] = new String[5];
+        sBotones[0] = "Alta";
+        sBotones[1] = "Baja";
+        sBotones[2] = "Modificar";
+        sBotones[3] = "Ver";
+        sBotones[4] = "Volver";
+        this.panelBotonesComandos.inicializar(this.getControlador(), sBotones, false);
+
+        this.getPanelDerecho().add(this.panelBotonesComandos);
 
         this.pack();
     }
-    
-    
-    
+
     //<editor-fold defaultstate="collapsed" desc="Método Main">
     public static void main(String[] args) {
-        DialogoGestion d=new DialogoGestion(null,true,null);
-        
-        
-        PanelContenedorGrilla pcg=new PanelContenedorGrilla();
+        DialogoGestion d = new DialogoGestion(null, true);
+
+        PanelContenedorGrilla pcg = new PanelContenedorGrilla();
         pcg.inicializar();
-        pcg.getTxtFiltro().setText("");
+       // pcg.getTxtFiltro().setText("");
         pcg.setEtiqueta("Filtro");
         d.getPanelCentral().add(pcg);
-        
-        
-        PanelContenedorBotones pcb=new PanelContenedorBotones();
-        String botones[]=new String[5];
-        botones[0]="Alta";
-        botones[1]="Baja";
-        botones[2]="Modificar";
-        botones[3]="Ver";
-        botones[4]="Volver";
-        pcb.inicializar(null,botones, true);
-        
+
+        PanelBotones pcb = new PanelBotones();
+        String botones[] = new String[5];
+        botones[0] = "Alta";
+        botones[1] = "Baja";
+        botones[2] = "Modificar";
+        botones[3] = "Ver";
+        botones[4] = "Volver";
+        pcb.inicializar(null, botones, true);
+
         d.getPanelInferior().add(pcb);
-        
 
         d.inicializar();
         d.centrar();
@@ -87,7 +98,15 @@ public class DialogoGestion extends Dialogo{
         d.pack();
     }
     //</editor-fold>
-    
-    
+
+    @Override
+    public void recuperarDatosDeCampos() {
+        throw new UnsupportedOperationException("Set Up Datos en Dialogo Gestion"); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void ConstruirVista() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
 }

@@ -46,6 +46,17 @@ public class PanelContenedorEtiqueta extends PanelContenedor {
 
     @Override
     public Object getValor() {
-        return this.lblEtiqueta.getText();
+        if (!this.lblEtiqueta.getText().equals("")) {
+            return this.lblEtiqueta.getText();
+        } else {
+            return null;
+        }
     }
+
+    @Override
+    public void bloquear(boolean bBloqueo) {
+        this.lblEtiqueta.setEnabled(!bBloqueo);
+    }
+    
+    
 }

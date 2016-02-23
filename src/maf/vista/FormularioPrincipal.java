@@ -12,6 +12,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu.Separator;
+import maf.controlador.ControladorGestion;
 import maf.controlador.ControladorMenu;
 import maf.core.Core;
 import maf.modelo.interfaces.IControladorGestion;
@@ -33,14 +34,15 @@ public class FormularioPrincipal extends JFrame {
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores">
-    public FormularioPrincipal(IControladorGestion gestores[]) {
+    public FormularioPrincipal(ControladorGestion gestores[]) {
         this.gestores = gestores;
         this.imagenFondo = new PanelImagen();
+        this.controladorMenu = new ControladorMenu(this,gestores);
         this.inicializar();
     }
 
     private void inicializar() {
-        this.controladorMenu = new ControladorMenu(this);
+        
         this.barraDeMenu = new JMenuBar();
 
         this.setTitle(Core.NOMBRE_SISTEMA + " (ver." + Core.VERSION_SISTEMA + ")");
@@ -106,7 +108,8 @@ public class FormularioPrincipal extends JFrame {
             mnuItemGestion[i] = new JMenuItem();
             mnuItemGestion[i].setText(gestores[i].getNombre());
             mnuItemGestion[i].setActionCommand(gestores[i].getNombre());
-            mnuItemGestion[i].addActionListener((ActionListener) gestores[i]);
+            mnuItemGestion[i].addActionListener(this.controladorMenu);
+            //mnuItemGestion[i].addActionListener((ActionListener) gestores[i]);
             mnuGestion.add(mnuItemGestion[i]);
         }
 

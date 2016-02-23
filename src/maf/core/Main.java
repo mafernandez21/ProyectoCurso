@@ -21,7 +21,7 @@ import maf.modelo.Cliente;
 import maf.modelo.ObjetoBase;
 import maf.modelo.interfaces.IControladorGestion;
 import maf.vista.FormularioPrincipal;
-import maf.vista.PanelContenedorBotones;
+import maf.vista.PanelBotones;
 import maf.vista.PanelContenedorCombo;
 import maf.vista.PanelContenedorGrilla;
 import maf.vista.PanelContenedorTexto;
@@ -60,10 +60,10 @@ public class Main {
         return sModulos;
     }
 
-    public static IControladorGestion[] setUpControladores(String[] sModulos) {
+    public static ControladorGestion[] setUpControladores(String[] sModulos) {
         int numModulos = sModulos.length;
 
-        IControladorGestion[] controladores = new ControladorGestion[numModulos];
+        ControladorGestion[] controladores = new ControladorGestion[numModulos];
 
         for (int i = 0; i < controladores.length; i++) {
             controladores[i] = new ControladorGestion();
@@ -136,7 +136,7 @@ public class Main {
 //        pag.setEtiqueta("Etiqueta");
 ////        pag.setValor("Hola soy Texto");
 //        vm.add(pag);
-//        PanelContenedorBotones pcb = new PanelContenedorBotones();
+//        PanelBotones pcb = new PanelBotones();
 //        
 //        String s[]=new String[3];
 //        s[0]="Aceptar";
@@ -262,7 +262,7 @@ public class Main {
 //        pag.setValor("Hola soy Texto");
         vm.add(pag);
 
-        PanelContenedorBotones pcb = new PanelContenedorBotones();
+        PanelBotones pcb = new PanelBotones();
 
         String s[] = new String[3];
         s[0] = "Aceptar";

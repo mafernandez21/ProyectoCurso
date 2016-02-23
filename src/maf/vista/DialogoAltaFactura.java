@@ -7,7 +7,6 @@ package maf.vista;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
-import javax.swing.JLabel;
 import javax.swing.JPanel;
 import maf.modelo.interfaces.IVistaReflex;
 
@@ -19,24 +18,24 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
 
     private JPanel Cliente;
     private PanelContenedorEtiqueta lblnombreCliente;
-    private PanelContenedorBotones agregarCliente;
-    private PanelContenedorBotones agregarDetalle;
+    private PanelBotones agregarCliente;
+    private PanelBotones agregarDetalle;
     private PanelContenedorGrilla listadoDetalles;
     private PanelContenedorEtiqueta subTotal;
     private PanelContenedorEtiqueta total;
-    private PanelContenedorBotones botonesDeVentana;
+    private PanelBotones botonesDeVentana;
     private ActionListener controlador;
 
     public DialogoAltaFactura(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
         super(ventanaPrincipal, modal);
         this.Cliente = new JPanel();
      this.lblnombreCliente = new PanelContenedorEtiqueta();
-     this.agregarCliente = new PanelContenedorBotones();
-     this.agregarDetalle = new PanelContenedorBotones();
+     this.agregarCliente = new PanelBotones();
+     this.agregarDetalle = new PanelBotones();
      this.listadoDetalles = new PanelContenedorGrilla();
      this.subTotal = new PanelContenedorEtiqueta();
      this.total = new PanelContenedorEtiqueta();
-     this.botonesDeVentana = new PanelContenedorBotones();
+     this.botonesDeVentana = new PanelBotones();
      this.controlador = controlador;
     }
 
@@ -56,19 +55,19 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
         this.lblnombreCliente = lblnombreCliente;
     }
 
-    public PanelContenedorBotones getAgregarCliente() {
+    public PanelBotones getAgregarCliente() {
         return agregarCliente;
     }
 
-    public void setAgregarCliente(PanelContenedorBotones agregarCliente) {
+    public void setAgregarCliente(PanelBotones agregarCliente) {
         this.agregarCliente = agregarCliente;
     }
 
-    public PanelContenedorBotones getAgregarDetalle() {
+    public PanelBotones getAgregarDetalle() {
         return agregarDetalle;
     }
 
-    public void setAgregarDetalle(PanelContenedorBotones agregarDetalle) {
+    public void setAgregarDetalle(PanelBotones agregarDetalle) {
         this.agregarDetalle = agregarDetalle;
     }
 
@@ -96,11 +95,11 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
         this.total = total;
     }
 
-    public PanelContenedorBotones getBotonesDeVentana() {
+    public PanelBotones getBotonesDeVentana() {
         return botonesDeVentana;
     }
 
-    public void setBotonesDeVentana(PanelContenedorBotones botonesDeVentana) {
+    public void setBotonesDeVentana(PanelBotones botonesDeVentana) {
         this.botonesDeVentana = botonesDeVentana;
     }
 
@@ -109,7 +108,7 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
     @Override
     public void inicializar() {
         super.inicializar();
-        this.setUpIngreso(); //To change body of generated methods, choose Tools | Templates.
+        this.ConstruirVista(); //To change body of generated methods, choose Tools | Templates.
 
         String sBotones1[] = new String[1];
         sBotones1[0] = "Agregar Cliente";
@@ -140,7 +139,7 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
     }
 
     @Override
-    public void setUpIngreso() {
+    public void ConstruirVista() {
         
 //        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -155,5 +154,10 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
         PanelContenedor pc[]=new PanelContenedor[1];
         pc[0]=this.lblnombreCliente;
     return pc;
+    }
+
+    @Override
+    public void recuperarDatosDeCampos() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

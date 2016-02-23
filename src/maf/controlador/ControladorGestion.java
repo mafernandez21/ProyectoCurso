@@ -14,8 +14,9 @@ import maf.modelo.interfaces.IControladorGestion;
 import maf.modelo.interfaces.IVista;
 import maf.modelo.interfaces.IVistaReflex;
 import maf.vista.Dialogo;
-import maf.vista.DialogoAlta;
 import maf.vista.DialogoGestion;
+import maf.vista.DialogoGestionAlta;
+import maf.vista.DialogoGestionBaja;
 
 /**
  * Descripcion ...
@@ -51,6 +52,14 @@ public class ControladorGestion implements IControladorGestion {
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
+    private void setVistaAux(Dialogo dialogo) {
+        this.vistaAux = dialogo;
+    }
+
+    private DialogoGestion getVistaAux() {
+        return (DialogoGestion) this.vistaAux;
+    }
+
     @Override
     public void inicializar() {
 
@@ -178,8 +187,8 @@ public class ControladorGestion implements IControladorGestion {
     }
 
     @Override
-    public void setDatosAObjeto() {
-        this.getObjetoGestionado().setDatos(this.getDatos());
+    public boolean setDatosAObjeto() {
+        return this.getObjetoGestionado().setDatos(this.getDatos());
     }
 
     @Override
@@ -211,57 +220,103 @@ public class ControladorGestion implements IControladorGestion {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Core.mostrarMensaje(e.getActionCommand());
-        String sAccion = e.getActionCommand();
+        Core.mostrarMensaje("Controlador (" + this.getNombre() + ") de Gestión capturó " + e.getActionCommand());
+        String sAccion = e.getActionCommand().toUpperCase();
         Dialogo vGestor;
+
         switch (sAccion) {
-            case "Cliente":
-//                vGestor = new DialogoGestion(null, true, this);
-//                this.setVista(vGestor);
-//                vGestor.setTituloVentana(this.getNombre());
-//                vGestor.inicializar();
-//                vGestor.mostrar();
-//
-//                break;
-            case "Factura":
-
-   //             break;
-            case "DetalleFactura":
- //               break;
-            case "Producto":
-                vGestor = new DialogoGestion(null, true, this);
-                this.setVista(vGestor);
-                vGestor.setTituloVentana(this.getNombre());
-                vGestor.inicializar();
-                vGestor.mostrar();
-                break;
             case "ALTA":
-                this.vistaAux = (Dialogo) this.getVista();
-                Dialogo vAlta = new DialogoAlta(null, true, this);
+                //Reservo la VISTA_GESTION
+                this.setVistaAux((Dialogo) this.getVista());
+                //Genero una VISTA_ALTA
+                Dialogo vAlta = new DialogoGestionAlta(null, true);
+                //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_ALTA
+                vAlta.setControlador(this);
                 this.setVista(vAlta);
+                //Preparo la VISTA_ALTA
                 this.getVista().setTituloVentana("Alta de " + this.getNombre());
-
+                //Como es un ALTA genero un nuevo objeto y lo inicializo
                 this.creaNuevoObjeto();
                 this.getObjetoGestionado().inicializar();
                 this.getObjetoGestionado().prepararMetaDatos();
                 this.getMetaDatosDeObjeto();
-                this.setMetaDatosVista();
+                //Inicializo la VISTA_ALTA
                 this.inicializarVista();
+                //Le envio los MetaDatos de acuerdo al modelo de Gestión
+                this.setMetaDatosVista();
+                //Construyo la VISTA_ALTA y la ,muestro
+                this.getVista().ConstruirVista();
                 this.getVista().mostrar();
+                //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
                 this.setVista(this.vistaAux);
                 break;
-            case "GUARDAR_c":
+            case "GUARDAR":
+                this.getVista().recuperarDatosDeCampos();
                 this.getDatosDeVista();
+                if (this.setDatosAObjeto()) {
+                    this.getObjetoGestionado();
+                    Core.mostrarMensaje("Guardar Objeto en la BD");
+                    Core.mostrarMensaje(this.getObjetoGestionado());
+                    this.getVista().cerrar();
+                } else {
+                    Core.mostrarMensaje("Error en los datos");
+                }
+                break;
+
+            case "BAJA":
+                //Reservo la VISTA_GESTION
+                this.setVistaAux((Dialogo) this.getVista());
+                //Genero una VISTA_ALTA
+                Dialogo vBaja = new DialogoGestionBaja(null, true);
+                //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_ALTA
+                vBaja.setControlador(this);
+                this.setVista(vBaja);
+                //Preparo la VISTA_ALTA
+                this.getVista().setTituloVentana("Baja de " + this.getNombre());
+                //Como es un ALTA genero un nuevo objeto y lo inicializo
+                this.creaNuevoObjeto();
+                this.getObjetoGestionado().inicializar();
+//##############################################################################
+//##############################################################################
+//##############################################################################
+                //TOMAR DATOS DE LA GRILLA
+                this.getVistaAux().recuperarDatosDeCampos();
+                this.getVistaAux().getDatos();
+                //TOMAR DATOS DE LA GRILLA
+                
+                this.setDatos(this.prepararCliente());
                 this.setDatosAObjeto();
-                this.getObjetoGestionado();
-                Core.mostrarMensaje("Guardar Objeto en la BD");
-                Core.mostrarMensaje(this.getObjetoGestionado());
+                
+//##############################################################################
+//##############################################################################
+//##############################################################################
+                this.getObjetoGestionado().prepararMetaDatos();
+                this.getMetaDatosDeObjeto();
+                //Inicializo la VISTA_ALTA
+                this.inicializarVista();
+                //Le envio los MetaDatos de acuerdo al modelo de Gestión
+                this.setMetaDatosVista();
+                this.setDatosVista();
+                //Construyo la VISTA_ALTA y la ,muestro
+                this.getVista().ConstruirVista();
+                this.getVista().mostrar();
+                //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
+                this.setVista(this.vistaAux);
+                break;
+            case "BORRAR":
+                this.getVista().recuperarDatosDeCampos();
+                this.getDatosDeVista();
+                if (Core.preguntar("Desea eliminar el registro")) {
+                    Core.mostrarMensaje("SE ELIMINÓ\n" + this.getObjetoGestionado());
+                    Core.mostrarMensaje("Objeto eliminado de la BD");
+                }
                 this.getVista().cerrar();
                 break;
 
             case "AGREGAR CLIENTE":
-                ((IVistaReflex)this.getVista()).getListaDeAtributos()[0].setEtiqueta("Cliente Agregado");
+                ((IVistaReflex) this.getVista()).getListaDeAtributos()[0].setEtiqueta("Cliente Agregado");
                 break;
+
             case "VOLVER":
             case "CANCELAR":
                 this.getVista().cerrar();
@@ -271,6 +326,29 @@ public class ControladorGestion implements IControladorGestion {
                 break;
         }
 
+    }
+
+    public HashMap prepararCliente() {
+        HashMap hm = new HashMap();
+        hm.put("ID", "009");
+        hm.put("NOMBRE", "Ale");
+        hm.put("APELLIDO", "Wolf");
+        hm.put("DNI", "34132393");
+        hm.put("DOMICILIO", "BS AS 671");
+        hm.put("LOCALIDAD", "Tucuman");
+        hm.put("CUIT", "20-03");
+        hm.put("CATEGORIA", Core.Categoria.EXCENTO);
+        return hm;
+    }
+
+    public HashMap prepararProductoParaVista() {
+        HashMap hm = new HashMap();
+        hm.put("ID", "12");
+        hm.put("DESCRIPCION", "Desodorante");
+        hm.put("PRECIO", 34.50);
+        hm.put("TIPOIVA", Core.TipoIVA._21);
+        hm.put("STOCK", 300);
+        return hm;
     }
 
 }

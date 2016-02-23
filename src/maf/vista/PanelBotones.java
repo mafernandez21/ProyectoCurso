@@ -19,12 +19,12 @@ import javax.swing.JPanel;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class PanelContenedorBotones extends JPanel {
+public class PanelBotones extends JPanel {
 
     JButton btnBotones[];
     ActionListener controlador;
 
-    public PanelContenedorBotones() {
+    public PanelBotones() {
     }
 
     public JButton[] getListaBotones() {
@@ -89,6 +89,12 @@ public class PanelContenedorBotones extends JPanel {
             for (JButton btn : this.btnBotones) {
                 this.add(btn);
             }
+        }
+    }
+
+    public void bloquear(boolean sBloqueo) {
+        for (JButton btn : this.btnBotones) {
+            btn.setEnabled(!sBloqueo);
         }
     }
 }

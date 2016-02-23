@@ -21,6 +21,7 @@ import javax.swing.JPanel;
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
 public abstract class PanelContenedor extends JPanel{
+    
     //<editor-fold defaultstate="collapsed" desc="Metodos Abstractos">
     public abstract void setEtiqueta(String sEtiqueta);
 
@@ -29,10 +30,14 @@ public abstract class PanelContenedor extends JPanel{
     public abstract void setValor(Object oValor);
     
     public abstract Object getValor();
+    
+    public abstract void bloquear(boolean bBloqueo);
     //</editor-fold>
 
     public void inicializar() {
         GridLayout layout = new GridLayout(1, 2);
+        layout.setHgap(10);
+        layout.setVgap(10);
         this.setLayout(layout);
         this.setBackground(new Color(0, 204, 255));
     }

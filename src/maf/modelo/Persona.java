@@ -97,17 +97,21 @@ public class Persona extends ObjetoBase {
     }
 
     @Override
-    public void setDatos(HashMap hmMetaDatos) {
+    public boolean setDatos(HashMap hmDatos) {
         try {
-            this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
-            this.setNombre(String.valueOf(hmDatos.get("NOMBRE")));
-            this.setApellido(String.valueOf(hmDatos.get("APELLIDO")));
-            this.setDni(String.valueOf(hmDatos.get("DNI")));
-            this.setDomicilio(String.valueOf(hmDatos.get("DOMICILIO")));
-            this.setLocalidad(String.valueOf(hmDatos.get("LOCALIDAD")));
+            if (!hmDatos.containsValue(null)) {
+                this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
+                this.setNombre(String.valueOf(hmDatos.get("NOMBRE")));
+                this.setApellido(String.valueOf(hmDatos.get("APELLIDO")));
+                this.setDni(String.valueOf(hmDatos.get("DNI")));
+                this.setDomicilio(String.valueOf(hmDatos.get("DOMICILIO")));
+                this.setLocalidad(String.valueOf(hmDatos.get("LOCALIDAD")));
+                return true;
+            }
         } catch (Exception ex) {
             Core.mostrarMensajeError("Estructura de Datos Malformada para " + this.getClass().getSimpleName());
         }
+        return false;
     }
 
     @Override

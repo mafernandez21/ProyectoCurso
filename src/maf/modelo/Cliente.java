@@ -17,7 +17,7 @@ import maf.core.Core.Categoria;
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
 public class Cliente extends Persona {
-    
+
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private String cuit;
     private Categoria categoria;
@@ -29,7 +29,6 @@ public class Cliente extends Persona {
     }
 
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Getters & Setters">
     public Categoria getCategoria() {
         return this.categoria;
@@ -62,19 +61,23 @@ public class Cliente extends Persona {
     }
 
     @Override
-    public void setDatos(HashMap hmDatos) {
-        try{
-            this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
-            this.setNombre(String.valueOf(hmDatos.get("NOMBRE")));
-            this.setApellido(String.valueOf(hmDatos.get("APELLIDO")));
-            this.setDni(String.valueOf(hmDatos.get("DNI")));
-            this.setDomicilio(String.valueOf(hmDatos.get("DOMICILIO")));
-            this.setLocalidad(String.valueOf(hmDatos.get("LOCALIDAD")));
-            this.setCuit(String.valueOf(hmDatos.get("CUIT")));
-            this.setCategoria((Categoria)hmDatos.get("CATEGORIA"));
-        } catch(Exception ex) {
+    public boolean setDatos(HashMap hmDatos) {
+        try {
+            if (!hmDatos.containsValue(null)) {
+                this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
+                this.setNombre(String.valueOf(hmDatos.get("NOMBRE")));
+                this.setApellido(String.valueOf(hmDatos.get("APELLIDO")));
+                this.setDni(String.valueOf(hmDatos.get("DNI")));
+                this.setDomicilio(String.valueOf(hmDatos.get("DOMICILIO")));
+                this.setLocalidad(String.valueOf(hmDatos.get("LOCALIDAD")));
+                this.setCuit(String.valueOf(hmDatos.get("CUIT")));
+                this.setCategoria((Categoria) hmDatos.get("CATEGORIA"));
+                return true;
+            }
+        } catch (Exception ex) {
             Core.mostrarMensajeError("Estructura de Datos Malformada para " + this.getClass().getSimpleName());
         }
+        return false;
     }
 
     @Override

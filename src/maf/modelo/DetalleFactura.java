@@ -87,16 +87,20 @@ public class DetalleFactura extends ObjetoBase {
     }
 
     @Override
-    public void setDatos(HashMap hmDatos) {
-        try{
-            this.setProducto((Producto) hmDatos.get("PRODUCTO"));
-            this.setCantidad(Integer.parseInt(String.valueOf(hmDatos.get("CANTIDAD"))));
-            this.precio = Double.parseDouble(String.valueOf(hmDatos.get("PRECIO")));
-            this.importeiva = Double.parseDouble(String.valueOf(hmDatos.get("IMPORTEIVA")));
-            this.totallinea = Double.parseDouble(String.valueOf(hmDatos.get("TOTALLINEA")));
-        } catch(Exception ex) {
+    public boolean setDatos(HashMap hmDatos) {
+        try {
+            if (!hmDatos.containsValue(null)) {
+                this.setProducto((Producto) hmDatos.get("PRODUCTO"));
+                this.setCantidad(Integer.parseInt(String.valueOf(hmDatos.get("CANTIDAD"))));
+                this.precio = Double.parseDouble(String.valueOf(hmDatos.get("PRECIO")));
+                this.importeiva = Double.parseDouble(String.valueOf(hmDatos.get("IMPORTEIVA")));
+                this.totallinea = Double.parseDouble(String.valueOf(hmDatos.get("TOTALLINEA")));
+                return true;
+            }
+        } catch (Exception ex) {
             Core.mostrarMensajeError("Estructura de Datos Malformada para " + this.getClass().getSimpleName());
         }
+        return false;
     }
 
     @Override

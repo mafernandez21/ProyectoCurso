@@ -49,25 +49,38 @@ public class PanelContenedorCombo extends PanelContenedor {
 
     @Override
     public void setValor(Object oValor) {
-        if(oValor instanceof Categoria){
-            this.lblEtiqueta.setText("Categoria");
-            this.cboValores.setModel(new DefaultComboBoxModel(Categoria.values()));
-        }
-    
-        if(oValor instanceof TipoIVA){
-            this.lblEtiqueta.setText("TipoIVA");
-            this.cboValores.setModel(new DefaultComboBoxModel(TipoIVA.values()));
-        }
         
-        if(oValor instanceof TipoFactura){
-            this.lblEtiqueta.setText("Tipo de Factura");
-            this.cboValores.setModel(new DefaultComboBoxModel(TipoFactura.values()));
+            if (oValor instanceof Categoria) {
+                this.lblEtiqueta.setText("CATEGORIA");
+                this.cboValores.setModel(new DefaultComboBoxModel(Categoria.values()));
+            }
+
+            if (oValor instanceof TipoIVA) {
+                this.lblEtiqueta.setText("TIPO IVA");
+                this.cboValores.setModel(new DefaultComboBoxModel(TipoIVA.values()));
+            }
+
+            if (oValor instanceof TipoFactura) {
+                this.lblEtiqueta.setText("TIPO DE FACTURA");
+                this.cboValores.setModel(new DefaultComboBoxModel(TipoFactura.values()));
+            }
+        if (oValor != null) {
+            this.cboValores.setSelectedItem(oValor);
+        } else {
+            this.cboValores.setSelectedIndex(0);
         }
-        this.cboValores.setSelectedIndex(0);
+
     }
 
     @Override
     public Object getValor() {
         return this.cboValores.getSelectedItem();
     }
+
+    @Override
+    public void bloquear(boolean bBloqueo) {
+        this.cboValores.setEnabled(!bBloqueo);
+    }
+    
+    
 }

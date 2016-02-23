@@ -22,7 +22,7 @@ public class Producto extends ObjetoBase {
 
     public Producto() {
     }
-    
+
     public int getId() {
         return this.id;
     }
@@ -30,6 +30,7 @@ public class Producto extends ObjetoBase {
     public void setId(int id) {
         this.id = id;
     }
+
     public String getDescripcion() {
         return descripcion;
     }
@@ -77,16 +78,20 @@ public class Producto extends ObjetoBase {
     }
 
     @Override
-    public void setDatos(HashMap hmDatos) {
+    public boolean setDatos(HashMap hmDatos) {
         try {
-            this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
-            this.setDescripcion(String.valueOf(hmDatos.get("DESCRIPCION")));
-            this.setPrecio(Integer.parseInt(String.valueOf(hmDatos.get("PRECIO"))));
-            this.setTipoIVA((TipoIVA)(hmDatos.get("TIPOIVA")));
-            this.setStock(Integer.parseInt(String.valueOf(hmDatos.get("STOCK"))));
+            if (!hmDatos.containsValue(null)) {
+                this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
+                this.setDescripcion(String.valueOf(hmDatos.get("DESCRIPCION")));
+                this.setPrecio(Integer.parseInt(String.valueOf(hmDatos.get("PRECIO"))));
+                this.setTipoIVA((TipoIVA) (hmDatos.get("TIPOIVA")));
+                this.setStock(Integer.parseInt(String.valueOf(hmDatos.get("STOCK"))));
+                return true;
+            }
         } catch (Exception ex) {
             Core.mostrarMensajeError("Estructura de Datos Malformada para " + this.getClass().getSimpleName());
         }
+        return false;
     }
 
     @Override

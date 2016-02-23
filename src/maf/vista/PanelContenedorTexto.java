@@ -14,12 +14,11 @@ import javax.swing.JTextField;
 public class PanelContenedorTexto extends PanelContenedorEtiqueta {
 
     private JTextField txtTexto;
-    
+
     /**
      * Creates new form PanelAtributoBoton
      */
     public PanelContenedorTexto() {
-
     }
 
     @Override
@@ -31,7 +30,7 @@ public class PanelContenedorTexto extends PanelContenedorEtiqueta {
 
     @Override
     public void setEtiqueta(String sTexto) {
-       this.lblEtiqueta.setText(sTexto);
+        this.lblEtiqueta.setText(sTexto);
     }
 
     @Override
@@ -46,6 +45,16 @@ public class PanelContenedorTexto extends PanelContenedorEtiqueta {
 
     @Override
     public Object getValor() {
-        return this.txtTexto.getText();
+        if (!this.txtTexto.getText().equals("")) {
+            return this.txtTexto.getText();
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public void bloquear(boolean bBloqueo) {
+        super.bloquear(!bBloqueo);
+        this.txtTexto.setEnabled(!bBloqueo);
     }
 }
