@@ -5,8 +5,11 @@
  */
 package maf.vista;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
 
 /**
  * Descripcion ...
@@ -24,6 +27,7 @@ public class DialogoGestion extends Dialogo {
     JPanel panel;
     PanelBotones panelBotonesComandos;
     FormularioPrincipal ventanaPrincipal;
+    ArrayList<HashMap> listaDeDatos;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructores">
@@ -32,7 +36,7 @@ public class DialogoGestion extends Dialogo {
         this.txtFiltro = new PanelContenedorTexto();
         this.panelGrilla = new PanelContenedorGrilla();
         this.panelBotonFiltro = new PanelBotones();
-        this.panel=new JPanel();
+        this.panel = new JPanel();
         this.panelBotonesComandos = new PanelBotones();
     }
     //</editor-fold>
@@ -41,20 +45,21 @@ public class DialogoGestion extends Dialogo {
     public void inicializar() {
         super.inicializar();
 
+        this.listaDeDatos = new ArrayList<HashMap>();
         this.txtFiltro.inicializar();
         this.txtFiltro.setValor("");
         this.txtFiltro.setEtiqueta("Filtro");
-                
-        String sFiltro[]=new String[1];
+
+        String sFiltro[] = new String[1];
         sFiltro[0] = "Filtrar";
         this.panelBotonFiltro.inicializar(this.getControlador(), sFiltro, true);
 
         this.txtFiltro.add(this.panelBotonFiltro);
 
         this.getPanelCentral().add(this.txtFiltro);
-        
+
         this.panelGrilla.inicializar();
-        
+
         this.panelGrilla.add(this.txtFiltro);
         this.getPanelCentral().add(this.panelGrilla);
 
@@ -77,7 +82,7 @@ public class DialogoGestion extends Dialogo {
 
         PanelContenedorGrilla pcg = new PanelContenedorGrilla();
         pcg.inicializar();
-       // pcg.getTxtFiltro().setText("");
+        // pcg.getTxtFiltro().setText("");
         pcg.setEtiqueta("Filtro");
         d.getPanelCentral().add(pcg);
 
@@ -100,13 +105,57 @@ public class DialogoGestion extends Dialogo {
     //</editor-fold>
 
     @Override
-    public void recuperarDatosDeCampos() {
-        throw new UnsupportedOperationException("Set Up Datos en Dialogo Gestion"); //To change body of generated methods, choose Tools | Templates.
+    public void recuperarDatosDeModelo() {
+        if (this.panelGrilla.getTblGrilla().getSelectedRow() >= 0) {
+            //   this.panelGrilla.getValor();
+            Object fila[] = (Object[]) this.panelGrilla.getValor();
+            String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
+
+            for (int i = 0; i < sEtiqueta.length; i++) {
+                this.getDatos().put(sEtiqueta[i], fila[i]);
+            }
+        HashMap hm = new HashMap();
+            hm.putAll(this.getDatos());
+            this.listaDeDatos.add(hm);
+        }
     }
 
     @Override
     public void ConstruirVista() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.prepararTblTablaDatos();
+        this.actualizarTablaDatos();
     }
 
+    public void prepararTblTablaDatos() {
+        String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
+
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        this.panelGrilla.getTblGrilla().setModel(modelo);
+
+        for (String s : sEtiqueta) {
+            modelo.addColumn(s);
+        }
+
+//        Object[] fila = new Object[sEtiqueta.length];
+//        for (int i = 0; i < sEtiqueta.length; i++) {
+//            fila[i] = "";
+//        }
+//        modelo.addRow(fila);
+    }
+
+    public void actualizarTablaDatos() {
+        String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
+        DefaultTableModel modelo = (DefaultTableModel) this.panelGrilla.getTblGrilla().getModel();
+        Object[] fila = new Object[sEtiqueta.length];
+        if (this.listaDeDatos != null && !this.listaDeDatos.isEmpty() && this.getDatos() != null) {
+            for (HashMap hm : this.listaDeDatos) {
+                for (int i = 0; i < sEtiqueta.length; i++) {
+                    fila[i] = hm.get(sEtiqueta[i]);
+                }
+                modelo.addRow(fila);
+                this.panelGrilla.getTblGrilla().setModel(modelo);
+            }
+        }
+    }
 }

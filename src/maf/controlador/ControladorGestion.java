@@ -251,7 +251,7 @@ public class ControladorGestion implements IControladorGestion {
                 this.setVista(this.vistaAux);
                 break;
             case "GUARDAR":
-                this.getVista().recuperarDatosDeCampos();
+                this.getVista().recuperarDatosDeModelo();
                 this.getDatosDeVista();
                 if (this.setDatosAObjeto()) {
                     this.getObjetoGestionado();
@@ -271,6 +271,8 @@ public class ControladorGestion implements IControladorGestion {
                 //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_ALTA
                 vBaja.setControlador(this);
                 this.setVista(vBaja);
+                //Inicializo la VISTA_ALTA
+                this.inicializarVista();
                 //Preparo la VISTA_ALTA
                 this.getVista().setTituloVentana("Baja de " + this.getNombre());
                 //Como es un ALTA genero un nuevo objeto y lo inicializo
@@ -280,20 +282,24 @@ public class ControladorGestion implements IControladorGestion {
 //##############################################################################
 //##############################################################################
                 //TOMAR DATOS DE LA GRILLA
-                this.getVistaAux().recuperarDatosDeCampos();
-                this.getVistaAux().getDatos();
-                //TOMAR DATOS DE LA GRILLA
-                
-                this.setDatos(this.prepararCliente());
+
+                this.getVistaAux().recuperarDatosDeModelo();
+//##############################################################################
+                this.getVistaAux().setDatos(this.prepararCliente());
+//##############################################################################
+                this.getVistaAux().actualizarTablaDatos();
+
+//                //TOMAR DATOS DE LA GRILLA
+//                
+                this.setDatos(this.getVistaAux().getDatos());
+                //this.getDatosDeVista();
                 this.setDatosAObjeto();
-                
+
 //##############################################################################
 //##############################################################################
 //##############################################################################
                 this.getObjetoGestionado().prepararMetaDatos();
                 this.getMetaDatosDeObjeto();
-                //Inicializo la VISTA_ALTA
-                this.inicializarVista();
                 //Le envio los MetaDatos de acuerdo al modelo de Gestión
                 this.setMetaDatosVista();
                 this.setDatosVista();
@@ -304,7 +310,7 @@ public class ControladorGestion implements IControladorGestion {
                 this.setVista(this.vistaAux);
                 break;
             case "BORRAR":
-                this.getVista().recuperarDatosDeCampos();
+                this.getVista().recuperarDatosDeModelo();
                 this.getDatosDeVista();
                 if (Core.preguntar("Desea eliminar el registro")) {
                     Core.mostrarMensaje("SE ELIMINÓ\n" + this.getObjetoGestionado());
@@ -350,5 +356,4 @@ public class ControladorGestion implements IControladorGestion {
         hm.put("STOCK", 300);
         return hm;
     }
-
 }

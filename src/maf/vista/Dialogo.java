@@ -181,7 +181,7 @@ public abstract class Dialogo extends JDialog implements IVista {
     }
 
     @Override
-    public abstract void recuperarDatosDeCampos();
+    public abstract void recuperarDatosDeModelo();
     
     @Override
     public void setDatos(HashMap hmDatos) {

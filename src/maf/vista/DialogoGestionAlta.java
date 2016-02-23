@@ -123,7 +123,7 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
     }
 
     @Override
-    public void recuperarDatosDeCampos() {
+    public void recuperarDatosDeModelo() {
         for (PanelContenedor p : this.getListaDeAtributos()) {
             String key = p.getEtiqueta().toUpperCase();
             Object o = p.getValor();

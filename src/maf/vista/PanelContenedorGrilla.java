@@ -19,15 +19,12 @@ import javax.swing.JTable;
 public class PanelContenedorGrilla extends PanelContenedor {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
-    
     private JTable tblGrilla;
     private JScrollPane panelGrilla;
 
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public JTable getTblGrilla() {
         return tblGrilla;
@@ -44,30 +41,28 @@ public class PanelContenedorGrilla extends PanelContenedor {
         layout.setHgap(10);
         layout.setVgap(10);
         this.setLayout(layout);
-        
-        this.panelGrilla=new JScrollPane();
-       
-        this.tblGrilla=new JTable();
+
+        this.panelGrilla = new JScrollPane();
+
+        this.tblGrilla = new JTable();
         this.tblGrilla.setModel(new javax.swing.table.DefaultTableModel(
-            new Object [][] {
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null},
-                {null, null, null, null}
-            },
-            new String [] {
-                "Columna 1", "Columna 2", "Columna 3", "Columna 4"
-            }
-        ));
-                
+                new Object[][]{
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null},
+            {null, null, null, null}
+        },
+                new String[]{
+            "Columna 1", "Columna 2", "Columna 3", "Columna 4"
+        }));
+
         this.panelGrilla.setViewportView(this.tblGrilla);
-        
-        this.add(this.panelGrilla,BorderLayout.SOUTH);
+
+        this.add(this.panelGrilla, BorderLayout.SOUTH);
     }
 
     @Override
     public void setEtiqueta(String sEtiqueta) {
-        
     }
 
     @Override
@@ -82,14 +77,16 @@ public class PanelContenedorGrilla extends PanelContenedor {
 
     @Override
     public Object getValor() {
-        return this.tblGrilla.getValueAt(this.tblGrilla.getSelectedRow(), this.tblGrilla.getSelectedColumn());
+//return this.tblGrilla.getValueAt(this.tblGrilla.getSelectedRow(), this.tblGrilla.getSelectedColumn());
+        Object filaRetorno[] = new Object[this.tblGrilla.getColumnCount()];
+        for (int i = 0; i < this.tblGrilla.getColumnCount(); i++) {
+            filaRetorno[i] = this.tblGrilla.getValueAt(this.tblGrilla.getSelectedRow(), i);
+        }
+        return filaRetorno;
     }
 
     @Override
     public void bloquear(boolean bBloqueo) {
         this.tblGrilla.setEnabled(!bBloqueo);
     }
-    
-    
-
 }

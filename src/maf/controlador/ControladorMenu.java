@@ -59,7 +59,7 @@ public class ControladorMenu implements ActionListener {
                 da.setTitle(sAccion);
                 da.setVisible(true);
                 break;
-                
+
             case "NUEVA_FACTURA":
                 ControladorGestion controladorFactura = new ControladorGestion();
                 controladorFactura.setModelo("maf.modelo.Factura");
@@ -73,7 +73,7 @@ public class ControladorMenu implements ActionListener {
                 nuevaFactura.mostrar();
                 break;
 
-                
+
             case "PERSONA":
             case "CLIENTE":
             case "PRODUCTO":
@@ -84,8 +84,15 @@ public class ControladorMenu implements ActionListener {
                 vGestor.setControlador(gestor);
                 gestor.setVista(vGestor);
                 //Preparo la VISTA_GESTION y la muestro
+                gestor.getMetaDatosDeObjeto();
+                //Inicializo la VISTA_ALTA
+                //Le envio los MetaDatos de acuerdo al modelo de Gestión
+                //Construyo la VISTA_ALTA y la ,muestro
                 gestor.getVista().setTituloVentana(gestor.getNombre());
                 gestor.getVista().inicializar();
+                gestor.setMetaDatosVista();
+                gestor.setDatosVista();
+                gestor.getVista().ConstruirVista();
                 gestor.getVista().mostrar();
                 break;
 
@@ -96,8 +103,8 @@ public class ControladorMenu implements ActionListener {
     }
 
     private ControladorGestion seleccionarControlador(String sAccion) {
-        for(ControladorGestion c: this.gestores){
-            if(sAccion.toUpperCase().equals(c.getNombre().toUpperCase())){
+        for (ControladorGestion c : this.gestores) {
+            if (sAccion.toUpperCase().equals(c.getNombre().toUpperCase())) {
                 return c;
             }
         }

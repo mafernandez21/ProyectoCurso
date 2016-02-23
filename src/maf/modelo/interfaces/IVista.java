@@ -23,7 +23,7 @@ public interface IVista {
 
     public HashMap getMetaDatos();
 
-    public void recuperarDatosDeCampos();
+    public void recuperarDatosDeModelo();
     
     public void setDatos(HashMap hmDatos);
 
