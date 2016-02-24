@@ -46,7 +46,7 @@ public class ControladorMenu implements ActionListener {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de menú capturó " + e.getActionCommand());
+        //Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de menú capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
 
         ControladorGestion gestor = this.seleccionarControlador(sAccion);
@@ -68,8 +68,9 @@ public class ControladorMenu implements ActionListener {
             case "NUEVA_FACTURA":
                 //ControladorGestion controladorFactura = new ControladorGestion();
                 //controladorFactura.setModelo("maf.modelo.Factura");
+                gestor.inicializar();
                 gestor.creaNuevoObjeto();
-                gestor.getObjetoGestionado().inicializar();
+                gestor.getObjeto().inicializar();
 
                 Dialogo nuevaFactura = new DialogoAltaFactura(this.ventana, true, gestor);
                 nuevaFactura.setTituloVentana(sAccion);
@@ -81,8 +82,9 @@ public class ControladorMenu implements ActionListener {
             case "LISTAR_FACTURAS":
                 //ControladorGestion controladorListadoFactura = new ControladorGestion();
                 //controladorListadoFactura.setModelo("maf.modelo.Factura");
+                gestor.inicializar();
                 gestor.creaNuevoObjeto();
-                gestor.getObjetoGestionado().inicializar();
+                gestor.getObjeto().inicializar();
 
                 Dialogo listaFactura = new DialogoListaFacturas(this.ventana, true, gestor);
                 listaFactura.setTituloVentana(sAccion);
@@ -96,6 +98,7 @@ public class ControladorMenu implements ActionListener {
             case "PRODUCTO":
                 //ControladorGestion gestor = this.seleccionarControlador(sAccion);
                 //Genero una vista de Gestion
+                gestor.inicializar();
                 Dialogo vGestor = new DialogoGestion(null, true);
                 //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
                 vGestor.setControlador(gestor);
@@ -109,7 +112,9 @@ public class ControladorMenu implements ActionListener {
                 gestor.getVista().inicializar();
                 gestor.setMetaDatosVista();
                 gestor.setDatosVista();
+                ((DialogoGestion)vGestor).actualizarTablaDatos(gestor.getGrupoDeDatos());
                 gestor.getVista().ConstruirVista();
+                gestor.getVista().centrar();
                 gestor.getVista().mostrar();
                 break;
 

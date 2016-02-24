@@ -38,6 +38,7 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
+
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Override">
     @Override
@@ -123,7 +124,7 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
     }
 
     @Override
-    public void recuperarDatosDeModelo() {
+    public void recuperarDatosDeGUI() {
         for (PanelContenedor p : this.getListaDeAtributos()) {
             String key = p.getEtiqueta().toUpperCase();
             Object o = p.getValor();

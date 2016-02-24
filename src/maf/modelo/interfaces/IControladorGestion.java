@@ -16,17 +16,17 @@ import maf.modelo.ObjetoBase;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public interface IControladorGestion extends ActionListener{
+public interface IControladorGestion extends ActionListener {
 
     //<editor-fold defaultstate="collapsed" desc="Controlador de Gestion">
     public String getNombre();
-    
+
     public void inicializar();
-    
+
     public void setDatos(HashMap hmDatos);
-    
+
     public HashMap getDatos();
-    
+
     public HashMap getMetaDatos();
     //</editor-fold>
 
@@ -36,6 +36,12 @@ public interface IControladorGestion extends ActionListener{
     public Class getModelo();
 
     public boolean creaNuevoObjeto();
+
+    public boolean agregarObjeto();
+
+    public boolean removerObjeto(ObjetoBase obj);
+
+    public int getIndiceDeObjeto(ObjetoBase obj);
     
     public void setObjeto(ObjetoBase objeto);
 
@@ -63,19 +69,24 @@ public interface IControladorGestion extends ActionListener{
 
     /**
      * Carga los datos en un objeto del modelo.
+     *
+     * @return
      */
     public boolean setDatosAObjeto();
 
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Funciones de Gestión de la Vista">
     public void inicializarVista();
 
     public void setMetaDatosVista();
 
+    /**
+     * Toma los datos del HashMap que esta en la vista y los guarda en el
+     * HashMap de datos del controlador
+     */
     public void getDatosDeVista();
 
     public void setDatosVista();
-    
+
     //</editor-fold>
 }

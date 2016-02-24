@@ -6,6 +6,7 @@
 package maf.vista;
 
 import java.awt.BorderLayout;
+import java.awt.Dimension;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
 
@@ -34,6 +35,14 @@ public class PanelContenedorGrilla extends PanelContenedor {
         this.tblGrilla = tblGrilla;
     }
 
+    public JScrollPane getPanelGrilla() {
+        return panelGrilla;
+    }
+
+    public void setPanelGrilla(JScrollPane panelGrilla) {
+        this.panelGrilla = panelGrilla;
+    }
+
 //</editor-fold>
     @Override
     public void inicializar() {
@@ -47,17 +56,17 @@ public class PanelContenedorGrilla extends PanelContenedor {
         this.tblGrilla = new JTable();
         this.tblGrilla.setModel(new javax.swing.table.DefaultTableModel(
                 new Object[][]{
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null},
-            {null, null, null, null}
-        },
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null},
+                    {null, null, null, null}
+                },
                 new String[]{
-            "Columna 1", "Columna 2", "Columna 3", "Columna 4"
-        }));
+                    "Columna 1", "Columna 2", "Columna 3", "Columna 4"
+                }));
 
         this.panelGrilla.setViewportView(this.tblGrilla);
-
+        this.panelGrilla.setPreferredSize(new Dimension(600, 200));
         this.add(this.panelGrilla, BorderLayout.SOUTH);
     }
 

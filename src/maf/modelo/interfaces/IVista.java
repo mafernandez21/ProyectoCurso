@@ -23,7 +23,10 @@ public interface IVista {
 
     public HashMap getMetaDatos();
 
-    public void recuperarDatosDeModelo();
+    /**
+     * Recupera los datos de la GUI y los envia al HashMap de datos que contiene la vista
+     */
+    public void recuperarDatosDeGUI();
     
     public void setDatos(HashMap hmDatos);
 

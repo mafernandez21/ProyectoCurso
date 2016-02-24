@@ -77,7 +77,7 @@ public class DialogoListaFacturas extends Dialogo implements IVistaReflex {
     }
 
     @Override
-    public void recuperarDatosDeModelo() {
+    public void recuperarDatosDeGUI() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

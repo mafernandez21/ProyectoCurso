@@ -97,4 +97,15 @@ public class PanelBotones extends JPanel {
             btn.setEnabled(!sBloqueo);
         }
     }
+    
+    public void bloquearBoton(boolean sBloqueo, int idx) {
+        if (idx >= 0 && idx < this.btnBotones.length) {
+            this.btnBotones[idx].setEnabled(!sBloqueo);
+        }
+    }
+
+    public void reestructurarBotones(String[] sBotones){
+        this.setBotones(sBotones);
+    }
+    
 }

@@ -83,7 +83,7 @@ public class Producto extends ObjetoBase {
             if (!hmDatos.containsValue(null)) {
                 this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
                 this.setDescripcion(String.valueOf(hmDatos.get("DESCRIPCION")));
-                this.setPrecio(Integer.parseInt(String.valueOf(hmDatos.get("PRECIO"))));
+                this.setPrecio(Double.parseDouble(String.valueOf(hmDatos.get("PRECIO"))));
                 this.setTipoIVA((TipoIVA) (hmDatos.get("TIPOIVA")));
                 this.setStock(Integer.parseInt(String.valueOf(hmDatos.get("STOCK"))));
                 return true;

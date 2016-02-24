@@ -7,6 +7,7 @@ package maf.modelo;
 
 import java.lang.reflect.Field;
 import java.util.HashMap;
+import java.util.Objects;
 import maf.core.Core;
 
 /**
@@ -115,4 +116,25 @@ public abstract class ObjetoBase {
         return hmSalida;
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if(obj instanceof ObjetoBase){
+            return obj.hashCode()==this.hashCode();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        int hash = 3;
+        String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
+        for(String s:sEtiqueta){
+            hash = 53 * hash + Objects.hashCode(this.getDatos().get(s));
+        }
+        //hash = 53 * hash + Objects.hashCode(this.hmMetaDatos);
+        return hash;
+    }
+
+ 
+    
 }

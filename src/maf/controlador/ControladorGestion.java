@@ -7,16 +7,18 @@ package maf.controlador;
 
 import java.awt.event.ActionEvent;
 import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import maf.core.Core;
 import maf.modelo.ObjetoBase;
 import maf.modelo.interfaces.IControladorGestion;
 import maf.modelo.interfaces.IVista;
-import maf.modelo.interfaces.IVistaReflex;
 import maf.vista.Dialogo;
 import maf.vista.DialogoGestion;
 import maf.vista.DialogoGestionAlta;
 import maf.vista.DialogoGestionBaja;
+import maf.vista.DialogoGestionModificar;
+import maf.vista.DialogoGestionVer;
 
 /**
  * Descripcion ...
@@ -30,6 +32,7 @@ public class ControladorGestion implements IControladorGestion {
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private Class cModelo;
     private ObjetoBase objetoGestionado;
+    private ArrayList<ObjetoBase> grupoDeObjetos;
     private IVista vistaActiva;
     private IVista vistaAux;
     private HashMap hmMetaDatos;
@@ -62,7 +65,7 @@ public class ControladorGestion implements IControladorGestion {
 
     @Override
     public void inicializar() {
-
+        this.grupoDeObjetos = new ArrayList<ObjetoBase>();
         this.hmMetaDatos = new HashMap();
         this.hmDatos = new HashMap();
     }
@@ -73,14 +76,6 @@ public class ControladorGestion implements IControladorGestion {
 
     public void setcModelo(Class cModelo) {
         this.cModelo = cModelo;
-    }
-
-    public ObjetoBase getObjetoGestionado() {
-        return this.objetoGestionado;
-    }
-
-    public void setObjetoGestionado(ObjetoBase objetoGestionado) {
-        this.objetoGestionado = objetoGestionado;
     }
 
     public IVista getVista() {
@@ -108,6 +103,14 @@ public class ControladorGestion implements IControladorGestion {
     @Override
     public void setDatos(HashMap hmDatos) {
         this.getDatos().putAll(hmDatos);
+    }
+
+    public ArrayList<ObjetoBase> getGrupoDeDatos() {
+        return grupoDeObjetos;
+    }
+
+    public void setGrupoDeDatos(ArrayList<ObjetoBase> grupoDeDatos) {
+        this.grupoDeObjetos = grupoDeDatos;
     }
 
     //</editor-fold>
@@ -151,7 +154,51 @@ public class ControladorGestion implements IControladorGestion {
     }
 
     @Override
-    public void setObjeto(ObjetoBase objeto) {
+    public boolean agregarObjeto() {
+
+        if (this.getGrupoDeDatos() == null) {
+            this.setGrupoDeDatos(new ArrayList<ObjetoBase>());
+        }
+
+        for (ObjetoBase ob : this.getGrupoDeDatos()) {
+            if (this.getObjeto().equals(ob)) {
+                Core.mostrarMensajeError("ERROR interno - El objeto ya existe y no se agregó");
+                return false;
+            }
+        }
+        this.getGrupoDeDatos().add(this.getObjeto());
+        return true;
+    }
+
+    @Override
+    public boolean removerObjeto(ObjetoBase obj) {
+        if (this.getGrupoDeDatos() != null && !this.getGrupoDeDatos().isEmpty()) {
+            for (ObjetoBase ob : this.getGrupoDeDatos()) {
+                if (ob.equals(obj)) {
+                    this.getGrupoDeDatos().remove(ob);
+                    return true;
+                }
+            }
+        }
+        Core.mostrarMensajeError("ERROR interno - El objeto no se eliminó");
+        return false;
+    }
+
+    @Override
+    public int getIndiceDeObjeto(ObjetoBase obj) {
+        if (this.getGrupoDeDatos() != null) {
+            for (int i = 0; i < this.getGrupoDeDatos().size(); i++) {
+                if (obj.equals(this.getGrupoDeDatos().get(i))) {
+                    return i;
+                }
+            }
+        }
+        return -1;
+    }
+
+    @Override
+    public void setObjeto(ObjetoBase objeto
+    ) {
         if (objeto != null) {
             this.objetoGestionado = objeto;
         } else {
@@ -176,19 +223,19 @@ public class ControladorGestion implements IControladorGestion {
 
     @Override
     public HashMap getMetaDatosDeObjeto() {
-        this.getMetaDatos().putAll(this.getObjetoGestionado().getMetaDatos());
-        return this.getObjetoGestionado().getMetaDatos();
+        this.getMetaDatos().putAll(this.getObjeto().getMetaDatos());
+        return this.getObjeto().getMetaDatos();
     }
 
     @Override
     public HashMap getDatosDeObjeto() {
-        this.getDatos().putAll(this.getObjetoGestionado().getDatos());
-        return this.getObjetoGestionado().getDatos();
+        this.getDatos().putAll(this.getObjeto().getDatos());
+        return this.getObjeto().getDatos();
     }
 
     @Override
     public boolean setDatosAObjeto() {
-        return this.getObjetoGestionado().setDatos(this.getDatos());
+        return this.getObjeto().setDatos(this.getDatos());
     }
 
     @Override
@@ -210,9 +257,9 @@ public class ControladorGestion implements IControladorGestion {
     public void setDatosVista() {
         this.getVista().setDatos(this.getDatos());
     }
-
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Método Main">
+
     public static void main(String[] args) {
         //TODO-Aquí va la lógica para iniciar la clase
     }
@@ -220,120 +267,268 @@ public class ControladorGestion implements IControladorGestion {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Core.mostrarMensaje("Controlador (" + this.getNombre() + ") de Gestión capturó " + e.getActionCommand());
+        //Core.mostrarMensaje("Controlador (" + this.getNombre() + ") de Gestión capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
-        Dialogo vGestor;
-
         switch (sAccion) {
             case "ALTA":
-                //Reservo la VISTA_GESTION
-                this.setVistaAux((Dialogo) this.getVista());
-                //Genero una VISTA_ALTA
-                Dialogo vAlta = new DialogoGestionAlta(null, true);
-                //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_ALTA
-                vAlta.setControlador(this);
-                this.setVista(vAlta);
-                //Preparo la VISTA_ALTA
-                this.getVista().setTituloVentana("Alta de " + this.getNombre());
-                //Como es un ALTA genero un nuevo objeto y lo inicializo
-                this.creaNuevoObjeto();
-                this.getObjetoGestionado().inicializar();
-                this.getObjetoGestionado().prepararMetaDatos();
-                this.getMetaDatosDeObjeto();
-                //Inicializo la VISTA_ALTA
-                this.inicializarVista();
-                //Le envio los MetaDatos de acuerdo al modelo de Gestión
-                this.setMetaDatosVista();
-                //Construyo la VISTA_ALTA y la ,muestro
-                this.getVista().ConstruirVista();
-                this.getVista().mostrar();
-                //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
-                this.setVista(this.vistaAux);
+            case "BAJA":
+            case "MODIFICAR":
+            case "VER":
+                this.seleccionarAlgoritmo(sAccion);
                 break;
             case "GUARDAR":
-                this.getVista().recuperarDatosDeModelo();
-                this.getDatosDeVista();
-                if (this.setDatosAObjeto()) {
-                    this.getObjetoGestionado();
-                    Core.mostrarMensaje("Guardar Objeto en la BD");
-                    Core.mostrarMensaje(this.getObjetoGestionado());
-                    this.getVista().cerrar();
-                } else {
-                    Core.mostrarMensaje("Error en los datos");
-                }
-                break;
-
-            case "BAJA":
-                //Reservo la VISTA_GESTION
-                this.setVistaAux((Dialogo) this.getVista());
-                //Genero una VISTA_BAJA
-                Dialogo vBaja = new DialogoGestionBaja(null, true);
-                //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_ALTA
-                vBaja.setControlador(this);
-                this.setVista(vBaja);
-                //Inicializo la VISTA_ALTA
-                this.inicializarVista();
-                //Preparo la VISTA_ALTA
-                this.getVista().setTituloVentana("Baja de " + this.getNombre());
-                //Como es un ALTA genero un nuevo objeto y lo inicializo
-                this.creaNuevoObjeto();
-                this.getObjetoGestionado().inicializar();
-//##############################################################################
-//##############################################################################
-//##############################################################################
-                //TOMAR DATOS DE LA GRILLA
-
-                this.getVistaAux().recuperarDatosDeModelo();
-//##############################################################################
-                this.getVistaAux().setDatos(this.prepararCliente());
-//##############################################################################
-                this.getVistaAux().actualizarTablaDatos();
-
-//                //TOMAR DATOS DE LA GRILLA
-//                
-                this.setDatos(this.getVistaAux().getDatos());
-                //this.getDatosDeVista();
-                this.setDatosAObjeto();
-
-//##############################################################################
-//##############################################################################
-//##############################################################################
-                this.getObjetoGestionado().prepararMetaDatos();
-                this.getMetaDatosDeObjeto();
-                //Le envio los MetaDatos de acuerdo al modelo de Gestión
-                this.setMetaDatosVista();
-                this.setDatosVista();
-                //Construyo la VISTA_ALTA y la ,muestro
-                this.getVista().ConstruirVista();
-                this.getVista().mostrar();
-                //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
-                this.setVista(this.vistaAux);
+                this.guardarObjeto();
                 break;
             case "BORRAR":
-                this.getVista().recuperarDatosDeModelo();
-                this.getDatosDeVista();
-                if (Core.preguntar("Desea eliminar el registro")) {
-                    Core.mostrarMensaje("SE ELIMINÓ\n" + this.getObjetoGestionado());
-                    Core.mostrarMensaje("Objeto eliminado de la BD");
-                }
+                this.eliminarObjeto(true);
                 this.getVista().cerrar();
                 break;
-
-            case "AGREGAR CLIENTE":
-                ((IVistaReflex) this.getVista()).getListaDeAtributos()[0].setEtiqueta("Cliente Agregado");
+            case "ACTUALIZAR":
+                this.eliminarObjeto(false);
+                this.guardarObjeto();
                 break;
-
+            case "CERRAR":
             case "VOLVER":
             case "CANCELAR":
                 this.getVista().cerrar();
                 break;
-            case "VER":
-                
+
             default:
                 Core.mostrarMensajeError("La función " + sAccion + " no está implementada");
                 break;
         }
 
+    }
+
+//    
+//    private void darDeAlta(boolean bModifica) {
+//        //Reservo la VISTA_GESTION
+//        this.setVistaAux((Dialogo) this.getVista());
+//        //Genero una VISTA_ALTA
+//        Dialogo vistaInput;
+//
+//
+//        if (!bModifica) {
+//            vistaInput = new DialogoGestionAlta(null, true);
+//        } else {
+//            vistaInput = new DialogoGestionModificar(null, true);
+//        }
+//        
+//
+////Enlazo la vista con el controlador
+//        vistaInput.setControlador(this);
+//        this.setVista(vistaInput);
+//        //Preparo la vista
+//        this.getVista().inicializar();
+//        
+//        
+//        if (!bModifica) {
+//            this.getVista().setTituloVentana("Alta de " + this.getNombre());
+//            this.creaNuevoObjeto();
+//            this.getObjeto().inicializar();
+//
+//        } else {
+//
+//            this.getVistaAux().recuperarDatosDeGUI();
+//
+//            this.getVista().setTituloVentana("Modificar " + this.getNombre());
+//            this.getVista().setDatos(this.getVistaAux().getDatos());
+//            this.getObjeto().setDatos(this.getVistaAux().getDatos());
+//
+//            this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
+//
+//        }
+//
+//        
+//        
+//        this.getObjeto().prepararMetaDatos();
+//        this.getMetaDatosDeObjeto();
+//        //Le envio los MetaDatos de acuerdo al modelo de Gestión
+//        this.getDatosDeObjeto();
+//
+//        
+//        
+//        
+//        if (bModifica) {
+//            this.setDatosVista();
+//        }
+//
+//        
+//        
+//        
+//        this.setMetaDatosVista();
+//        //Construyo la VISTA_ALTA y la ,muestro
+//        this.getVista().ConstruirVista();
+//        this.getVista().mostrar();
+//        //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
+//        //Creo un nuevo objeto y lo inicializo
+//        this.creaNuevoObjeto();
+//        this.getObjeto().inicializar();
+//        this.setVista(this.getVistaAux());
+//    }
+//    
+    private void seleccionarAlgoritmo(String sAccion) {
+        //Reservo la VISTA_GESTION
+        this.setVistaAux((Dialogo) this.getVista());
+        //Genero una VISTA_ALTA
+        Dialogo vistaInput;
+
+        switch (sAccion) {
+            case "ALTA":
+                vistaInput = new DialogoGestionAlta(null, true);
+                vistaInput.setTituloVentana("Alta de " + this.getNombre());
+                //Enlazo la vista con el controlador
+                vistaInput.setControlador(this);
+                this.setVista(vistaInput);
+                //Preparo la vista
+                this.getVista().inicializar();
+                this.creaNuevoObjeto();
+                this.getObjeto().inicializar();
+                this.getObjeto().prepararMetaDatos();
+                break;
+            case "BAJA":
+                vistaInput = new DialogoGestionBaja(null, true);
+                this.getVistaAux().recuperarDatosDeGUI();
+                vistaInput.setTituloVentana("Baja " + this.getNombre());
+                //Enlazo la vista con el controlador
+                vistaInput.setControlador(this);
+                this.setVista(vistaInput);
+                //Preparo la vista
+                this.getVista().inicializar();
+                this.creaNuevoObjeto();
+                this.getObjeto().inicializar();
+                this.getObjeto().prepararMetaDatos();
+                vistaInput.setDatos(this.getVistaAux().getDatos());
+                this.getObjeto().setDatos(this.getVistaAux().getDatos());
+                this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
+                break;
+            case "MODIFICAR":
+                vistaInput = new DialogoGestionModificar(null, true);
+                this.getVistaAux().recuperarDatosDeGUI();
+                vistaInput.setTituloVentana("Modificar " + this.getNombre());
+                //Enlazo la vista con el controlador
+                vistaInput.setControlador(this);
+                this.setVista(vistaInput);
+                //Preparo la vista
+                this.getVista().inicializar();
+                this.creaNuevoObjeto();
+                this.getObjeto().inicializar();
+                this.getObjeto().prepararMetaDatos();
+                vistaInput.setDatos(this.getVistaAux().getDatos());
+                this.getObjeto().setDatos(this.getVistaAux().getDatos());
+                this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
+
+                break;
+            case "VER":
+                vistaInput = new DialogoGestionVer(null, true);
+                this.getVistaAux().recuperarDatosDeGUI();
+                vistaInput.setTituloVentana("Ver " + this.getNombre());
+                //Enlazo la vista con el controlador
+                vistaInput.setControlador(this);
+                this.setVista(vistaInput);
+                //Preparo la vista
+                this.getVista().inicializar();
+                this.creaNuevoObjeto();
+                this.getObjeto().inicializar();
+                this.getObjeto().prepararMetaDatos();
+                vistaInput.setDatos(this.getVistaAux().getDatos());
+                this.getObjeto().setDatos(this.getVistaAux().getDatos());
+                this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
+                break;
+
+            default:
+                break;
+        }
+        this.getMetaDatosDeObjeto();
+        //Le envio los MetaDatos de acuerdo al modelo de Gestión
+        this.getDatosDeObjeto();
+        if (!sAccion.equals("ALTA")) {
+            this.setDatosVista();
+        }
+        this.setMetaDatosVista();
+        //Construyo la VISTA_ALTA y la ,muestro
+        this.getVista().ConstruirVista();
+        this.getVista().centrar();
+        this.getVista().mostrar();
+        //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
+        //Creo un nuevo objeto y lo inicializo
+        this.creaNuevoObjeto();
+        this.getObjeto().inicializar();
+        this.setVista(this.getVistaAux());
+    }
+
+    private void darDeBaja(boolean bModifica) {
+        //Reservo la VISTA_GESTION
+        this.setVistaAux((Dialogo) this.getVista());
+//Genero una VISTA_BAJA
+        Dialogo vBaja = new DialogoGestionBaja(null, true);
+//Enlazo la vista con el controlador
+        vBaja.setControlador(this);
+        this.setVista(vBaja);
+//Inicializo la vista
+        this.inicializarVista();
+        this.getVista().setTituloVentana("Baja de " + this.getNombre());
+//Creo un nuevo objeto y lo inicializo
+        this.creaNuevoObjeto();
+        this.getObjeto().inicializar();
+//##############################################################################
+//##############################################################################
+//##############################################################################
+        if (bModifica) {
+
+//TOMAR DATOS DE LA GRILLA
+            this.getVistaAux().recuperarDatosDeGUI();
+            this.getVista().setDatos(this.getVistaAux().getDatos());
+            this.getDatosDeVista();
+            this.setDatosAObjeto();
+            this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
+
+            this.getObjeto().prepararMetaDatos();
+            this.getMetaDatosDeObjeto();
+            //Le envio los MetaDatos de acuerdo al modelo de Gestión
+            this.setDatosVista();
+            this.setMetaDatosVista();
+
+            //Construyo la vista y la muestro
+            this.getVista().ConstruirVista();
+            this.getVista().mostrar();
+        } else {
+            this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
+            this.eliminarObjeto(false);
+        }
+        //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
+        //Creo un nuevo objeto y lo inicializo
+        this.creaNuevoObjeto();
+        this.getObjeto().inicializar();
+        this.setVista(this.getVistaAux());
+    }
+
+    private void guardarObjeto() {
+        this.getVista().recuperarDatosDeGUI();
+//Recupera los datos que están en la vista
+        this.getDatosDeVista();
+//Si los datos pueden ser almacenados en el objeto los almacena y luego envia el objeto a la BD
+        if (this.setDatosAObjeto() && this.agregarObjeto()) {
+            //Core.mostrarMensaje("Se esta por Guardar el Objeto en la BD\n" + this.getObjeto());
+            this.getVistaAux().actualizarTablaDatos(this.getGrupoDeDatos());
+            this.getVista().cerrar();
+        } else {
+            Core.mostrarMensaje("Los datos son erroeneos o están incompletos, por favor revise y reintente");
+        }
+    }
+
+    private void eliminarObjeto(boolean advertencia) {
+        if (advertencia) {
+            if (Core.preguntar("Desea eliminar el registro")) {
+                this.removerObjeto(this.getObjeto());
+                this.getVistaAux().actualizarTablaDatos(this.getGrupoDeDatos());
+                Core.mostrarMensaje("SE ELIMINÓ\n" + this.getObjeto());
+                Core.mostrarMensaje("Objeto eliminado de la BD");
+            }
+        } else {
+            this.removerObjeto(this.getObjeto());
+            this.getVistaAux().actualizarTablaDatos(this.getGrupoDeDatos());
+        }
     }
 
     public HashMap prepararCliente() {

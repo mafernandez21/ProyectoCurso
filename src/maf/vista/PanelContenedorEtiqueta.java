@@ -5,6 +5,7 @@
  */
 package maf.vista;
 
+import java.awt.Dimension;
 import javax.swing.JLabel;
 
 /**
@@ -25,6 +26,7 @@ public class PanelContenedorEtiqueta extends PanelContenedor {
     @Override
     public void inicializar() {
         super.inicializar();
+        this.setPreferredSize(new Dimension(250,50));
         this.lblEtiqueta = new JLabel();
         this.add(this.lblEtiqueta);
     }

@@ -5,6 +5,7 @@
  */
 package maf.vista;
 
+import java.awt.Dimension;
 import javax.swing.JTextField;
 
 /**
@@ -25,6 +26,7 @@ public class PanelContenedorTexto extends PanelContenedorEtiqueta {
     public void inicializar() {
         super.inicializar();
         this.txtTexto = new JTextField();
+        this.txtTexto.setPreferredSize(new Dimension(250,25));
         this.add(this.txtTexto);
     }
 

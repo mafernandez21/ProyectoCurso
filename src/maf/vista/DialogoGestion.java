@@ -5,11 +5,15 @@
  */
 package maf.vista;
 
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
+import maf.modelo.ObjetoBase;
 
 /**
  * Descripcion ...
@@ -27,7 +31,6 @@ public class DialogoGestion extends Dialogo {
     JPanel panel;
     PanelBotones panelBotonesComandos;
     FormularioPrincipal ventanaPrincipal;
-    ArrayList<HashMap> listaDeDatos;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructores">
@@ -45,7 +48,6 @@ public class DialogoGestion extends Dialogo {
     public void inicializar() {
         super.inicializar();
 
-        this.listaDeDatos = new ArrayList<HashMap>();
         this.txtFiltro.inicializar();
         this.txtFiltro.setValor("");
         this.txtFiltro.setEtiqueta("Filtro");
@@ -70,6 +72,37 @@ public class DialogoGestion extends Dialogo {
         sBotones[3] = "Ver";
         sBotones[4] = "Volver";
         this.panelBotonesComandos.inicializar(this.getControlador(), sBotones, false);
+
+        if (this.panelGrilla.getTblGrilla().getSelectedRow() == -1) {
+            this.panelBotonesComandos.bloquear(true);
+            this.panelBotonesComandos.bloquearBoton(false, 0);
+            panelBotonesComandos.bloquearBoton(false, 4);
+        }
+
+        this.panelGrilla.getTblGrilla().addFocusListener(new FocusListener() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                if (panelGrilla.getTblGrilla().getSelectedRow() > -1) {
+                    panelBotonesComandos.bloquear(false);
+                }
+            }
+            @Override
+            public void focusLost(FocusEvent e) {
+            }
+        });
+        this.panelGrilla.getPanelGrilla().addMouseMotionListener(new MouseMotionListener() {
+            @Override
+            public void mouseDragged(MouseEvent e) {
+            }
+            @Override
+            public void mouseMoved(MouseEvent e) {
+                if (panelGrilla.getTblGrilla().getSelectedRow() == -1) {
+                    panelBotonesComandos.bloquear(true);
+                    panelBotonesComandos.bloquearBoton(false, 0);
+                    panelBotonesComandos.bloquearBoton(false, 4);
+                }
+            }
+        });
 
         this.getPanelDerecho().add(this.panelBotonesComandos);
 
@@ -105,8 +138,8 @@ public class DialogoGestion extends Dialogo {
     //</editor-fold>
 
     @Override
-    public void recuperarDatosDeModelo() {
-        if (this.panelGrilla.getTblGrilla().getSelectedRow() >= 0) {
+    public void recuperarDatosDeGUI() {
+        if (this.panelGrilla.getTblGrilla().getSelectedRow() != -1) {
             //   this.panelGrilla.getValor();
             Object fila[] = (Object[]) this.panelGrilla.getValor();
             String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
@@ -114,16 +147,12 @@ public class DialogoGestion extends Dialogo {
             for (int i = 0; i < sEtiqueta.length; i++) {
                 this.getDatos().put(sEtiqueta[i], fila[i]);
             }
-        HashMap hm = new HashMap();
-            hm.putAll(this.getDatos());
-            this.listaDeDatos.add(hm);
         }
     }
 
     @Override
     public void ConstruirVista() {
         this.prepararTblTablaDatos();
-        this.actualizarTablaDatos();
     }
 
     public void prepararTblTablaDatos() {
@@ -136,26 +165,21 @@ public class DialogoGestion extends Dialogo {
         for (String s : sEtiqueta) {
             modelo.addColumn(s);
         }
-
-//        Object[] fila = new Object[sEtiqueta.length];
-//        for (int i = 0; i < sEtiqueta.length; i++) {
-//            fila[i] = "";
-//        }
-//        modelo.addRow(fila);
     }
 
-    public void actualizarTablaDatos() {
-        String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
-        DefaultTableModel modelo = (DefaultTableModel) this.panelGrilla.getTblGrilla().getModel();
-        Object[] fila = new Object[sEtiqueta.length];
-        if (this.listaDeDatos != null && !this.listaDeDatos.isEmpty() && this.getDatos() != null) {
-            for (HashMap hm : this.listaDeDatos) {
+    public void actualizarTablaDatos(ArrayList<ObjetoBase> listaDeObjetos) {
+        if (listaDeObjetos != null) {
+            this.prepararTblTablaDatos();
+            DefaultTableModel modelo = (DefaultTableModel) this.panelGrilla.getTblGrilla().getModel();
+            for (ObjetoBase ob : listaDeObjetos) {
+                String sEtiqueta[] = String.valueOf(ob.getMetaDatos().get("ATRIBUTOS")).split(",");
+                Object[] fila = new Object[sEtiqueta.length];
                 for (int i = 0; i < sEtiqueta.length; i++) {
-                    fila[i] = hm.get(sEtiqueta[i]);
+                    fila[i] = ob.getDatos().get(sEtiqueta[i]);
                 }
                 modelo.addRow(fila);
-                this.panelGrilla.getTblGrilla().setModel(modelo);
             }
+            this.panelGrilla.getTblGrilla().setModel(modelo);
         }
     }
 }

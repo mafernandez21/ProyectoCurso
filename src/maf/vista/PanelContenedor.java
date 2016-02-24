@@ -7,7 +7,7 @@
 package maf.vista;
 
 import java.awt.Color;
-import java.awt.GridLayout;
+import java.awt.FlowLayout;
 import javax.swing.JPanel;
 
 
@@ -35,7 +35,9 @@ public abstract class PanelContenedor extends JPanel{
     //</editor-fold>
 
     public void inicializar() {
-        GridLayout layout = new GridLayout(1, 2);
+        //GridLayout layout = new GridLayout(1, 2);
+        FlowLayout layout=new FlowLayout();
+        layout.setAlignment(FlowLayout.LEFT);
         layout.setHgap(10);
         layout.setVgap(10);
         this.setLayout(layout);
