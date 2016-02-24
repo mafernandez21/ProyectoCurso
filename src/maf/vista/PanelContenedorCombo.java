@@ -59,12 +59,12 @@ public class PanelContenedorCombo extends PanelContenedor {
             }
 
             if (oValor instanceof TipoIVA) {
-                this.lblEtiqueta.setText("TIPO IVA");
+                this.lblEtiqueta.setText("TIPOIVA");
                 this.cboValores.setModel(new DefaultComboBoxModel(TipoIVA.values()));
             }
 
             if (oValor instanceof TipoFactura) {
-                this.lblEtiqueta.setText("TIPO DE FACTURA");
+                this.lblEtiqueta.setText("TIPOFACTURA");
                 this.cboValores.setModel(new DefaultComboBoxModel(TipoFactura.values()));
             }
         if (oValor != null) {
