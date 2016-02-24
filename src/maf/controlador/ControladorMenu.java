@@ -112,8 +112,8 @@ public class ControladorMenu implements ActionListener {
                 gestor.getVista().inicializar();
                 gestor.setMetaDatosVista();
                 gestor.setDatosVista();
-                ((DialogoGestion)vGestor).actualizarTablaDatos(gestor.getGrupoDeDatos());
                 gestor.getVista().ConstruirVista();
+                ((DialogoGestion)vGestor).actualizarTablaDatos(gestor.getGrupoDeDatos());
                 gestor.getVista().centrar();
                 gestor.getVista().mostrar();
                 break;

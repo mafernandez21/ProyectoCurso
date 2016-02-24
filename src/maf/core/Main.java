@@ -14,6 +14,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu.Separator;
+import maf.bdmem.BDEnMemoria;
 import maf.controlador.ControladorGestion;
 import maf.core.Core.Categoria;
 import maf.core.Core.TipoFactura;
@@ -39,8 +40,8 @@ public class Main {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        
-        String sModulos[]=Main.getModulos();
+        Main.poblar();
+        String sModulos[] = Main.getModulos();
         JFrame f = new FormularioPrincipal(Main.setUpControladores(sModulos));
         f.setLocationRelativeTo(null);
         f.setVisible(true);
@@ -74,6 +75,28 @@ public class Main {
             controladores[i].inicializarObjeto();
         }
         return controladores;
+    }
+
+    public static void poblar() {
+
+        for (int i = 0; i < 10; i++) {
+            HashMap hmDatosCliente = new HashMap();
+            hmDatosCliente.put("ID", i);
+            hmDatosCliente.put("NOMBRE", "Nombre_" + i);
+            hmDatosCliente.put("APELLIDO", "Apellido_" + i);
+            hmDatosCliente.put("DNI", "1234567" + i);
+            hmDatosCliente.put("DOMICILIO", "Domicilio_" + i);
+            hmDatosCliente.put("LOCALIDAD", "Localidad_" + i);
+            hmDatosCliente.put("CUIT", "20-1234567" + i + "-" + i);
+            hmDatosCliente.put("CATEGORIA", Categoria.CONSUMIDOR_FINAL);
+            Cliente c=new Cliente();
+            c.inicializar();
+            c.prepararMetaDatos();
+            c.setDatos(hmDatosCliente);
+
+            BDEnMemoria.conectar().insertar(c);
+        }
+
     }
 
     public static void test3() {
@@ -269,7 +292,7 @@ public class Main {
         s[1] = "Cancelar";
         s[2] = "Volver";
         pcb.setBotones(s);
-        pcb.inicializar(null,s, true);
+        pcb.inicializar(null, s, true);
         vm.add(pcb);
 
         JMenuBar barraDeMenu = new JMenuBar();
