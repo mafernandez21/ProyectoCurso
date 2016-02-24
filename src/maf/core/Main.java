@@ -18,8 +18,11 @@ import maf.bdmem.BDEnMemoria;
 import maf.controlador.ControladorGestion;
 import maf.core.Core.Categoria;
 import maf.core.Core.TipoFactura;
+import maf.core.Core.TipoIVA;
 import maf.modelo.Cliente;
 import maf.modelo.ObjetoBase;
+import maf.modelo.Persona;
+import maf.modelo.Producto;
 import maf.modelo.interfaces.IControladorGestion;
 import maf.vista.FormularioPrincipal;
 import maf.vista.PanelBotones;
@@ -80,21 +83,38 @@ public class Main {
     public static void poblar() {
 
         for (int i = 0; i < 10; i++) {
-            HashMap hmDatosCliente = new HashMap();
-            hmDatosCliente.put("ID", i);
-            hmDatosCliente.put("NOMBRE", "Nombre_" + i);
-            hmDatosCliente.put("APELLIDO", "Apellido_" + i);
-            hmDatosCliente.put("DNI", "1234567" + i);
-            hmDatosCliente.put("DOMICILIO", "Domicilio_" + i);
-            hmDatosCliente.put("LOCALIDAD", "Localidad_" + i);
-            hmDatosCliente.put("CUIT", "20-1234567" + i + "-" + i);
-            hmDatosCliente.put("CATEGORIA", Categoria.CONSUMIDOR_FINAL);
-            Cliente c=new Cliente();
+            HashMap hmDatos = new HashMap();
+            hmDatos.put("ID", i);
+            hmDatos.put("NOMBRE", "Nombre_" + i);
+            hmDatos.put("APELLIDO", "Apellido_" + i);
+            hmDatos.put("DNI", "1234567" + i);
+            hmDatos.put("DOMICILIO", "Domicilio_" + i);
+            hmDatos.put("LOCALIDAD", "Localidad_" + i);
+            Persona p = new Persona();
+            p.inicializar();
+            p.prepararMetaDatos();
+            p.setDatos(hmDatos);
+
+            hmDatos.put("CUIT", "20-1234567" + i + "-" + i);
+            hmDatos.put("CATEGORIA", Categoria.CONSUMIDOR_FINAL);
+            Cliente c = new Cliente();
             c.inicializar();
             c.prepararMetaDatos();
-            c.setDatos(hmDatosCliente);
+            c.setDatos(hmDatos);
 
+            hmDatos.put("DESCRIPCION", "Producto_" + i);
+            hmDatos.put("PRECIO", (35.0*(i+1)));
+            hmDatos.put("TIPOIVA", TipoIVA._21);
+            hmDatos.put("STOCK", (100*(i+1)));
+            Producto prod = new Producto();
+            prod.inicializar();
+            prod.prepararMetaDatos();
+            prod.setDatos(hmDatos);
+            
+            
+            BDEnMemoria.conectar().insertar(p);
             BDEnMemoria.conectar().insertar(c);
+            BDEnMemoria.conectar().insertar(prod);
         }
 
     }
