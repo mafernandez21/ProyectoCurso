@@ -38,8 +38,8 @@ public abstract class PanelContenedor extends JPanel{
         //GridLayout layout = new GridLayout(1, 2);
         FlowLayout layout=new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
-        layout.setHgap(10);
-        layout.setVgap(10);
+        layout.setHgap(5);
+        layout.setVgap(5);
         this.setLayout(layout);
         this.setBackground(new Color(0, 204, 255));
     }

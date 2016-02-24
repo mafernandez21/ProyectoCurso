@@ -5,6 +5,7 @@
  */
 package maf.vista;
 
+import java.awt.Dimension;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import javax.swing.JLabel;
@@ -33,6 +34,8 @@ public class PanelContenedorCombo extends PanelContenedor {
         super.inicializar();
         this.lblEtiqueta = new JLabel();
         this.cboValores = new JComboBox();
+        this.lblEtiqueta.setPreferredSize(new Dimension(100,25));
+        this.cboValores.setPreferredSize(new Dimension(250,25));
         this.add(this.lblEtiqueta);
         this.add(this.cboValores);
     }

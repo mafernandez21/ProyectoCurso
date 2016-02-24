@@ -26,8 +26,8 @@ public class PanelContenedorEtiqueta extends PanelContenedor {
     @Override
     public void inicializar() {
         super.inicializar();
-        this.setPreferredSize(new Dimension(250,50));
         this.lblEtiqueta = new JLabel();
+        this.lblEtiqueta.setPreferredSize(new Dimension(100,25));
         this.add(this.lblEtiqueta);
     }
 
