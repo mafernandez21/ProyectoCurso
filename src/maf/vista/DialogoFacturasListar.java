@@ -13,13 +13,13 @@ import maf.modelo.interfaces.IVistaReflex;
  *
  * @author Wolf
  */
-public class DialogoListaFacturas extends Dialogo implements IVistaReflex {
+public class DialogoFacturasListar extends Dialogo implements IVistaReflex {
     
     private PanelContenedorGrilla listadoFactura;
     private PanelBotones botonesDeVentana;
     private ActionListener controlador;
 
-    public DialogoListaFacturas(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
+    public DialogoFacturasListar(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
         super(ventanaPrincipal, modal);
         this.listadoFactura = new PanelContenedorGrilla();
         this.botonesDeVentana = new PanelBotones();
@@ -59,31 +59,25 @@ public class DialogoListaFacturas extends Dialogo implements IVistaReflex {
         this.pack();
     
     }
-    
-//    @Override
-//    public void setUpIngreso() {
-//        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-//    }
 
     @Override
     public void setListaDeAtributos(PanelContenedor[] paneles) {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+
     }
 
     @Override
     public PanelContenedor[] getListaDeAtributos() {
         return null;
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
 
     @Override
     public void recuperarDatosDeGUI() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    
     }
 
     @Override
     public void ConstruirVista() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
     
-}
+    }
+    }

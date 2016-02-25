@@ -11,9 +11,9 @@ import javax.swing.JFrame;
 import maf.core.Core;
 import maf.vista.Acerca;
 import maf.vista.Dialogo;
-import maf.vista.DialogoAltaFactura;
+import maf.vista.DialogoFacturasAlta;
 import maf.vista.DialogoGestion;
-import maf.vista.DialogoListaFacturas;
+import maf.vista.DialogoFacturasListar;
 
 /**
  * Descripcion ...
@@ -29,6 +29,7 @@ public class ControladorMenu implements ActionListener {
     private ControladorGestion gestores[];
 
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public ControladorMenu(JFrame ventana, ControladorGestion gestores[]) {
         this.ventana = ventana;
@@ -36,8 +37,10 @@ public class ControladorMenu implements ActionListener {
     }
 
     //</editor-fold>
+
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Método Main">
     public static void main(String[] args) {
         //TODO-Aquí va la lógica para iniciar la clase
@@ -50,8 +53,7 @@ public class ControladorMenu implements ActionListener {
         String sAccion = e.getActionCommand().toUpperCase();
 
         ControladorGestion gestor = this.seleccionarControlador(sAccion);
-        
-
+    
         switch (sAccion) {
             case "SALIR":
                 if (Core.preguntar("Desea Salir")) {
@@ -72,7 +74,7 @@ public class ControladorMenu implements ActionListener {
                 gestor.creaNuevoObjeto();
                 gestor.getObjeto().inicializar();
 
-                Dialogo nuevaFactura = new DialogoAltaFactura(this.ventana, true, gestor);
+                Dialogo nuevaFactura = new DialogoFacturasAlta(this.ventana, true, gestor);
                 nuevaFactura.setTituloVentana(sAccion);
                 gestor.setVista(nuevaFactura);
                 nuevaFactura.inicializar();
@@ -86,7 +88,7 @@ public class ControladorMenu implements ActionListener {
                 gestor.creaNuevoObjeto();
                 gestor.getObjeto().inicializar();
 
-                Dialogo listaFactura = new DialogoListaFacturas(this.ventana, true, gestor);
+                Dialogo listaFactura = new DialogoFacturasListar(this.ventana, true, gestor);
                 listaFactura.setTituloVentana(sAccion);
                 gestor.setVista(listaFactura);
                 listaFactura.inicializar();

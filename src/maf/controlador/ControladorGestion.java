@@ -18,6 +18,7 @@ import maf.vista.Dialogo;
 import maf.vista.DialogoGestion;
 import maf.vista.DialogoGestionAlta;
 import maf.vista.DialogoGestionBaja;
+import maf.vista.DialogoGestionListar;
 import maf.vista.DialogoGestionModificar;
 import maf.vista.DialogoGestionVer;
 
@@ -68,8 +69,8 @@ public class ControladorGestion implements IControladorGestion {
     @Override
     public void inicializar() {
         this.grupoDeObjetos = new ArrayList<ObjetoBase>();
-        for(Object o: BDEnMemoria.conectar().seleccionar(this.getNombre())){
-            this.grupoDeObjetos.add((ObjetoBase)o);
+        for (Object o : BDEnMemoria.conectar().seleccionar(this.getNombre())) {
+            this.grupoDeObjetos.add((ObjetoBase) o);
         }
         this.hmMetaDatos = new HashMap();
         this.hmDatos = new HashMap();
@@ -263,9 +264,8 @@ public class ControladorGestion implements IControladorGestion {
         this.getVista().setDatos(this.getDatos());
     }
     //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Método Main">
 
+    //<editor-fold defaultstate="collapsed" desc="Método Main">
     public static void main(String[] args) {
         //TODO-Aquí va la lógica para iniciar la clase
     }
@@ -299,11 +299,62 @@ public class ControladorGestion implements IControladorGestion {
                 this.getVista().cerrar();
                 break;
 
+            case "AGREGARCLIENTE":
+                this.lanzarListado(sAccion);
+                break;
+
             default:
                 Core.mostrarMensajeError("La función " + sAccion + " no está implementada");
                 break;
         }
 
+    }
+
+    private void lanzarListado(String sAccion) {
+        //Reservo la VISTA_GESTION
+        ControladorGestion c = new ControladorGestion();
+        switch (sAccion) {
+            case "AGREGARCLIENTE":
+           
+                c.setModelo("maf.modelo.Cliente");
+                break;
+            case "AGREGARPRODUCTO":
+                c.setModelo("maf.modelo.Producto");
+                break;
+            case "LISTARFACTURAS":
+                c.setModelo("maf.modelo.Factura");
+                //this.setVistaAux((Dialogo) this.getVista());
+                break;
+            default:
+                break;
+
+        }
+        
+        c.inicializar();
+        c.creaNuevoObjeto();
+        c.inicializarObjeto();
+        
+        Dialogo vListado = new DialogoGestionListar(null, true);
+        //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
+        vListado.setControlador(c);
+        c.setVista(vListado);
+        //Preparo la VISTA_GESTION y la muestro
+        c.getMetaDatosDeObjeto();
+        //Le envio los MetaDatos de acuerdo al modelo de Gestión
+        //Construyo la VISTA_ALTA y la ,muestro
+        c.getVista().setTituloVentana("Listado de " + c.getNombre());
+        c.getVista().inicializar();
+        c.setMetaDatosVista();
+        c.setDatosVista();
+        c.getVista().ConstruirVista();
+        ((DialogoGestionListar) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
+        c.getVista().centrar();
+        c.getVista().mostrar();
+        
+        
+        
+        
+        
     }
 
     private void seleccionarAlgoritmo(String sAccion) {
@@ -356,7 +407,6 @@ public class ControladorGestion implements IControladorGestion {
                 vistaInput.setDatos(this.getVistaAux().getDatos());
                 this.getObjeto().setDatos(this.getVistaAux().getDatos());
                 this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
-
                 break;
             case "VER":
                 vistaInput = new DialogoGestionVer(null, true);
@@ -374,7 +424,6 @@ public class ControladorGestion implements IControladorGestion {
                 this.getObjeto().setDatos(this.getVistaAux().getDatos());
                 this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));
                 break;
-
             default:
                 break;
         }
@@ -395,7 +444,7 @@ public class ControladorGestion implements IControladorGestion {
         this.getObjeto().inicializar();
         this.setVista(this.getVistaAux());
     }
-    
+
     private void guardarObjeto() {
         this.getVista().recuperarDatosDeGUI();
 //Recupera los datos que están en la vista
@@ -492,8 +541,6 @@ public class ControladorGestion implements IControladorGestion {
 //        this.setVista(this.getVistaAux());
 //    }
 //    
-
-    
 //    private void darDeBaja(boolean bModifica) {
 //        //Reservo la VISTA_GESTION
 //        this.setVistaAux((Dialogo) this.getVista());
@@ -539,8 +586,6 @@ public class ControladorGestion implements IControladorGestion {
 //        this.getObjeto().inicializar();
 //        this.setVista(this.getVistaAux());
 //    }
-
-
     public HashMap prepararCliente() {
         HashMap hm = new HashMap();
         hm.put("ID", "009");
@@ -564,5 +609,5 @@ public class ControladorGestion implements IControladorGestion {
         return hm;
     }
 //</editor-fold>
-    
+
 }

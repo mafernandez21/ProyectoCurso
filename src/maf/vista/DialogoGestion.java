@@ -109,34 +109,6 @@ public class DialogoGestion extends Dialogo {
         this.pack();
     }
 
-    //<editor-fold defaultstate="collapsed" desc="Método Main">
-    public static void main(String[] args) {
-        DialogoGestion d = new DialogoGestion(null, true);
-
-        PanelContenedorGrilla pcg = new PanelContenedorGrilla();
-        pcg.inicializar();
-        // pcg.getTxtFiltro().setText("");
-        pcg.setEtiqueta("Filtro");
-        d.getPanelCentral().add(pcg);
-
-        PanelBotones pcb = new PanelBotones();
-        String botones[] = new String[5];
-        botones[0] = "Alta";
-        botones[1] = "Baja";
-        botones[2] = "Modificar";
-        botones[3] = "Ver";
-        botones[4] = "Volver";
-        pcb.inicializar(null, botones, true);
-
-        d.getPanelInferior().add(pcb);
-
-        d.inicializar();
-        d.centrar();
-        d.mostrar();
-        d.pack();
-    }
-    //</editor-fold>
-
     @Override
     public void recuperarDatosDeGUI() {
         if (this.panelGrilla.getTblGrilla().getSelectedRow() != -1) {
@@ -182,4 +154,32 @@ public class DialogoGestion extends Dialogo {
             this.panelGrilla.getTblGrilla().setModel(modelo);
         }
     }
+
+    //<editor-fold defaultstate="collapsed" desc="Método Main">
+    public static void main(String[] args) {
+        DialogoGestion d = new DialogoGestion(null, true);
+
+        PanelContenedorGrilla pcg = new PanelContenedorGrilla();
+        pcg.inicializar();
+        // pcg.getTxtFiltro().setText("");
+        pcg.setEtiqueta("Filtro");
+        d.getPanelCentral().add(pcg);
+
+        PanelBotones pcb = new PanelBotones();
+        String botones[] = new String[5];
+        botones[0] = "Alta";
+        botones[1] = "Baja";
+        botones[2] = "Modificar";
+        botones[3] = "Ver";
+        botones[4] = "Volver";
+        pcb.inicializar(null, botones, true);
+
+        d.getPanelInferior().add(pcb);
+
+        d.inicializar();
+        d.centrar();
+        d.mostrar();
+        d.pack();
+    }
+    //</editor-fold>
 }

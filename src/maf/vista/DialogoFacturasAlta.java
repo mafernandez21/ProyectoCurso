@@ -14,7 +14,7 @@ import maf.modelo.interfaces.IVistaReflex;
  *
  * @author Martín Alejandro
  */
-public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
+public class DialogoFacturasAlta extends Dialogo implements IVistaReflex {
 
     private JPanel Cliente;
     private PanelContenedorEtiqueta lblnombreCliente;
@@ -26,7 +26,7 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
     private PanelBotones botonesDeVentana;
     private ActionListener controlador;
 
-    public DialogoAltaFactura(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
+    public DialogoFacturasAlta(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
         super(ventanaPrincipal, modal);
         this.Cliente = new JPanel();
      this.lblnombreCliente = new PanelContenedorEtiqueta();
@@ -116,6 +116,9 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
         this.lblnombreCliente.setEtiqueta("Nombre del Cliente");
         this.getPanelSuperior().add(this.lblnombreCliente);
         this.agregarCliente.inicializar(this.controlador, sBotones1, true);
+        
+        this.agregarCliente.setComandoBoton("AgregarCliente", 0);
+        
         this.getPanelSuperior().add(this.agregarCliente);
         
         this.getPanelCentral().setLayout(new GridLayout(4, 1));
@@ -123,6 +126,7 @@ public class DialogoAltaFactura extends Dialogo implements IVistaReflex {
         String sBotones2[] = new String[1];
         sBotones2[0] = "Agregar Detalle";
         this.agregarDetalle.inicializar(controlador, sBotones2, true);
+        this.agregarDetalle.setComandoBoton("AgregarDetalle", 0);
         this.getPanelCentral().add(this.agregarDetalle);
         
         this.getPanelCentral().add(this.listadoDetalles);
