@@ -16,10 +16,6 @@ import javax.swing.JFrame;
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
 public class DialogoGestionBaja extends DialogoGestionAlta{
-    
-    //<editor-fold defaultstate="collapsed" desc="Atributos">
-
-    //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public DialogoGestionBaja(JFrame ventanaPrincipal, boolean modal) {
@@ -31,7 +27,7 @@ public class DialogoGestionBaja extends DialogoGestionAlta{
 
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Override">
+    //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void ConstruirVista() {
         super.ConstruirVista();
@@ -42,13 +38,4 @@ public class DialogoGestionBaja extends DialogoGestionAlta{
         this.panelDeBotones.setComandoBoton("BORRAR", 0);
     }
     //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Método Main">
-    public static void main(String[] args){
-        //TODO-Aquí va la lógica para iniciar la clase
-    }
-    //</editor-fold>
-
-
-
 }

@@ -24,17 +24,17 @@ import maf.modelo.interfaces.IControladorGestion;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class FormularioPrincipal extends JFrame {
+public class VentanaPrincipal extends JFrame {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private JMenuBar barraDeMenu;
-    private ActionListener controladorMenu;
-    private IControladorGestion gestores[];
+    private final ActionListener controladorMenu;
+    private final IControladorGestion gestores[];
     private final PanelImagen imagenFondo;
-
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Constructores">
-    public FormularioPrincipal(ControladorGestion gestores[]) {
+    public VentanaPrincipal(ControladorGestion gestores[]) {
         this.gestores = gestores;
         this.imagenFondo = new PanelImagen();
         this.controladorMenu = new ControladorMenu(this,gestores);
@@ -58,9 +58,6 @@ public class FormularioPrincipal extends JFrame {
         this.pack();
     }
 
-    //</editor-fold>
-    
-    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     //</editor-fold>
     
     JMenuBar inicializarMenuModulos(IControladorGestion gestores[]) {
@@ -109,7 +106,6 @@ public class FormularioPrincipal extends JFrame {
             mnuItemGestion[i].setText(gestores[i].getNombre());
             mnuItemGestion[i].setActionCommand(gestores[i].getNombre());
             mnuItemGestion[i].addActionListener(this.controladorMenu);
-            //mnuItemGestion[i].addActionListener((ActionListener) gestores[i]);
             mnuGestion.add(mnuItemGestion[i]);
         }
 

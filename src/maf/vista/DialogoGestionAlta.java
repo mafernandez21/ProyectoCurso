@@ -24,10 +24,7 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     PanelContenedor[] paneles;
     PanelBotones panelDeBotones;
-    FormularioPrincipal ventanaPrincipal;
-//    ActionListener controlador;
-//    HashMap hmDatos;
-//    HashMap hmMetaDatos;
+    VentanaPrincipal ventanaPrincipal;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructores">
@@ -35,24 +32,13 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
         super(ventanaPrincipal, modal);
         this.panelDeBotones = new PanelBotones();
     }
-
     //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
-
-    //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Override">
+     
+    //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
         super.inicializar();
-        //this.ConstruirVista();
     }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Método Main">
-    public static void main(String[] args) {
-        //TODO-Aquí va la lógica para iniciar la clase
-    }
-    //</editor-fold>
 
     @Override
     public void ConstruirVista() {
@@ -133,4 +119,6 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
             }
         }
     }
+    //</editor-fold>
+    
 }

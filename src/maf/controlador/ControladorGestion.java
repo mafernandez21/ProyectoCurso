@@ -18,7 +18,6 @@ import maf.vista.Dialogo;
 import maf.vista.DialogoGestion;
 import maf.vista.DialogoGestionAlta;
 import maf.vista.DialogoGestionBaja;
-import maf.vista.DialogoGestionListar;
 import maf.vista.DialogoGestionModificar;
 import maf.vista.DialogoGestionVer;
 
@@ -57,6 +56,7 @@ public class ControladorGestion implements IControladorGestion {
     }
 
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     private void setVistaAux(Dialogo dialogo) {
         this.vistaAux = dialogo;
@@ -120,6 +120,7 @@ public class ControladorGestion implements IControladorGestion {
     }
 
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Override">
     @Override
     public String getNombre() {
@@ -273,7 +274,7 @@ public class ControladorGestion implements IControladorGestion {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        //Core.mostrarMensaje("Controlador (" + this.getNombre() + ") de Gestión capturó " + e.getActionCommand());
+        Core.mostrarMensaje("Controlador (" + this.getNombre() + ") de Gestión capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
         switch (sAccion) {
             case "ALTA":
@@ -298,65 +299,13 @@ public class ControladorGestion implements IControladorGestion {
             case "CANCELAR":
                 this.getVista().cerrar();
                 break;
-
-            case "AGREGARCLIENTE":
-                this.lanzarListado(sAccion);
-                break;
-
             default:
                 Core.mostrarMensajeError("La función " + sAccion + " no está implementada");
                 break;
         }
 
     }
-
-    private void lanzarListado(String sAccion) {
-        //Reservo la VISTA_GESTION
-        ControladorGestion c = new ControladorGestion();
-        switch (sAccion) {
-            case "AGREGARCLIENTE":
-           
-                c.setModelo("maf.modelo.Cliente");
-                break;
-            case "AGREGARPRODUCTO":
-                c.setModelo("maf.modelo.Producto");
-                break;
-            case "LISTARFACTURAS":
-                c.setModelo("maf.modelo.Factura");
-                //this.setVistaAux((Dialogo) this.getVista());
-                break;
-            default:
-                break;
-
-        }
-        
-        c.inicializar();
-        c.creaNuevoObjeto();
-        c.inicializarObjeto();
-        
-        Dialogo vListado = new DialogoGestionListar(null, true);
-        //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
-        vListado.setControlador(c);
-        c.setVista(vListado);
-        //Preparo la VISTA_GESTION y la muestro
-        c.getMetaDatosDeObjeto();
-        //Le envio los MetaDatos de acuerdo al modelo de Gestión
-        //Construyo la VISTA_ALTA y la ,muestro
-        c.getVista().setTituloVentana("Listado de " + c.getNombre());
-        c.getVista().inicializar();
-        c.setMetaDatosVista();
-        c.setDatosVista();
-        c.getVista().ConstruirVista();
-        ((DialogoGestionListar) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
-        c.getVista().centrar();
-        c.getVista().mostrar();
-        
-        
-        
-        
-        
-    }
-
+    
     private void seleccionarAlgoritmo(String sAccion) {
         //Reservo la VISTA_GESTION
         this.setVistaAux((Dialogo) this.getVista());
@@ -451,9 +400,9 @@ public class ControladorGestion implements IControladorGestion {
         this.getDatosDeVista();
 //Si los datos pueden ser almacenados en el objeto los almacena y luego envia el objeto a la BD
         if (this.setDatosAObjeto() && this.agregarObjeto()) {
-            //Core.mostrarMensaje("Se esta por Guardar el Objeto en la BD\n" + this.getObjeto());
             this.getVistaAux().actualizarTablaDatos(this.getGrupoDeDatos());
             BDEnMemoria.conectar().insertar(this.getObjeto());
+            Core.mostrarMensaje("Objeto guardado en la BD");
             this.getVista().cerrar();
         } else {
             Core.mostrarMensaje("Los datos son erroeneos o están incompletos, por favor revise y reintente");

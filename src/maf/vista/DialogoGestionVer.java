@@ -16,17 +16,13 @@ import javax.swing.JFrame;
  */
 public class DialogoGestionVer extends DialogoGestionAlta {
 
-    //<editor-fold defaultstate="collapsed" desc="Atributos">
-    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public DialogoGestionVer(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
     }
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
-    //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Override">
+    //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void ConstruirVista() {
         super.ConstruirVista();
@@ -36,12 +32,6 @@ public class DialogoGestionVer extends DialogoGestionAlta {
 
         this.panelDeBotones.setEtiquetaBoton("CERRAR", 0);
         this.panelDeBotones.setComandoBoton("CERRAR", 0);
-    }
-    //</editor-fold>
-
-    //<editor-fold defaultstate="collapsed" desc="Método Main">
-    public static void main(String[] args) {
-        //TODO-Aquí va la lógica para iniciar la clase
     }
     //</editor-fold>
 

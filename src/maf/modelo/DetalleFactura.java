@@ -16,7 +16,7 @@ public class DetalleFactura extends ObjetoBase {
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private Producto producto;
     private int cantidad;
-    private double precio;
+    private double precioUnitario;
     private double importeiva;
     private double totallinea;
     //</editor-fold>
@@ -35,8 +35,8 @@ public class DetalleFactura extends ObjetoBase {
         return importeiva;
     }
 
-    public double getPrecio() {
-        return precio;
+    public double getPrecioUnitario() {
+        return precioUnitario;
     }
 
     public Producto getProducto() {
@@ -52,12 +52,12 @@ public class DetalleFactura extends ObjetoBase {
     }
 
     public void setImporteiva() {
-        this.importeiva = this.getProducto().getTipoIVA().getValor() * (this.getCantidad() * this.getPrecio());
+        this.importeiva = this.getProducto().getTipoIVA().getValor() * (this.getCantidad() * this.getPrecioUnitario());
 
     }
 
-    public void setPrecio() {
-        this.precio = this.producto.getPrecio();
+    public void setPrecioUnitario() {
+        this.precioUnitario = this.producto.getPrecio();
     }
 
     public void setProducto(Producto producto) {
@@ -65,13 +65,13 @@ public class DetalleFactura extends ObjetoBase {
     }
 
     public void setTotallinea() {
-        this.totallinea = this.getCantidad() * this.getPrecio();
+        this.totallinea = this.getCantidad() * this.getPrecioUnitario();
     }
 
     @Override
     public String toString() {
         return " DetalleFactura{" + " producto=" + producto + " cantidad="
-                + cantidad + " precio=" + precio + " importeiva=" + importeiva
+                + cantidad + " precio=" + precioUnitario + " importeiva=" + importeiva
                 + " totallinea=" + totallinea + '}';
     }
     //</editor-fold>
@@ -81,7 +81,7 @@ public class DetalleFactura extends ObjetoBase {
     protected void setUpValoresDefault() {
         this.producto = new Producto();
         this.cantidad = 0;
-        this.precio = 0.0;
+        this.precioUnitario = 0.0;
         this.importeiva = 0.0;
         this.totallinea = 0.0;
     }
@@ -92,7 +92,7 @@ public class DetalleFactura extends ObjetoBase {
             if (!hmDatos.containsValue(null)) {
                 this.setProducto((Producto) hmDatos.get("PRODUCTO"));
                 this.setCantidad(Integer.parseInt(String.valueOf(hmDatos.get("CANTIDAD"))));
-                this.precio = Double.parseDouble(String.valueOf(hmDatos.get("PRECIO")));
+                this.precioUnitario = Double.parseDouble(String.valueOf(hmDatos.get("PRECIO")));
                 this.importeiva = Double.parseDouble(String.valueOf(hmDatos.get("IMPORTEIVA")));
                 this.totallinea = Double.parseDouble(String.valueOf(hmDatos.get("TOTALLINEA")));
                 return true;

@@ -9,11 +9,11 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import maf.core.Core;
-import maf.vista.Acerca;
 import maf.vista.Dialogo;
 import maf.vista.DialogoFacturasAlta;
 import maf.vista.DialogoGestion;
-import maf.vista.DialogoFacturasListar;
+import maf.vista.DialogoGestionListar;
+import maf.vista.VentanaAcerca;
 
 /**
  * Descripcion ...
@@ -29,7 +29,6 @@ public class ControladorMenu implements ActionListener {
     private ControladorGestion gestores[];
 
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public ControladorMenu(JFrame ventana, ControladorGestion gestores[]) {
         this.ventana = ventana;
@@ -37,10 +36,8 @@ public class ControladorMenu implements ActionListener {
     }
 
     //</editor-fold>
-
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Método Main">
     public static void main(String[] args) {
         //TODO-Aquí va la lógica para iniciar la clase
@@ -51,9 +48,9 @@ public class ControladorMenu implements ActionListener {
     public void actionPerformed(ActionEvent e) {
         //Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de menú capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
+        ControladorGestion gestorFactura = new ControladorGestion();
+        gestorFactura.setModelo("maf.modelo.Factura");
 
-        ControladorGestion gestor = this.seleccionarControlador(sAccion);
-    
         switch (sAccion) {
             case "SALIR":
                 if (Core.preguntar("Desea Salir")) {
@@ -62,64 +59,107 @@ public class ControladorMenu implements ActionListener {
                 break;
             case "ACERCA DE...":
             case "CONTENIDO":
-                Acerca da = new Acerca(this.ventana, true);
+                VentanaAcerca da = new VentanaAcerca(this.ventana, true);
                 da.setTitle(sAccion);
                 da.setVisible(true);
                 break;
 
             case "NUEVA_FACTURA":
-                //ControladorGestion controladorFactura = new ControladorGestion();
-                //controladorFactura.setModelo("maf.modelo.Factura");
-                gestor.inicializar();
-                gestor.creaNuevoObjeto();
-                gestor.getObjeto().inicializar();
+                gestorFactura.inicializar();
+                gestorFactura.creaNuevoObjeto();
+                gestorFactura.getObjeto().inicializar();
 
-                Dialogo nuevaFactura = new DialogoFacturasAlta(this.ventana, true, gestor);
-                nuevaFactura.setTituloVentana(sAccion);
-                gestor.setVista(nuevaFactura);
-                nuevaFactura.inicializar();
-                nuevaFactura.mostrar();
+                ControladorListados gestorListado = new ControladorListados();
+                gestorListado.setGestorOriginal(gestorFactura);
+
+                Dialogo vNuevaFactura = new DialogoFacturasAlta(this.ventana, true, gestorListado);
+                vNuevaFactura.setControlador(gestorFactura);
+
+                //vNuevaFactura.setControlador(gestorFactura);
+                vNuevaFactura.setTituloVentana(sAccion);
+                gestorFactura.setVista(vNuevaFactura);
+                vNuevaFactura.inicializar();
+                vNuevaFactura.centrar();
+                vNuevaFactura.mostrar();
+                vNuevaFactura.cerrar();
                 break;
 
             case "LISTAR_FACTURAS":
-                //ControladorGestion controladorListadoFactura = new ControladorGestion();
-                //controladorListadoFactura.setModelo("maf.modelo.Factura");
-                gestor.inicializar();
-                gestor.creaNuevoObjeto();
-                gestor.getObjeto().inicializar();
+                gestorListado = new ControladorListados();
+                gestorListado.setGestorOriginal(gestorFactura);
+                
+                ControladorGestion c = new ControladorGestion();
+                c.setModelo("maf.modelo.Factura");
+                c.inicializar();
+                c.creaNuevoObjeto();
+                c.inicializarObjeto();
+                Dialogo vListado = new DialogoGestionListar(null, true);
+                //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
+                //vListado.setControlador(c);
+                c.setVista(vListado);
+                //Preparo la VISTA_GESTION y la muestro
+                c.getMetaDatosDeObjeto();
+                //Le envio los MetaDatos de acuerdo al modelo de Gestión
+                //Construyo la VISTA_ALTA y la ,muestro
+                c.getVista().setTituloVentana("Listado de " + c.getNombre());
 
-                Dialogo listaFactura = new DialogoFacturasListar(this.ventana, true, gestor);
-                listaFactura.setTituloVentana(sAccion);
-                gestor.setVista(listaFactura);
-                listaFactura.inicializar();
-                listaFactura.mostrar();
+                //indico que la ventana de listado ahora tambien la controla el "controlador de listados"
+                c.getVista().setControlador(gestorListado);
+                gestorListado.setVista(c.getVista());
+
+                //El controlado de Gestion presenta la vista y los datos
+                c.getVista().inicializar();
+                c.setMetaDatosVista();
+                c.setDatosVista();
+                c.getVista().ConstruirVista();
+
+                gestorListado.setObjeto(c.getObjeto());
+                gestorListado.setGestorListado(c);
+
+                ((DialogoGestionListar) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
+                c.getVista().centrar();
+                c.getVista().mostrar();
+
+//                gestorFactura.inicializar();
+//                gestorFactura.creaNuevoObjeto();
+//                gestorFactura.getObjeto().inicializar();
+//
+//                Dialogo vListaFactura = new DialogoFacturasListar(this.ventana, true, gestorFactura);
+//                vListaFactura.setTituloVentana(sAccion);
+//                gestorFactura.setVista(vListaFactura);
+//                vListaFactura.inicializar();
+//                vListaFactura.centrar();
+//                vListaFactura.mostrar();
+//                vListaFactura.cerrar();
                 break;
 
             case "PERSONA":
             case "CLIENTE":
             case "PRODUCTO":
-                //ControladorGestion gestor = this.seleccionarControlador(sAccion);
-                //Genero una vista de Gestion
-                gestor.inicializar();
-                Dialogo vGestor = new DialogoGestion(null, true);
-                //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
-                vGestor.setControlador(gestor);
-                gestor.setVista(vGestor);
-                //Preparo la VISTA_GESTION y la muestro
-                gestor.getMetaDatosDeObjeto();
-                //Inicializo la VISTA_ALTA
-                //Le envio los MetaDatos de acuerdo al modelo de Gestión
-                //Construyo la VISTA_ALTA y la ,muestro
-                gestor.getVista().setTituloVentana(gestor.getNombre());
-                gestor.getVista().inicializar();
-                gestor.setMetaDatosVista();
-                gestor.setDatosVista();
-                gestor.getVista().ConstruirVista();
-                ((DialogoGestion)vGestor).actualizarTablaDatos(gestor.getGrupoDeDatos());
-                gestor.getVista().centrar();
-                gestor.getVista().mostrar();
+                ControladorGestion gestor = this.seleccionarControlador(sAccion);
+                if (gestor != null) {//Genero una vista de Gestion
+                    gestor.inicializar();
+                    Dialogo vGestor = new DialogoGestion(null, true);
+                    //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
+                    vGestor.setControlador(gestor);
+                    gestor.setVista(vGestor);
+                    //Preparo la VISTA_GESTION y la muestro
+                    gestor.getMetaDatosDeObjeto();
+                    //Inicializo la VISTA_ALTA
+                    //Le envio los MetaDatos de acuerdo al modelo de Gestión
+                    //Construyo la VISTA_ALTA y la ,muestro
+                    gestor.getVista().setTituloVentana(gestor.getNombre());
+                    gestor.getVista().inicializar();
+                    gestor.setMetaDatosVista();
+                    gestor.setDatosVista();
+                    gestor.getVista().ConstruirVista();
+                    ((DialogoGestion) vGestor).actualizarTablaDatos(gestor.getGrupoDeDatos());
+                    gestor.getVista().centrar();
+                    gestor.getVista().mostrar();
+                } else {
+                    Core.mostrarMensajeError("El módulo " + sAccion + " no fué cargado");
+                }
                 break;
-
             default:
                 Core.mostrarMensajeError("Función " + sAccion + " no implementada");
                 break;
@@ -134,7 +174,5 @@ public class ControladorMenu implements ActionListener {
         }
         return null;
     }
-    
-    
-    
+
 }

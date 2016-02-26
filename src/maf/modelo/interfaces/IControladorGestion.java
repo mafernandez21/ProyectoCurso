@@ -75,6 +75,7 @@ public interface IControladorGestion extends ActionListener {
     public boolean setDatosAObjeto();
 
     //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Funciones de Gestión de la Vista">
     public void inicializarVista();
 

@@ -30,7 +30,7 @@ public abstract class Dialogo extends JDialog implements IVista {
     private ActionListener controlador;
     private HashMap hmDatos;
     private HashMap hmMetaDatos;
-    private JFrame ventanaPrincipal;
+    private final JFrame ventanaPrincipal;
 
     private JPanel panelPrincipal;
     private JPanel panelSuperior;
@@ -113,12 +113,11 @@ public abstract class Dialogo extends JDialog implements IVista {
     public void setBotones(PanelBotones Botones) {
         this.Botones = Botones;
     }
-
     //</editor-fold>
-    
+
+    //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
-
         this.panelPrincipal = new JPanel();
         this.panelSuperior = new JPanel();
         this.panelIzquierdo = new JPanel();
@@ -222,5 +221,5 @@ public abstract class Dialogo extends JDialog implements IVista {
         this.ocultar();
         this.dispose();
     }
-
+//</editor-fold>
 }

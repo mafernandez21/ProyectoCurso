@@ -5,13 +5,11 @@
  */
 package maf.vista;
 
-import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
 import javax.swing.JFrame;
-import javax.swing.JPanel;
 import javax.swing.table.DefaultTableModel;
 import maf.modelo.ObjetoBase;
 
@@ -25,39 +23,25 @@ import maf.modelo.ObjetoBase;
 public class DialogoGestionListar extends Dialogo {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
-    PanelContenedorTexto txtFiltro;
     PanelContenedorGrilla panelGrilla;
-    PanelBotones panelBotonFiltro;
-    JPanel panel;
     PanelBotones panelBotonesComandos;
-    FormularioPrincipal ventanaPrincipal;
+    VentanaPrincipal ventanaPrincipal;
     //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Controlador">
     public DialogoGestionListar(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
-        this.txtFiltro = new PanelContenedorTexto();
         this.panelGrilla = new PanelContenedorGrilla();
-        this.panelBotonFiltro = new PanelBotones();
-        this.panel = new JPanel();
         this.panelBotonesComandos = new PanelBotones();
     }
+    //</editor-fold>
 
+    //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
         super.inicializar();
-        this.txtFiltro.inicializar();
-        this.txtFiltro.setValor("");
-        this.txtFiltro.setEtiqueta("Filtro");
-
-        String sFiltro[] = new String[1];
-        sFiltro[0] = "Filtrar";
-        this.panelBotonFiltro.inicializar(this.getControlador(), sFiltro, true);
-
-        this.txtFiltro.add(this.panelBotonFiltro);
-
         this.panelGrilla.inicializar();
 
-        this.panelGrilla.add(this.txtFiltro);
         this.getPanelCentral().add(this.panelGrilla);
 
         String sBotones[] = new String[2];
@@ -69,20 +53,32 @@ public class DialogoGestionListar extends Dialogo {
             this.panelBotonesComandos.bloquear(true);
             this.panelBotonesComandos.bloquearBoton(false, 1);
         }
-
-        this.panelGrilla.getTblGrilla().addFocusListener(new FocusListener() {
+        
+        this.panelGrilla.getTblGrilla().addMouseListener(new MouseListener() {
             @Override
-            public void focusGained(FocusEvent e) {
-                if (panelGrilla.getTblGrilla().getSelectedRow() > -1) {
+            public void mouseClicked(MouseEvent e) {
+                if (panelGrilla.getTblGrilla().getSelectedRow() != -1) {
                     panelBotonesComandos.bloquear(false);
                 }
             }
 
             @Override
-            public void focusLost(FocusEvent e) {
+            public void mousePressed(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseReleased(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e) {
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e) {
             }
         });
-        
+
         this.panelGrilla.getPanelGrilla().addMouseMotionListener(new MouseMotionListener() {
             @Override
             public void mouseDragged(MouseEvent e) {
@@ -92,7 +88,7 @@ public class DialogoGestionListar extends Dialogo {
             public void mouseMoved(MouseEvent e) {
                 if (panelGrilla.getTblGrilla().getSelectedRow() == -1) {
                     panelBotonesComandos.bloquear(true);
-                    panelBotonesComandos.bloquearBoton(false,1);
+                    panelBotonesComandos.bloquearBoton(false, 1);
                 }
             }
         });
@@ -101,14 +97,13 @@ public class DialogoGestionListar extends Dialogo {
 
         this.pack();
     }
-    
+
     @Override
     public void recuperarDatosDeGUI() {
         if (this.panelGrilla.getTblGrilla().getSelectedRow() != -1) {
             //   this.panelGrilla.getValor();
             Object fila[] = (Object[]) this.panelGrilla.getValor();
             String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
-
             for (int i = 0; i < sEtiqueta.length; i++) {
                 this.getDatos().put(sEtiqueta[i], fila[i]);
             }
@@ -147,5 +142,5 @@ public class DialogoGestionListar extends Dialogo {
             this.panelGrilla.getTblGrilla().setModel(modelo);
         }
     }
-
+    //</editor-fold>
 }

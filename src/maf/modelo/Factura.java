@@ -5,6 +5,7 @@
 package maf.modelo;
 
 import java.util.*;
+import maf.core.Core;
 import maf.core.Core.TipoFactura;
 
 /**
@@ -84,18 +85,21 @@ public class Factura extends ObjetoBase {
     }
 
     public void setTotaliva() {
+        this.totaliva = 0.0;
         for (DetalleFactura d : detalles) {
-            totaliva += 0.21 * d.getTotallinea();
+            totaliva += d.getImporteiva();
         }
     }
 
     public void setTotalneto() {
+        this.totalneto = 0.0;
         for (DetalleFactura d : detalles) {
             totalneto += d.getTotallinea();
         }
     }
 
     public void setTotal() {
+        this.total = 0.0;
         total = getTotaliva() + getTotalneto();
     }
 
@@ -116,17 +120,52 @@ public class Factura extends ObjetoBase {
     //<editor-fold defaultstate="collapsed" desc="Override">
     @Override
     protected void setUpValoresDefault() {
-        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        this.id = 0;
+        this.cliente = new Cliente();
+        this.fecha = new Date();
+        this.numero = 0;
+        this.detalles = new ArrayList<DetalleFactura>();
+        this.tipo = TipoFactura.C;
+        this.totalneto = 0.0;
+        this.totaliva = 0.0;
+        this.total = 0.0;
+
     }
 
     @Override
     public boolean setDatos(HashMap hmDatos) {
-        return true;//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            if (!hmDatos.containsValue(null)) {
+                this.setId(Integer.parseInt(String.valueOf(hmDatos.get("ID"))));
+                this.setCliente((Cliente) hmDatos.get("CLIENTE"));
+                this.setFecha((Date) hmDatos.get("FECHA"));
+                this.setNumero(Integer.parseInt(String.valueOf(hmDatos.get("NUMERO"))));
+                this.setDetalles((ArrayList<DetalleFactura>) hmDatos.get("DETALLES"));
+                this.setTipo((TipoFactura) hmDatos.get("TIPO"));
+                this.setTotalneto();
+                this.setTotaliva();
+                this.setTotal();
+                return true;
+            }
+        } catch (Exception ex) {
+            Core.mostrarMensajeError("Estructura de Datos Malformada para " + this.getClass().getSimpleName());
+        }
+        return false;
     }
 
     @Override
     public HashMap getDatos() {
-        return null;//throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        HashMap hmSalida = new HashMap();
+        hmSalida.put("ID", this.getId());
+        hmSalida.put("CLIENTE", this.getCliente());
+        hmSalida.put("FECHA", this.getFecha());
+        hmSalida.put("NUMERO", this.getNumero());
+        hmSalida.put("DETALLES", this.getDetalles());
+        hmSalida.put("TIPO", this.getTipo());
+        hmSalida.put("TOTALNETO", this.getTotalneto());
+        hmSalida.put("TOTALIVA", this.getTotaliva());
+        hmSalida.put("TOTAL", this.getTotal());
+        return hmSalida;
     }
     //</editor-fold>
 
