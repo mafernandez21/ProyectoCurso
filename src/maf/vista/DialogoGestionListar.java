@@ -45,7 +45,7 @@ public class DialogoGestionListar extends Dialogo {
         this.getPanelCentral().add(this.panelGrilla);
 
         String sBotones[] = new String[2];
-        sBotones[0] = "Listo";
+        sBotones[0] = "Seleccionar";
         sBotones[1] = "Volver";
         this.panelBotonesComandos.inicializar(this.getControlador(), sBotones, true);
 

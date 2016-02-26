@@ -59,9 +59,9 @@ public class MaxPower {
         return controladores;
     }
 
-    public void poblar() {
-        for (int i = 0; i < 100; i++) {
-            Core.mostrarMensajeConsola("Poblando la Base de Datos en Memoria..." + i + "%");
+    public void poblar(int pobladores) {
+        for (int i = 0; i < pobladores; i++) {
+            Core.mostrarMensajeConsola("Poblando la Base de Datos en Memoria..." + ((i*100)/pobladores) + "%");
             HashMap hmDatos = new HashMap();
             hmDatos.put("ID", i);
             hmDatos.put("NOMBRE", "Nombre_" + i);
@@ -136,7 +136,7 @@ public class MaxPower {
     public static void main(String[] args) {
         MaxPower sistemaMaxPower = new MaxPower();
 
-        sistemaMaxPower.poblar();
+        sistemaMaxPower.poblar(5);
 
         String sModulos[] = sistemaMaxPower.getModulos();
 

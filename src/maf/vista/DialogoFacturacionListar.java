@@ -13,13 +13,13 @@ import maf.modelo.interfaces.IVistaReflex;
  *
  * @author Wolf
  */
-public class DialogoFacturasListar extends Dialogo implements IVistaReflex {
+public class DialogoFacturacionListar extends Dialogo implements IVistaReflex {
     
     private PanelContenedorGrilla listadoFactura;
     private PanelBotones botonesDeVentana;
     private ActionListener controlador;
 
-    public DialogoFacturasListar(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
+    public DialogoFacturacionListar(JFrame ventanaPrincipal, boolean modal, ActionListener controlador) {
         super(ventanaPrincipal, modal);
         this.listadoFactura = new PanelContenedorGrilla();
         this.botonesDeVentana = new PanelBotones();

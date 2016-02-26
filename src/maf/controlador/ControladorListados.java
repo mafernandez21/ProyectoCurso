@@ -35,8 +35,6 @@ public class ControladorListados implements ActionListener {
     private ControladorGestion gestorOriginal;
     //</editor-fold>
 
-    //<editor-fold defaultstate="collapsed" desc="Constructores">
-    //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public IVista getVista() {
         return vista;
@@ -69,8 +67,6 @@ public class ControladorListados implements ActionListener {
     public void setGestorOriginal(ControladorGestion gestorOriginal) {
         this.gestorOriginal = gestorOriginal;
     }
-    
-    
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
@@ -82,10 +78,14 @@ public class ControladorListados implements ActionListener {
             case "SETCLIENTE":
                 this.lanzarListado(ControladorListados.LISTADO_CLIENTES);
                 break;
-            case "LISTO":
-            case "OK":
+            case "SELECCIONAR":
                 this.retornarObjeto(ControladorListados.LISTADO_CLIENTES);
                 break;
+            case "SETDETALLE":
+                
+                break;
+
+            case "OK":
             case "CERRAR":
             case "VOLVER":
             case "CANCELAR":
@@ -136,13 +136,10 @@ public class ControladorListados implements ActionListener {
         c.setMetaDatosVista();
         c.setDatosVista();
         c.getVista().ConstruirVista();
-        
-        
+
         this.setObjeto(c.getObjeto());
         this.setGestorListado(c);
 
-        
-        
         ((DialogoGestionListar) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
         c.getVista().centrar();
         c.getVista().mostrar();
@@ -156,7 +153,7 @@ public class ControladorListados implements ActionListener {
 
         switch (iTipoListado) {
             case ControladorListados.LISTADO_CLIENTES:
-                ((Factura)this.getGestorOriginal().getObjeto()).setCliente((Cliente) this.getGestorListado().getObjeto());
+                ((Factura) this.getGestorOriginal().getObjeto()).setCliente((Cliente) this.getGestorListado().getObjeto());
                 break;
             case ControladorListados.LISTADO_DETALLES:
                 //c.setModelo("maf.modelo.Producto");

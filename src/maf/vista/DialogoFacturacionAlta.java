@@ -18,7 +18,7 @@ import maf.modelo.interfaces.IVista;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class DialogoFacturasAlta extends Dialogo implements IVista {
+public class DialogoFacturacionAlta extends Dialogo implements IVista {
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private JPanel Cliente;
     private PanelContenedorEtiqueta lblnombreCliente;
@@ -28,12 +28,12 @@ public class DialogoFacturasAlta extends Dialogo implements IVista {
     private PanelContenedorEtiqueta subTotal;
     private PanelContenedorEtiqueta total;
     private PanelBotones botonesDeVentana;
-    private ActionListener controladorListado;
+    private ActionListener controladorListadoClientes;
     //private ControladorGestion controlador;
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Constructores">
-    public DialogoFacturasAlta(JFrame ventanaPrincipal, boolean modal, ActionListener controladorListado) {
+    public DialogoFacturacionAlta(JFrame ventanaPrincipal, boolean modal, ActionListener controladorListadoClientes) {
         super(ventanaPrincipal, modal);
         this.Cliente = new JPanel();
         this.lblnombreCliente = new PanelContenedorEtiqueta();
@@ -43,7 +43,7 @@ public class DialogoFacturasAlta extends Dialogo implements IVista {
         this.subTotal = new PanelContenedorEtiqueta();
         this.total = new PanelContenedorEtiqueta();
         this.botonesDeVentana = new PanelBotones();
-        this.controladorListado=controladorListado;
+        this.controladorListadoClientes=controladorListadoClientes;
     }
 //</editor-fold>
     
@@ -112,12 +112,12 @@ public class DialogoFacturasAlta extends Dialogo implements IVista {
         this.botonesDeVentana = botonesDeVentana;
     }
 
-    public ActionListener getControladorListado() {
-        return this.controladorListado;
+    public ActionListener getControladorListadoClientes() {
+        return this.controladorListadoClientes;
     }
 
-    public void setControladorListado(ActionListener controladorListado) {
-        this.controladorListado = controladorListado;
+    public void setControladorListadoClientes(ActionListener controladorListadoClientes) {
+        this.controladorListadoClientes = controladorListadoClientes;
     }
 
     
@@ -134,8 +134,8 @@ public class DialogoFacturasAlta extends Dialogo implements IVista {
         this.lblnombreCliente.inicializar();
         this.lblnombreCliente.setEtiqueta("Nombre del Cliente");
         this.getPanelSuperior().add(this.lblnombreCliente);
-        this.agregarCliente.inicializar(this.controladorListado, sBotones1, true);
-        this.agregarCliente.setComandoBoton("SETCliente", 0);
+        this.agregarCliente.inicializar(this.controladorListadoClientes, sBotones1, true);
+        this.agregarCliente.setComandoBoton("setCliente", 0);
 
         this.getPanelSuperior().add(this.agregarCliente);
 
@@ -143,8 +143,8 @@ public class DialogoFacturasAlta extends Dialogo implements IVista {
 
         String sBotones2[] = new String[1];
         sBotones2[0] = "Agregar Detalle";
-        this.agregarDetalle.inicializar(this.controladorListado, sBotones2, true);
-        this.agregarDetalle.setComandoBoton("AgregarDetalle", 0);
+        this.agregarDetalle.inicializar(this.controladorListadoClientes, sBotones2, true);
+        this.agregarDetalle.setComandoBoton("setDetalle", 0);
         this.getPanelCentral().add(this.agregarDetalle);
 
         this.getPanelCentral().add(this.listadoDetalles);

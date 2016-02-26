@@ -10,7 +10,7 @@ import java.awt.event.ActionListener;
 import javax.swing.JFrame;
 import maf.core.Core;
 import maf.vista.Dialogo;
-import maf.vista.DialogoFacturasAlta;
+import maf.vista.DialogoFacturacionAlta;
 import maf.vista.DialogoGestion;
 import maf.vista.DialogoGestionListar;
 import maf.vista.VentanaAcerca;
@@ -72,7 +72,7 @@ public class ControladorMenu implements ActionListener {
                 ControladorListados gestorListado = new ControladorListados();
                 gestorListado.setGestorOriginal(gestorFactura);
 
-                Dialogo vNuevaFactura = new DialogoFacturasAlta(this.ventana, true, gestorListado);
+                Dialogo vNuevaFactura = new DialogoFacturacionAlta(this.ventana, true, gestorListado);
                 vNuevaFactura.setControlador(gestorFactura);
 
                 //vNuevaFactura.setControlador(gestorFactura);
