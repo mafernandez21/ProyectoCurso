@@ -384,7 +384,7 @@ public class ControladorGestion implements IControladorGestion {
         }
         this.setMetaDatosVista();
         //Construyo la VISTA_ALTA y la ,muestro
-        this.getVista().ConstruirVista();
+        this.getVista().construirVista();
         this.getVista().centrar();
         this.getVista().mostrar();
         //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
@@ -481,7 +481,7 @@ public class ControladorGestion implements IControladorGestion {
 //        
 //        this.setMetaDatosVista();
 //        //Construyo la VISTA_ALTA y la ,muestro
-//        this.getVista().ConstruirVista();
+//        this.getVista().construirVista();
 //        this.getVista().mostrar();
 //        //Una vez que se termino el proceso de ALTA retorno la VISTA_GESTION al controlador
 //        //Creo un nuevo objeto y lo inicializo
@@ -523,7 +523,7 @@ public class ControladorGestion implements IControladorGestion {
 //            this.setMetaDatosVista();
 //
 //            //Construyo la vista y la muestro
-//            this.getVista().ConstruirVista();
+//            this.getVista().construirVista();
 //            this.getVista().mostrar();
 //        } else {
 //            this.setObjeto(this.getGrupoDeDatos().get(this.getIndiceDeObjeto(this.getObjeto())));

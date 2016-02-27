@@ -7,6 +7,9 @@ package maf.vista;
 
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import maf.modelo.interfaces.IVista;
@@ -19,10 +22,13 @@ import maf.modelo.interfaces.IVista;
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
 public class DialogoFacturacionAlta extends Dialogo implements IVista {
+
     //<editor-fold defaultstate="collapsed" desc="Atributos">
-    private JPanel Cliente;
-    private PanelContenedorEtiqueta lblnombreCliente;
-    private PanelBotones agregarCliente;
+    private JPanel panelDatosCliente = new JPanel();
+    private PanelContenedorEtiqueta lblFecha;
+    private PanelContenedorEtiqueta lblNombreApellidoCliente;
+    private PanelContenedorEtiqueta lblCategoriaCliente;
+    private PanelBotones btnAgregarCliente;
     private PanelBotones agregarDetalle;
     private PanelContenedorGrilla listadoDetalles;
     private PanelContenedorEtiqueta subTotal;
@@ -31,45 +37,39 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
     private ActionListener controladorListadoClientes;
     //private ControladorGestion controlador;
     //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Constructores">
     public DialogoFacturacionAlta(JFrame ventanaPrincipal, boolean modal, ActionListener controladorListadoClientes) {
         super(ventanaPrincipal, modal);
-        this.Cliente = new JPanel();
-        this.lblnombreCliente = new PanelContenedorEtiqueta();
-        this.agregarCliente = new PanelBotones();
+        this.lblFecha = new PanelContenedorEtiqueta();
+        this.lblNombreApellidoCliente = new PanelContenedorEtiqueta();
+        this.lblCategoriaCliente = new PanelContenedorEtiqueta();
+        this.btnAgregarCliente = new PanelBotones();
         this.agregarDetalle = new PanelBotones();
         this.listadoDetalles = new PanelContenedorGrilla();
         this.subTotal = new PanelContenedorEtiqueta();
         this.total = new PanelContenedorEtiqueta();
         this.botonesDeVentana = new PanelBotones();
-        this.controladorListadoClientes=controladorListadoClientes;
+        this.controladorListadoClientes = controladorListadoClientes;
+        this.panelDatosCliente = new JPanel();
     }
 //</editor-fold>
-    
+
     //<editor-fold defaultstate="collapsed" desc="Getters & Setters">
-    public JPanel getCliente() {
-        return Cliente;
+    public PanelContenedorEtiqueta getLblNombreApellidoCliente() {
+        return lblNombreApellidoCliente;
     }
 
-    public void setCliente(JPanel Cliente) {
-        this.Cliente = Cliente;
+    public void setLblNombreApellidoCliente(PanelContenedorEtiqueta lblNombreApellidoCliente) {
+        this.lblNombreApellidoCliente = lblNombreApellidoCliente;
     }
 
-    public PanelContenedorEtiqueta getLblnombreCliente() {
-        return lblnombreCliente;
+    public PanelBotones getBtnAgregarCliente() {
+        return btnAgregarCliente;
     }
 
-    public void setLblnombreCliente(PanelContenedorEtiqueta lblnombreCliente) {
-        this.lblnombreCliente = lblnombreCliente;
-    }
-
-    public PanelBotones getAgregarCliente() {
-        return agregarCliente;
-    }
-
-    public void setAgregarCliente(PanelBotones agregarCliente) {
-        this.agregarCliente = agregarCliente;
+    public void setBtnAgregarCliente(PanelBotones btnAgregarCliente) {
+        this.btnAgregarCliente = btnAgregarCliente;
     }
 
     public PanelBotones getAgregarDetalle() {
@@ -120,24 +120,38 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.controladorListadoClientes = controladorListadoClientes;
     }
 
-    
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
         super.inicializar();
-        this.ConstruirVista();
+        this.construirVista();
 
+        panelDatosCliente.setLayout(new GridLayout(3, 1));
+
+        this.lblFecha.inicializar();
+        SimpleDateFormat formato= new SimpleDateFormat("dd/MM/yyyy");
+        
+        this.lblFecha.setEtiqueta("Fecha:" + formato.format(new Date()));
+        this.panelDatosCliente.add(this.lblFecha);
+
+        this.lblNombreApellidoCliente.inicializar();
+        this.lblNombreApellidoCliente.setEtiqueta("Nombre del Cliente");
+        this.panelDatosCliente.add(this.lblNombreApellidoCliente);
+
+        this.lblCategoriaCliente.inicializar();
+        this.lblCategoriaCliente.setEtiqueta("Categoria del Cliente");
+        this.panelDatosCliente.add(this.lblCategoriaCliente);
+
+        this.getPanelSuperior().add(this.panelDatosCliente);
+        
+        
         String sBotones1[] = new String[1];
         sBotones1[0] = "Seleccionar un Cliente";
-        this.lblnombreCliente.inicializar();
-        this.lblnombreCliente.setEtiqueta("Nombre del Cliente");
-        this.getPanelSuperior().add(this.lblnombreCliente);
-        this.agregarCliente.inicializar(this.controladorListadoClientes, sBotones1, true);
-        this.agregarCliente.setComandoBoton("setCliente", 0);
-
-        this.getPanelSuperior().add(this.agregarCliente);
+        this.btnAgregarCliente.inicializar(this.controladorListadoClientes, sBotones1, true);
+        this.btnAgregarCliente.setComandoBoton("setCliente", 0);
+        this.getPanelSuperior().add(this.btnAgregarCliente);
 
         this.getPanelCentral().setLayout(new GridLayout(4, 1));
 
@@ -156,18 +170,31 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         sBotones3[1] = "Cancelar";
         this.botonesDeVentana.inicializar(this.getControlador(), sBotones3, true);
         this.getPanelInferior().add(this.botonesDeVentana);
+        
+        this.setSize(500, 400);
         this.pack();
     }
 
     @Override
-    public void ConstruirVista() {
-//        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void construirVista() {
+
     }
 
     @Override
     public void recuperarDatosDeGUI() {
-        
+
     }
+
+    @Override
+    public void actualizarDatosDeVista(HashMap hmDatos) {
+        this.lblNombreApellidoCliente.setEtiqueta("Nombre, Apellido: " + String.valueOf(hmDatos.get("ETIQUETA1")));
+        this.lblCategoriaCliente.setEtiqueta("Categoria: " + String.valueOf(hmDatos.get("ETIQUETA2")));
+    }
+
+    @Override
+    public void setListaDeAtributos(PanelContenedor[] paneles) {}
+
+    @Override
+    public PanelContenedor[] getListaDeAtributos() {return null;}
     //</editor-fold>
-    
 }

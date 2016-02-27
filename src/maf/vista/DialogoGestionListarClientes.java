@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import maf.modelo.ObjetoBase;
@@ -20,7 +21,7 @@ import maf.modelo.ObjetoBase;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class DialogoGestionListar extends Dialogo {
+public class DialogoGestionListarClientes extends Dialogo {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     PanelContenedorGrilla panelGrilla;
@@ -29,7 +30,7 @@ public class DialogoGestionListar extends Dialogo {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Controlador">
-    public DialogoGestionListar(JFrame ventanaPrincipal, boolean modal) {
+    public DialogoGestionListarClientes(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
         this.panelGrilla = new PanelContenedorGrilla();
         this.panelBotonesComandos = new PanelBotones();
@@ -49,7 +50,7 @@ public class DialogoGestionListar extends Dialogo {
         sBotones[1] = "Volver";
         this.panelBotonesComandos.inicializar(this.getControlador(), sBotones, true);
 
-        if (this.panelGrilla.getTblGrilla().getSelectedRow() == -1) {
+        if (this.panelGrilla.getTblGrilla().getSelectedRow() < 0 ) {
             this.panelBotonesComandos.bloquear(true);
             this.panelBotonesComandos.bloquearBoton(false, 1);
         }
@@ -86,7 +87,7 @@ public class DialogoGestionListar extends Dialogo {
 
             @Override
             public void mouseMoved(MouseEvent e) {
-                if (panelGrilla.getTblGrilla().getSelectedRow() == -1) {
+                if (panelGrilla.getTblGrilla().getSelectedRow() < 0) {
                     panelBotonesComandos.bloquear(true);
                     panelBotonesComandos.bloquearBoton(false, 1);
                 }
@@ -101,7 +102,6 @@ public class DialogoGestionListar extends Dialogo {
     @Override
     public void recuperarDatosDeGUI() {
         if (this.panelGrilla.getTblGrilla().getSelectedRow() != -1) {
-            //   this.panelGrilla.getValor();
             Object fila[] = (Object[]) this.panelGrilla.getValor();
             String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
             for (int i = 0; i < sEtiqueta.length; i++) {
@@ -111,7 +111,7 @@ public class DialogoGestionListar extends Dialogo {
     }
 
     @Override
-    public void ConstruirVista() {
+    public void construirVista() {
         this.prepararTblTablaDatos();
     }
 
@@ -142,5 +142,16 @@ public class DialogoGestionListar extends Dialogo {
             this.panelGrilla.getTblGrilla().setModel(modelo);
         }
     }
-    //</editor-fold>
+
+    @Override
+    public void actualizarDatosDeVista(HashMap hmDatos) {}
+
+    @Override
+    public void setListaDeAtributos(PanelContenedor[] paneles) {}
+
+    @Override
+    public PanelContenedor[] getListaDeAtributos() {
+        return null;
+    }
+    //</editor-fold>    
 }

@@ -12,8 +12,6 @@ import maf.vista.PanelContenedor;
  */
 public interface IVistaReflex extends IVista{
 
-    void ConstruirVista();
-    
     public void setListaDeAtributos(PanelContenedor[] paneles);
     
     public PanelContenedor[] getListaDeAtributos();

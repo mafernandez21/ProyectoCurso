@@ -180,9 +180,6 @@ public abstract class Dialogo extends JDialog implements IVista {
     }
 
     @Override
-    public abstract void recuperarDatosDeGUI();
-    
-    @Override
     public void setDatos(HashMap hmDatos) {
         if (hmDatos != null) {
             this.hmDatos.putAll(hmDatos);
@@ -221,5 +218,18 @@ public abstract class Dialogo extends JDialog implements IVista {
         this.ocultar();
         this.dispose();
     }
+
+    @Override
+    public abstract void recuperarDatosDeGUI();
+
+    @Override
+    public abstract void actualizarDatosDeVista(HashMap hmDatos);
+
+    @Override
+    public abstract void setListaDeAtributos(PanelContenedor[] paneles);
+
+    @Override
+    public abstract PanelContenedor[] getListaDeAtributos();
+
 //</editor-fold>
 }

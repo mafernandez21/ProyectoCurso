@@ -35,7 +35,6 @@ public abstract class PanelContenedor extends JPanel{
     //</editor-fold>
 
     public void inicializar() {
-        //GridLayout layout = new GridLayout(1, 2);
         FlowLayout layout=new FlowLayout();
         layout.setAlignment(FlowLayout.LEFT);
         layout.setHgap(5);

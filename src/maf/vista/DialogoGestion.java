@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import maf.modelo.ObjetoBase;
@@ -118,7 +119,7 @@ public class DialogoGestion extends Dialogo {
     }
 
     @Override
-    public void ConstruirVista() {
+    public void construirVista() {
         this.prepararTblTablaDatos();
     }
 
@@ -150,5 +151,21 @@ public class DialogoGestion extends Dialogo {
         }
     }
     //</editor-fold>
+
+    @Override
+    public void actualizarDatosDeVista(HashMap hmDatos) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void setListaDeAtributos(PanelContenedor[] paneles) {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public PanelContenedor[] getListaDeAtributos() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return null;
+    }
 
 }

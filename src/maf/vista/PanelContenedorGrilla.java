@@ -22,10 +22,8 @@ public class PanelContenedorGrilla extends PanelContenedor {
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private JTable tblGrilla;
     private JScrollPane panelGrilla;
-
     //</editor-fold>
-    //<editor-fold defaultstate="collapsed" desc="Constructores">
-    //</editor-fold>
+     
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
     public JTable getTblGrilla() {
         return tblGrilla;
@@ -43,7 +41,9 @@ public class PanelContenedorGrilla extends PanelContenedor {
         this.panelGrilla = panelGrilla;
     }
 
-//</editor-fold>
+    //</editor-fold>
+
+    //<editor-fold defaultstate="collapsed" desc="Implementaciones">    
     @Override
     public void inicializar() {
         BorderLayout layout = new BorderLayout();
@@ -64,7 +64,6 @@ public class PanelContenedorGrilla extends PanelContenedor {
                 new String[]{
                     "Columna 1", "Columna 2", "Columna 3", "Columna 4"
                 }));
-
         this.panelGrilla.setViewportView(this.tblGrilla);
         this.panelGrilla.setPreferredSize(new Dimension(600, 200));
         this.add(this.panelGrilla, BorderLayout.SOUTH);
@@ -86,7 +85,6 @@ public class PanelContenedorGrilla extends PanelContenedor {
 
     @Override
     public Object getValor() {
-//return this.tblGrilla.getValueAt(this.tblGrilla.getSelectedRow(), this.tblGrilla.getSelectedColumn());
         Object filaRetorno[] = new Object[this.tblGrilla.getColumnCount()];
         for (int i = 0; i < this.tblGrilla.getColumnCount(); i++) {
             filaRetorno[i] = this.tblGrilla.getValueAt(this.tblGrilla.getSelectedRow(), i);
@@ -98,4 +96,5 @@ public class PanelContenedorGrilla extends PanelContenedor {
     public void bloquear(boolean bBloqueo) {
         this.tblGrilla.setEnabled(!bBloqueo);
     }
+    //</editor-fold>
 }

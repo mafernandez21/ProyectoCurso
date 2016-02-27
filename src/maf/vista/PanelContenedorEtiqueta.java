@@ -27,7 +27,7 @@ public class PanelContenedorEtiqueta extends PanelContenedor {
     public void inicializar() {
         super.inicializar();
         this.lblEtiqueta = new JLabel();
-        this.lblEtiqueta.setPreferredSize(new Dimension(100,25));
+        this.lblEtiqueta.setPreferredSize(new Dimension(250,25));
         this.add(this.lblEtiqueta);
     }
 
@@ -40,7 +40,7 @@ public class PanelContenedorEtiqueta extends PanelContenedor {
     public String getEtiqueta() {
         return this.lblEtiqueta.getText();
     }
-
+    
     @Override
     public void setValor(Object oValor) {
         this.lblEtiqueta.setText(String.valueOf(oValor));

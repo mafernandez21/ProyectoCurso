@@ -19,23 +19,28 @@ import maf.core.Core.TipoIVA;
  */
 public class PanelContenedorCombo extends PanelContenedor {
 
+    //<editor-fold defaultstate="collapsed" desc="Atributos">
     private JComboBox cboValores;
     private JLabel lblEtiqueta;
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Contructores">
     /**
      * Creates new form PanelAtributoBoton
      */
     public PanelContenedorCombo() {
 
     }
-
+    //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
         super.inicializar();
         this.lblEtiqueta = new JLabel();
         this.cboValores = new JComboBox();
-        this.lblEtiqueta.setPreferredSize(new Dimension(100,25));
-        this.cboValores.setPreferredSize(new Dimension(250,25));
+        this.lblEtiqueta.setPreferredSize(new Dimension(100, 25));
+        this.cboValores.setPreferredSize(new Dimension(250, 25));
         this.add(this.lblEtiqueta);
         this.add(this.cboValores);
     }
@@ -52,21 +57,21 @@ public class PanelContenedorCombo extends PanelContenedor {
 
     @Override
     public void setValor(Object oValor) {
-        
-            if (oValor instanceof Categoria) {
-                this.lblEtiqueta.setText("CATEGORIA");
-                this.cboValores.setModel(new DefaultComboBoxModel(Categoria.values()));
-            }
 
-            if (oValor instanceof TipoIVA) {
-                this.lblEtiqueta.setText("TIPOIVA");
-                this.cboValores.setModel(new DefaultComboBoxModel(TipoIVA.values()));
-            }
+        if (oValor instanceof Categoria) {
+            this.lblEtiqueta.setText("CATEGORIA");
+            this.cboValores.setModel(new DefaultComboBoxModel(Categoria.values()));
+        }
 
-            if (oValor instanceof TipoFactura) {
-                this.lblEtiqueta.setText("TIPOFACTURA");
-                this.cboValores.setModel(new DefaultComboBoxModel(TipoFactura.values()));
-            }
+        if (oValor instanceof TipoIVA) {
+            this.lblEtiqueta.setText("TIPOIVA");
+            this.cboValores.setModel(new DefaultComboBoxModel(TipoIVA.values()));
+        }
+
+        if (oValor instanceof TipoFactura) {
+            this.lblEtiqueta.setText("TIPOFACTURA");
+            this.cboValores.setModel(new DefaultComboBoxModel(TipoFactura.values()));
+        }
         if (oValor != null) {
             this.cboValores.setSelectedItem(oValor);
         } else {
@@ -84,6 +89,5 @@ public class PanelContenedorCombo extends PanelContenedor {
     public void bloquear(boolean bBloqueo) {
         this.cboValores.setEnabled(!bBloqueo);
     }
-    
-    
+    //</editor-fold>
 }

@@ -6,14 +6,15 @@
 package maf.vista;
 
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import javax.swing.JFrame;
-import maf.modelo.interfaces.IVistaReflex;
+import maf.modelo.interfaces.IVista;
 
 /**
  *
  * @author Wolf
  */
-public class DialogoFacturacionListar extends Dialogo implements IVistaReflex {
+public class DialogoFacturacionListar extends Dialogo implements IVista {
     
     private PanelContenedorGrilla listadoFactura;
     private PanelBotones botonesDeVentana;
@@ -45,7 +46,7 @@ public class DialogoFacturacionListar extends Dialogo implements IVistaReflex {
     @Override
     public void inicializar() {
         super.inicializar(); // aqui se llama a la funcion inicializar de Dialogo, donde se arma el borderlayout
-        this.ConstruirVista();
+        this.construirVista();
         
         this.listadoFactura.inicializar();
         this.getPanelCentral().add(this.listadoFactura);
@@ -77,7 +78,12 @@ public class DialogoFacturacionListar extends Dialogo implements IVistaReflex {
     }
 
     @Override
-    public void ConstruirVista() {
+    public void construirVista() {
     
+    }
+
+    @Override
+    public void actualizarDatosDeVista(HashMap hmDatos) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     }

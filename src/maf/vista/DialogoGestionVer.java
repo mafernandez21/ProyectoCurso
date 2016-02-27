@@ -24,8 +24,8 @@ public class DialogoGestionVer extends DialogoGestionAlta {
 
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
-    public void ConstruirVista() {
-        super.ConstruirVista();
+    public void construirVista() {
+        super.construirVista();
         for (PanelContenedor pc : this.getListaDeAtributos()) {
             pc.bloquear(true);
         }

@@ -12,7 +12,7 @@ import maf.core.Core;
 import maf.vista.Dialogo;
 import maf.vista.DialogoFacturacionAlta;
 import maf.vista.DialogoGestion;
-import maf.vista.DialogoGestionListar;
+import maf.vista.DialogoGestionListarClientes;
 import maf.vista.VentanaAcerca;
 
 /**
@@ -69,7 +69,7 @@ public class ControladorMenu implements ActionListener {
                 gestorFactura.creaNuevoObjeto();
                 gestorFactura.getObjeto().inicializar();
 
-                ControladorListados gestorListado = new ControladorListados();
+                ControladorListadoCliente gestorListado = new ControladorListadoCliente();
                 gestorListado.setGestorOriginal(gestorFactura);
 
                 Dialogo vNuevaFactura = new DialogoFacturacionAlta(this.ventana, true, gestorListado);
@@ -85,7 +85,7 @@ public class ControladorMenu implements ActionListener {
                 break;
 
             case "LISTAR_FACTURAS":
-                gestorListado = new ControladorListados();
+                gestorListado = new ControladorListadoCliente();
                 gestorListado.setGestorOriginal(gestorFactura);
                 
                 ControladorGestion c = new ControladorGestion();
@@ -93,7 +93,7 @@ public class ControladorMenu implements ActionListener {
                 c.inicializar();
                 c.creaNuevoObjeto();
                 c.inicializarObjeto();
-                Dialogo vListado = new DialogoGestionListar(null, true);
+                Dialogo vListado = new DialogoGestionListarClientes(null, true);
                 //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
                 //vListado.setControlador(c);
                 c.setVista(vListado);
@@ -111,12 +111,12 @@ public class ControladorMenu implements ActionListener {
                 c.getVista().inicializar();
                 c.setMetaDatosVista();
                 c.setDatosVista();
-                c.getVista().ConstruirVista();
+                c.getVista().construirVista();
 
                 gestorListado.setObjeto(c.getObjeto());
                 gestorListado.setGestorListado(c);
 
-                ((DialogoGestionListar) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
+                ((DialogoGestionListarClientes) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
                 c.getVista().centrar();
                 c.getVista().mostrar();
 
@@ -152,7 +152,7 @@ public class ControladorMenu implements ActionListener {
                     gestor.getVista().inicializar();
                     gestor.setMetaDatosVista();
                     gestor.setDatosVista();
-                    gestor.getVista().ConstruirVista();
+                    gestor.getVista().construirVista();
                     ((DialogoGestion) vGestor).actualizarTablaDatos(gestor.getGrupoDeDatos());
                     gestor.getVista().centrar();
                     gestor.getVista().mostrar();

@@ -7,13 +7,14 @@ package maf.controlador;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashMap;
 import maf.core.Core;
 import maf.modelo.Cliente;
 import maf.modelo.Factura;
 import maf.modelo.ObjetoBase;
 import maf.modelo.interfaces.IVista;
 import maf.vista.Dialogo;
-import maf.vista.DialogoGestionListar;
+import maf.vista.DialogoGestionListarClientes;
 
 /**
  * Descripcion ...
@@ -22,17 +23,15 @@ import maf.vista.DialogoGestionListar;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class ControladorListados implements ActionListener {
+public class ControladorListadoCliente implements ActionListener {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
-    public static final int LISTADO_CLIENTES = 0;
-    public static final int LISTADO_DETALLES = 1;
-    public static final int LISTADO_FACTURAS = 2;
-    public static final int LISTADO_GENERICO = 3;
     private IVista vista;
     private ObjetoBase objetoDeListado;
     private ControladorGestion gestorListado;
     private ControladorGestion gestorOriginal;
+    private HashMap hmDatos = new HashMap();
+    private HashMap hmMetaDatos = new HashMap();
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
@@ -76,15 +75,17 @@ public class ControladorListados implements ActionListener {
         String sAccion = e.getActionCommand().toUpperCase();
         switch (sAccion) {
             case "SETCLIENTE":
-                this.lanzarListado(ControladorListados.LISTADO_CLIENTES);
+                this.mostrarListadoDeClientes();
                 break;
             case "SELECCIONAR":
-                this.retornarObjeto(ControladorListados.LISTADO_CLIENTES);
+                this.retornarObjeto();
+                String s = ((Cliente) ((Factura) this.getGestorOriginal().getObjeto()).getCliente()).getNombre();
+                s += ", " + ((Cliente) ((Factura) this.getGestorOriginal().getObjeto()).getCliente()).getApellido();
+                this.hmDatos.put("ETIQUETA1", s);
+                s = ((Cliente) ((Factura) this.getGestorOriginal().getObjeto()).getCliente()).getCategoria().toString();
+                this.hmDatos.put("ETIQUETA2", s);
+                this.getGestorOriginal().getVista().actualizarDatosDeVista(this.hmDatos);
                 break;
-            case "SETDETALLE":
-                
-                break;
-
             case "OK":
             case "CERRAR":
             case "VOLVER":
@@ -98,74 +99,44 @@ public class ControladorListados implements ActionListener {
     }
     //</editor-fold>
 
-    private void lanzarListado(int iTipoListado) {
+    private void mostrarListadoDeClientes() {
         //Reservo la VISTA_GESTION
         ControladorGestion c = new ControladorGestion();
-        switch (iTipoListado) {
-            case ControladorListados.LISTADO_CLIENTES:
-                c.setModelo("maf.modelo.Cliente");
-                break;
-            case ControladorListados.LISTADO_DETALLES:
-                c.setModelo("maf.modelo.Producto");
-                break;
-            case ControladorListados.LISTADO_FACTURAS:
-                c.setModelo("maf.modelo.Factura");
-                break;
-            default:
-                break;
-        }
+        c.setModelo("maf.modelo.Cliente");
         c.inicializar();
         c.creaNuevoObjeto();
         c.inicializarObjeto();
-        Dialogo vListado = new DialogoGestionListar(null, true);
+        Dialogo vListado = new DialogoGestionListarClientes(null, true);
         //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
-        //vListado.setControlador(c);
         c.setVista(vListado);
         //Preparo la VISTA_GESTION y la muestro
         c.getMetaDatosDeObjeto();
         //Le envio los MetaDatos de acuerdo al modelo de Gestión
         //Construyo la VISTA_ALTA y la ,muestro
         c.getVista().setTituloVentana("Listado de " + c.getNombre());
-
         //indico que la ventana de listado ahora tambien la controla el "controlador de listados"
         c.getVista().setControlador(this);
         this.setVista(c.getVista());
-
         //El controlado de Gestion presenta la vista y los datos
         c.getVista().inicializar();
         c.setMetaDatosVista();
         c.setDatosVista();
-        c.getVista().ConstruirVista();
+        c.getVista().construirVista();
 
         this.setObjeto(c.getObjeto());
         this.setGestorListado(c);
 
-        ((DialogoGestionListar) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
+        ((DialogoGestionListarClientes) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
         c.getVista().centrar();
         c.getVista().mostrar();
     }
 
-    private void retornarObjeto(int iTipoListado) {
+    private void retornarObjeto() {
 
         this.getGestorListado().getVista().recuperarDatosDeGUI();
         this.getGestorListado().getDatosDeVista();
         this.getGestorListado().setDatosAObjeto();
-
-        switch (iTipoListado) {
-            case ControladorListados.LISTADO_CLIENTES:
-                ((Factura) this.getGestorOriginal().getObjeto()).setCliente((Cliente) this.getGestorListado().getObjeto());
-                break;
-            case ControladorListados.LISTADO_DETALLES:
-                //c.setModelo("maf.modelo.Producto");
-                break;
-            case ControladorListados.LISTADO_FACTURAS:
-                //c.setModelo("maf.modelo.Factura");
-                //this.setVistaAux((Dialogo) this.getVista());
-                break;
-            default:
-                break;
-
-        }
+        ((Factura) this.getGestorOriginal().getObjeto()).setCliente((Cliente) this.getGestorListado().getObjeto());
 
         this.getVista().cerrar();
 

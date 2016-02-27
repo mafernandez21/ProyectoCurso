@@ -6,6 +6,7 @@ package maf.modelo.interfaces;
 
 import java.awt.event.ActionListener;
 import java.util.HashMap;
+import maf.vista.PanelContenedor;
 
 /**
  *
@@ -32,10 +33,16 @@ public interface IVista {
 
     public HashMap getDatos();
 
-    public void ConstruirVista();
+    public void construirVista();
+    
+    public void actualizarDatosDeVista(HashMap hmDatos);
     
     public void setTituloVentana(String sTitulo);
 
+    public void setListaDeAtributos(PanelContenedor[] paneles);
+    
+    public PanelContenedor[] getListaDeAtributos();
+    
     public void centrar();
 
     public void mostrar();

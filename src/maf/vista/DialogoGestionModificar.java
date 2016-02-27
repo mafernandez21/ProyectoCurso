@@ -29,8 +29,8 @@ public class DialogoGestionModificar extends DialogoGestionAlta{
 
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
-    public void ConstruirVista() {
-        super.ConstruirVista();
+    public void construirVista() {
+        super.construirVista();
         this.panelDeBotones.setEtiquetaBoton("ACTUALIZAR", 0);
         this.panelDeBotones.setComandoBoton("ACTUALIZAR", 0);
     }

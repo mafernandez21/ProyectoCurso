@@ -6,11 +6,12 @@
 package maf.vista;
 
 import java.awt.GridLayout;
+import java.util.HashMap;
 import javax.swing.JFrame;
 import maf.core.Core.Categoria;
 import maf.core.Core.TipoFactura;
 import maf.core.Core.TipoIVA;
-import maf.modelo.interfaces.IVistaReflex;
+import maf.modelo.interfaces.IVista;
 
 /**
  * Descripcion ...
@@ -19,7 +20,7 @@ import maf.modelo.interfaces.IVistaReflex;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
+public class DialogoGestionAlta extends Dialogo implements IVista {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     PanelContenedor[] paneles;
@@ -41,7 +42,7 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
     }
 
     @Override
-    public void ConstruirVista() {
+    public void construirVista() {
         String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
         String sTipoAtributo[] = String.valueOf(this.getMetaDatos().get("TIPOATRIBUTOS")).split(",");
         this.setListaDeAtributos(new PanelContenedor[sTipoAtributo.length]);
@@ -120,5 +121,10 @@ public class DialogoGestionAlta extends Dialogo implements IVistaReflex {
         }
     }
     //</editor-fold>
+
+    @Override
+    public void actualizarDatosDeVista(HashMap hmDatos) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
