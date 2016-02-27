@@ -51,9 +51,7 @@ public class DialogoFacturacionListar extends Dialogo implements IVista {
         this.listadoFactura.inicializar();
         this.getPanelCentral().add(this.listadoFactura);
         
-        String sBotones3[] = new String[2];
-        sBotones3[0] = "Ver";
-        sBotones3[1] = "Cancelar";
+        String sBotones3[] = {"Ver","Cancelar"};
         this.botonesDeVentana.inicializar(this.controlador, sBotones3, true);
         this.getPanelInferior().add(this.botonesDeVentana);
         

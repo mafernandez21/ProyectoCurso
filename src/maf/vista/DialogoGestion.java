@@ -46,12 +46,7 @@ public class DialogoGestion extends Dialogo {
 
         this.getPanelCentral().add(this.panelGrilla);
 
-        String sBotones[] = new String[5];
-        sBotones[0] = "Alta";
-        sBotones[1] = "Baja";
-        sBotones[2] = "Modificar";
-        sBotones[3] = "Ver";
-        sBotones[4] = "Volver";
+        String sBotones[] = {"Alta","Baja","Modificar","Ver","Volver"};
         this.panelBotonesComandos.inicializar(this.getControlador(), sBotones, false);
 
         if (this.panelGrilla.getTblGrilla().getSelectedRow() == -1) {

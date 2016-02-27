@@ -35,11 +35,11 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
     private PanelContenedorEtiqueta total;
     private PanelBotones botonesDeVentana;
     private ActionListener controladorListadoClientes;
-    //private ControladorGestion controlador;
+    private ActionListener controladorDetalles;
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Constructores">
-    public DialogoFacturacionAlta(JFrame ventanaPrincipal, boolean modal, ActionListener controladorListadoClientes) {
+    public DialogoFacturacionAlta(JFrame ventanaPrincipal, boolean modal, ActionListener controladorListadoClientes, ActionListener controladorDetalles) {
         super(ventanaPrincipal, modal);
         this.lblFecha = new PanelContenedorEtiqueta();
         this.lblNombreApellidoCliente = new PanelContenedorEtiqueta();
@@ -51,6 +51,7 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.total = new PanelContenedorEtiqueta();
         this.botonesDeVentana = new PanelBotones();
         this.controladorListadoClientes = controladorListadoClientes;
+        this.controladorDetalles=controladorDetalles;
         this.panelDatosCliente = new JPanel();
     }
 //</editor-fold>
@@ -120,6 +121,14 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.controladorListadoClientes = controladorListadoClientes;
     }
 
+    public ActionListener getControladorDetalles() {
+        return controladorDetalles;
+    }
+
+    public void setControladorDetalles(ActionListener controladorDetalles) {
+        this.controladorDetalles = controladorDetalles;
+    }
+    
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
@@ -147,17 +156,15 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.getPanelSuperior().add(this.panelDatosCliente);
         
         
-        String sBotones1[] = new String[1];
-        sBotones1[0] = "Seleccionar un Cliente";
+        String sBotones1[] = {"Seleccionar un Cliente"};
         this.btnAgregarCliente.inicializar(this.controladorListadoClientes, sBotones1, true);
         this.btnAgregarCliente.setComandoBoton("setCliente", 0);
         this.getPanelSuperior().add(this.btnAgregarCliente);
 
         this.getPanelCentral().setLayout(new GridLayout(4, 1));
 
-        String sBotones2[] = new String[1];
-        sBotones2[0] = "Agregar Detalle";
-        this.agregarDetalle.inicializar(this.controladorListadoClientes, sBotones2, true);
+        String sBotones2[] = {"Agregar Detalle"};
+        this.agregarDetalle.inicializar(this.controladorDetalles, sBotones2, true);
         this.agregarDetalle.setComandoBoton("setDetalle", 0);
         this.getPanelCentral().add(this.agregarDetalle);
 
@@ -165,9 +172,7 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.getPanelCentral().add(this.subTotal);
         this.getPanelCentral().add(this.total);
 
-        String sBotones3[] = new String[2];
-        sBotones3[0] = "Guardar";
-        sBotones3[1] = "Cancelar";
+        String sBotones3[] = {"Guardar","Cancelar"};
         this.botonesDeVentana.inicializar(this.getControlador(), sBotones3, true);
         this.getPanelInferior().add(this.botonesDeVentana);
         

@@ -281,7 +281,7 @@ public class ControladorGestion implements IControladorGestion {
             case "BAJA":
             case "MODIFICAR":
             case "VER":
-                this.seleccionarAlgoritmo(sAccion);
+                this.seleccionarAlgoritmoABM(sAccion);
                 break;
             case "GUARDAR":
                 this.guardarObjeto();
@@ -306,7 +306,7 @@ public class ControladorGestion implements IControladorGestion {
 
     }
     
-    private void seleccionarAlgoritmo(String sAccion) {
+    private void seleccionarAlgoritmoABM(String sAccion) {
         //Reservo la VISTA_GESTION
         this.setVistaAux((Dialogo) this.getVista());
         //Genero una VISTA_ALTA

@@ -89,9 +89,7 @@ public class DialogoGestionAlta extends Dialogo implements IVista {
             this.getPanelCentral().add(p);
         }
 
-        String sBotones[] = new String[2];
-        sBotones[0] = "Guardar";
-        sBotones[1] = "Volver";
+        String sBotones[] = {"Guardar","Volver"};
 
         this.panelDeBotones.inicializar(this.getControlador(), sBotones, true);
 

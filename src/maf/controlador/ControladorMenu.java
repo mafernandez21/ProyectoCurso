@@ -72,10 +72,11 @@ public class ControladorMenu implements ActionListener {
                 ControladorListadoCliente gestorListado = new ControladorListadoCliente();
                 gestorListado.setGestorOriginal(gestorFactura);
 
-                Dialogo vNuevaFactura = new DialogoFacturacionAlta(this.ventana, true, gestorListado);
+                ControladorDetalles gestorDetalles = new ControladorDetalles();
+                gestorDetalles.setGestorOriginal(gestorFactura);
+                
+                Dialogo vNuevaFactura = new DialogoFacturacionAlta(this.ventana, true, gestorListado,gestorDetalles);
                 vNuevaFactura.setControlador(gestorFactura);
-
-                //vNuevaFactura.setControlador(gestorFactura);
                 vNuevaFactura.setTituloVentana(sAccion);
                 gestorFactura.setVista(vNuevaFactura);
                 vNuevaFactura.inicializar();
