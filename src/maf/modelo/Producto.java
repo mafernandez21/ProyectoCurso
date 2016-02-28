@@ -65,9 +65,14 @@ public class Producto extends ObjetoBase {
 
     @Override
     public String toString() {
-        return " Producto{" + " id=" + id + " descripcion=" + descripcion + " precio=" + precio + " tipoiva=" + tipoiva + " stock=" + stock + '}';
+        return "(Descripcion/Precio/IVA/Stock)\n" +
+                descripcion + "/$" + precio + "/" + tipoiva + "/" + stock;
     }
 
+    public String toString2() {
+        return descripcion ;
+    }
+    
     @Override
     protected void setUpValoresDefault() {
         this.setId(0);

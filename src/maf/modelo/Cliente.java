@@ -48,7 +48,9 @@ public class Cliente extends Persona {
 
     @Override
     public String toString() {
-        return super.toString() + "\nCliente" + " \ncuit=" + cuit + " \ncategoria=" + categoria;
+        return super.toString() + 
+               "\nCUIT : " + cuit +
+               "\nCategoria : " + categoria;
     }
     //</editor-fold>
 

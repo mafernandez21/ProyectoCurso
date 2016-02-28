@@ -81,7 +81,12 @@ public class Persona extends ObjetoBase {
 
     @Override
     public String toString() {
-        return "Persona" + " \nid=" + id + " \nnombre=" + nombre + " \napellido=" + apellido + " \ndni=" + dni + " \ndomicilio=" + domicilio + " \nlocalidad=" + localidad;
+        return "id : " + id +
+               "\nNombre : " + nombre + 
+               "\nApellido : " + apellido +
+               "\nDNI : " + dni +
+               "\nDomicilio : " + domicilio + 
+               "\nLocalidad : " + localidad;
     }
 
     //</editor-fold>

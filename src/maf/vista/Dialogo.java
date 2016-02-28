@@ -46,6 +46,43 @@ public abstract class Dialogo extends JDialog implements IVista {
     public Dialogo(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
         this.ventanaPrincipal = ventanaPrincipal;
+        
+                this.panelPrincipal = new JPanel();
+        this.panelSuperior = new JPanel();
+        this.panelIzquierdo = new JPanel();
+        this.panelDerecho = new JPanel();
+        this.panelCentral = new JPanel();
+        this.panelInferior = new JPanel();
+        this.hmDatos = new HashMap();
+        this.hmMetaDatos = new HashMap();
+
+        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        this.addWindowListener(new WindowAdapter() {
+            @Override
+            public void windowClosing(WindowEvent evt) {
+                cerrar();
+            }
+        });
+
+        BorderLayout layout = new BorderLayout();
+        this.panelPrincipal.setLayout(layout);
+        this.panelPrincipal.setBackground(new java.awt.Color(102, 153, 0));
+
+        this.panelSuperior.setBackground(Color.YELLOW);
+        this.panelIzquierdo.setBackground(Color.BLACK);
+        this.panelDerecho.setBackground(Color.BLACK);
+        this.panelInferior.setBackground(Color.YELLOW);
+        this.panelCentral.setBackground(Color.RED);
+
+        this.panelPrincipal.add(this.panelSuperior, BorderLayout.NORTH);
+        this.panelPrincipal.add(this.panelIzquierdo, BorderLayout.WEST);
+        this.panelPrincipal.add(this.panelDerecho, BorderLayout.EAST);
+        this.panelPrincipal.add(this.panelCentral, BorderLayout.CENTER);
+        this.panelPrincipal.add(this.panelInferior, BorderLayout.SOUTH);
+
+        this.add(this.panelPrincipal);
+        this.pack();
+        
     }
     //</editor-fold>
 
@@ -118,41 +155,7 @@ public abstract class Dialogo extends JDialog implements IVista {
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
-        this.panelPrincipal = new JPanel();
-        this.panelSuperior = new JPanel();
-        this.panelIzquierdo = new JPanel();
-        this.panelDerecho = new JPanel();
-        this.panelCentral = new JPanel();
-        this.panelInferior = new JPanel();
-        this.hmDatos = new HashMap();
-        this.hmMetaDatos = new HashMap();
 
-        this.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
-        this.addWindowListener(new WindowAdapter() {
-            @Override
-            public void windowClosing(WindowEvent evt) {
-                cerrar();
-            }
-        });
-
-        BorderLayout layout = new BorderLayout();
-        this.panelPrincipal.setLayout(layout);
-        this.panelPrincipal.setBackground(new java.awt.Color(102, 153, 0));
-
-        this.panelSuperior.setBackground(Color.YELLOW);
-        this.panelIzquierdo.setBackground(Color.BLACK);
-        this.panelDerecho.setBackground(Color.BLACK);
-        this.panelInferior.setBackground(Color.YELLOW);
-        this.panelCentral.setBackground(Color.RED);
-
-        this.panelPrincipal.add(this.panelSuperior, BorderLayout.NORTH);
-        this.panelPrincipal.add(this.panelIzquierdo, BorderLayout.WEST);
-        this.panelPrincipal.add(this.panelDerecho, BorderLayout.EAST);
-        this.panelPrincipal.add(this.panelCentral, BorderLayout.CENTER);
-        this.panelPrincipal.add(this.panelInferior, BorderLayout.SOUTH);
-
-        this.add(this.panelPrincipal);
-        this.pack();
     }
 
     @Override
@@ -223,7 +226,7 @@ public abstract class Dialogo extends JDialog implements IVista {
     public abstract void recuperarDatosDeGUI();
 
     @Override
-    public abstract void actualizarDatosDeVista(HashMap hmDatos);
+    public abstract void actualizarDatosDeVista();
 
     @Override
     public abstract void setListaDeAtributos(PanelContenedor[] paneles);

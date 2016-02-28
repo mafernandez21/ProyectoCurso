@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import maf.modelo.ObjetoBase;
@@ -21,7 +20,7 @@ import maf.modelo.ObjetoBase;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class DialogoGestionListarClientes extends Dialogo {
+public class DialogoGestionListar extends Dialogo {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     PanelContenedorGrilla panelGrilla;
@@ -30,7 +29,7 @@ public class DialogoGestionListarClientes extends Dialogo {
     //</editor-fold>
 
     //<editor-fold defaultstate="collapsed" desc="Controlador">
-    public DialogoGestionListarClientes(JFrame ventanaPrincipal, boolean modal) {
+    public DialogoGestionListar(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
         this.panelGrilla = new PanelContenedorGrilla();
         this.panelBotonesComandos = new PanelBotones();
@@ -142,7 +141,7 @@ public class DialogoGestionListarClientes extends Dialogo {
     }
 
     @Override
-    public void actualizarDatosDeVista(HashMap hmDatos) {}
+    public void actualizarDatosDeVista() {}
 
     @Override
     public void setListaDeAtributos(PanelContenedor[] paneles) {}

@@ -9,12 +9,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.HashMap;
 import maf.core.Core;
-import maf.modelo.Cliente;
-import maf.modelo.Factura;
+import maf.modelo.DetalleFactura;
 import maf.modelo.ObjetoBase;
+import maf.modelo.Producto;
 import maf.modelo.interfaces.IVista;
 import maf.vista.Dialogo;
-import maf.vista.DialogoGestionListarClientes;
+import maf.vista.DialogoGestionListar;
 
 /**
  * Descripcion ...
@@ -23,7 +23,7 @@ import maf.vista.DialogoGestionListarClientes;
  * @version 1.0
  * @see <a href="mailto://mafernandez21@hotmail.com">Contacto</a>
  */
-public class ControladorListadoCliente implements ActionListener {
+public class ControladorListadoProductos implements ActionListener {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private IVista vista;
@@ -74,17 +74,17 @@ public class ControladorListadoCliente implements ActionListener {
         Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de Gestión capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
         switch (sAccion) {
-            case "SETCLIENTE":
-                this.mostrarListadoDeClientes();
+            case "SETPRODUCTO":
+                this.mostrarListadoDeProductos();
                 break;
             case "SELECCIONAR":
                 this.retornarObjeto();
-                String s = ((Cliente) ((Factura) this.getGestorOriginal().getObjeto()).getCliente()).getNombre();
-                s += ", " + ((Cliente) ((Factura) this.getGestorOriginal().getObjeto()).getCliente()).getApellido();
-                this.hmDatos.put("ETIQUETA1", s);
-                s = ((Cliente) ((Factura) this.getGestorOriginal().getObjeto()).getCliente()).getCategoria().toString();
-                this.hmDatos.put("ETIQUETA2", s);
-                this.getGestorOriginal().getVista().actualizarDatosDeVista(this.hmDatos);
+//                String s = ((Producto) ((DetalleFactura) this.getGestorOriginal().getObjeto()).getProducto()).getDescripcion();
+//                s += ", Precio: $" + ((Producto) ((DetalleFactura) this.getGestorOriginal().getObjeto()).getProducto()).getPrecio();
+//                s +=  ", IVA:" + ((Producto) ((DetalleFactura) this.getGestorOriginal().getObjeto()).getProducto()).getTipoIVA().toString();
+//                s +=  ", Stock: " + String.valueOf((((Producto) ((DetalleFactura) this.getGestorOriginal().getObjeto()).getProducto()).getStock()));
+//                this.hmDatos.put("ETIQUETA", s);
+                this.getGestorOriginal().getVista().actualizarDatosDeVista();
                 break;
             case "OK":
             case "CERRAR":
@@ -93,20 +93,20 @@ public class ControladorListadoCliente implements ActionListener {
                 this.getVista().cerrar();
                 break;
             default:
-                Core.mostrarMensajeError("La función " + sAccion + " no está implementada");
+                Core.mostrarMensajeError("La función " + sAccion + " no está implementada por el controlador " + this.getClass().getSimpleName());
                 break;
         }
     }
     //</editor-fold>
 
-    private void mostrarListadoDeClientes() {
+    private void mostrarListadoDeProductos() {
         //Reservo la VISTA_GESTION
         ControladorGestion c = new ControladorGestion();
-        c.setModelo("maf.modelo.Cliente");
+        c.setModelo("maf.modelo.Producto");
         c.inicializar();
         c.creaNuevoObjeto();
         c.inicializarObjeto();
-        Dialogo vListado = new DialogoGestionListarClientes(null, true);
+        Dialogo vListado = new DialogoGestionListar(null, true);
         //Enlazo la vista con el controlador CONTROLADOR <--> VISTA_GESTION
         c.setVista(vListado);
         //Preparo la VISTA_GESTION y la muestro
@@ -126,20 +126,17 @@ public class ControladorListadoCliente implements ActionListener {
         this.setObjeto(c.getObjeto());
         this.setGestorListado(c);
 
-        ((DialogoGestionListarClientes) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
+        ((DialogoGestionListar) vListado).actualizarTablaDatos(c.getGrupoDeDatos());
         c.getVista().centrar();
         c.getVista().mostrar();
     }
 
     private void retornarObjeto() {
-
         this.getGestorListado().getVista().recuperarDatosDeGUI();
         this.getGestorListado().getDatosDeVista();
         this.getGestorListado().setDatosAObjeto();
-        ((Factura) this.getGestorOriginal().getObjeto()).setCliente((Cliente) this.getGestorListado().getObjeto());
-
+        ((DetalleFactura) this.getGestorOriginal().getObjeto()).setProducto((Producto)this.getGestorListado().getObjeto());
         this.getVista().cerrar();
-
     }
 
 }

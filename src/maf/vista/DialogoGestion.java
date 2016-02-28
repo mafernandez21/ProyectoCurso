@@ -9,7 +9,6 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 import java.util.ArrayList;
-import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.table.DefaultTableModel;
 import maf.modelo.ObjetoBase;
@@ -36,7 +35,37 @@ public class DialogoGestion extends Dialogo {
         this.panelBotonesComandos = new PanelBotones();
     }
     //</editor-fold>
+    
+    //<editor-fold defaultstate="collapsed" desc="Getter & Setter">
+    public PanelContenedorGrilla getPanelGrilla() {    
+        return panelGrilla;
+    }
 
+    public void setPanelGrilla(PanelContenedorGrilla panelGrilla) {
+        this.panelGrilla = panelGrilla;
+    }
+
+    public PanelBotones getPanelBotonesComandos() {
+        return panelBotonesComandos;
+    }
+
+    public void setPanelBotonesComandos(PanelBotones panelBotonesComandos) {
+        this.panelBotonesComandos = panelBotonesComandos;
+    }
+
+    public VentanaPrincipal getVentanaPrincipal() {
+        return ventanaPrincipal;
+    }
+
+
+    public void setVentanaPrincipal(VentanaPrincipal ventanaPrincipal) {    
+        this.ventanaPrincipal = ventanaPrincipal;
+    }
+
+    
+    
+    //</editor-fold>
+    
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
@@ -123,7 +152,7 @@ public class DialogoGestion extends Dialogo {
 
         DefaultTableModel modelo = new DefaultTableModel();
 
-        this.panelGrilla.getTblGrilla().setModel(modelo);
+        this.getPanelGrilla().getTblGrilla().setModel(modelo);
 
         for (String s : sEtiqueta) {
             modelo.addColumn(s);
@@ -148,7 +177,7 @@ public class DialogoGestion extends Dialogo {
     //</editor-fold>
 
     @Override
-    public void actualizarDatosDeVista(HashMap hmDatos) {
+    public void actualizarDatosDeVista() {
         //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 

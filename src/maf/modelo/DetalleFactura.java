@@ -70,9 +70,20 @@ public class DetalleFactura extends ObjetoBase {
 
     @Override
     public String toString() {
-        return " DetalleFactura{" + " producto=" + producto + " cantidad="
-                + cantidad + " precio=" + precioUnitario + " importeiva=" + importeiva
-                + " totallinea=" + totallinea + '}';
+        return "(Cantidad/Producto/Precio/ImporteIVA/TotalLinea)\n"
+                +cantidad + " \t\t\t\t "
+                + producto.toString2() + " \t\t\t\t $"
+                + precioUnitario + " \t\t\t\t $"
+                + importeiva + " \t\t\t\t $"
+                + totallinea;
+    }
+
+    public String toString2() {
+        return  cantidad + " \t\t\t\t "
+                + producto.toString2() + " \t\t\t\t $"
+                + precioUnitario + " \t\t\t\t $"
+                + importeiva + " \t\t\t\t $"
+                + totallinea;
     }
     //</editor-fold>
 
@@ -92,7 +103,7 @@ public class DetalleFactura extends ObjetoBase {
             if (!hmDatos.containsValue(null)) {
                 this.setProducto((Producto) hmDatos.get("PRODUCTO"));
                 this.setCantidad(Integer.parseInt(String.valueOf(hmDatos.get("CANTIDAD"))));
-                this.precioUnitario = Double.parseDouble(String.valueOf(hmDatos.get("PRECIO")));
+                this.precioUnitario = Double.parseDouble(String.valueOf(hmDatos.get("PRECIOUNITARIO")));
                 this.importeiva = Double.parseDouble(String.valueOf(hmDatos.get("IMPORTEIVA")));
                 this.totallinea = Double.parseDouble(String.valueOf(hmDatos.get("TOTALLINEA")));
                 return true;
@@ -108,7 +119,7 @@ public class DetalleFactura extends ObjetoBase {
         HashMap hmSalida = new HashMap();
         hmSalida.put("PRODUCTO", this.getProducto());
         hmSalida.put("CANTIDAD", this.getCantidad());
-        hmSalida.put("PRECIO", this.getCantidad());
+        hmSalida.put("PRECIOUNITARIO", this.getPrecioUnitario());
         hmSalida.put("IMPORTEIVA", this.getImporteiva());
         hmSalida.put("TOTALLINEA", this.getTotallinea());
         return hmSalida;

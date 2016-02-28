@@ -11,6 +11,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import maf.bdmem.BDEnMemoria;
 import maf.core.Core;
+import maf.modelo.DetalleFactura;
+import maf.modelo.Factura;
 import maf.modelo.ObjetoBase;
 import maf.modelo.interfaces.IControladorGestion;
 import maf.modelo.interfaces.IVista;
@@ -58,12 +60,12 @@ public class ControladorGestion implements IControladorGestion {
     //</editor-fold>
     
     //<editor-fold defaultstate="collapsed" desc="Getters and Setters">
-    private void setVistaAux(Dialogo dialogo) {
+    public void setVistaAux(IVista dialogo) {
         this.vistaAux = dialogo;
     }
 
-    private DialogoGestion getVistaAux() {
-        return (DialogoGestion) this.vistaAux;
+    public IVista getVistaAux() {
+        return this.vistaAux;
     }
 
     @Override
@@ -120,7 +122,6 @@ public class ControladorGestion implements IControladorGestion {
     }
 
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Override">
     @Override
     public String getNombre() {
@@ -136,7 +137,7 @@ public class ControladorGestion implements IControladorGestion {
         try {
             this.cModelo = Class.forName(sModelo);
         } catch (ExceptionInInitializerError | ClassNotFoundException ex) {
-            Core.mostrarMensajeError(ex.getMessage());
+            Core.mostrarMensajeError("El módulo " + ex.getMessage() + " no se cargó");
             return false;
         }
         return true;
@@ -294,18 +295,32 @@ public class ControladorGestion implements IControladorGestion {
                 this.eliminarObjeto(false);
                 this.guardarObjeto();
                 break;
+            case "AGREGAR":
+                this.agregarDetalle();
+                this.getVista().cerrar();
+                break;
+            case "CONFIRMAR":
+                Core.mostrarMensaje("CONFIRMó");
+                Factura f = new Factura();
+                f.inicializar();
+                for (ObjetoBase df : this.getGrupoDeDatos()) {
+                    f.getDetalles().clear();
+                    f.getDetalles().add((DetalleFactura) df);
+                }
+                this.getVista().cerrar();
+                break;
             case "CERRAR":
             case "VOLVER":
             case "CANCELAR":
                 this.getVista().cerrar();
                 break;
             default:
-                Core.mostrarMensajeError("La función " + sAccion + " no está implementada");
+                Core.mostrarMensajeError("La función " + sAccion + " no está implementada por el controlador " + this.getNombre());
                 break;
         }
 
     }
-    
+
     private void seleccionarAlgoritmoABM(String sAccion) {
         //Reservo la VISTA_GESTION
         this.setVistaAux((Dialogo) this.getVista());
@@ -398,14 +413,23 @@ public class ControladorGestion implements IControladorGestion {
         this.getVista().recuperarDatosDeGUI();
 //Recupera los datos que están en la vista
         this.getDatosDeVista();
+        if (this.getDatos().isEmpty()) {
+            this.getDatosDeObjeto();
+        }
 //Si los datos pueden ser almacenados en el objeto los almacena y luego envia el objeto a la BD
-        if (this.setDatosAObjeto() && this.agregarObjeto()) {
-            this.getVistaAux().actualizarTablaDatos(this.getGrupoDeDatos());
-            BDEnMemoria.conectar().insertar(this.getObjeto());
-            Core.mostrarMensaje("Objeto guardado en la BD");
-            this.getVista().cerrar();
-        } else {
-            Core.mostrarMensaje("Los datos son erroeneos o están incompletos, por favor revise y reintente");
+        try {
+            if (this.setDatosAObjeto() && this.agregarObjeto()) {
+                if(!this.getNombre().equals("Factura")){
+                    ((DialogoGestion) this.getVistaAux()).actualizarTablaDatos(this.getGrupoDeDatos());
+                }
+                BDEnMemoria.conectar().insertar(this.getObjeto());
+                Core.mostrarMensaje("Objeto guardado en la BD");
+                this.getVista().cerrar();
+            } else {
+                Core.mostrarMensaje("Los datos son erroeneos o están incompletos, por favor revise y reintente");
+            }
+        } catch (NullPointerException ex) {
+            Core.mostrarMensajeError("Vista no accesible desde " + this.getNombre());
         }
     }
 
@@ -413,13 +437,28 @@ public class ControladorGestion implements IControladorGestion {
         if (advertencia) {
             if (Core.preguntar("Desea eliminar el registro")) {
                 this.removerObjeto(this.getObjeto());
-                this.getVistaAux().actualizarTablaDatos(this.getGrupoDeDatos());
+                ((DialogoGestion) this.getVistaAux()).actualizarTablaDatos(this.getGrupoDeDatos());
                 BDEnMemoria.conectar().borrar(this.getObjeto());
                 Core.mostrarMensaje("Objeto eliminado de la BD");
             }
         } else {
             this.removerObjeto(this.getObjeto());
-            this.getVistaAux().actualizarTablaDatos(this.getGrupoDeDatos());
+            ((DialogoGestion) this.getVistaAux()).actualizarTablaDatos(this.getGrupoDeDatos());
+        }
+    }
+
+    private void agregarDetalle() {
+        this.getVista().recuperarDatosDeGUI();
+//Recupera los datos que están en la vista
+        this.getDatosDeVista();
+//Si los datos pueden ser almacenados en el objeto los almacena y luego envia el objeto a la BD
+        if (this.setDatosAObjeto() && this.agregarObjeto()) {
+            //((DialogoGestion)this.getVista()).actualizarTablaDatos(this.getGrupoDeDatos());
+            //this.creaNuevoObjeto();
+            //this.inicializarObjeto();
+//            Core.mostrarMensaje("Actualizar Lista de Detalles");
+        } else {
+            Core.mostrarMensaje("Los datos son erroeneos o están incompletos, por favor revise y reintente");
         }
     }
 

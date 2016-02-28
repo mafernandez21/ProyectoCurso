@@ -35,7 +35,7 @@ public interface IVista {
 
     public void construirVista();
     
-    public void actualizarDatosDeVista(HashMap hmDatos);
+    public void actualizarDatosDeVista();
     
     public void setTituloVentana(String sTitulo);
 

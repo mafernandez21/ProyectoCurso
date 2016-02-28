@@ -105,7 +105,49 @@ public class Factura extends ObjetoBase {
 
     @Override
     public String toString() {
-        return " Factura{" + " cliente=" + cliente + " fecha=" + fecha + " numero=" + numero + " detalles=" + detalles + " totalneto=" + totalneto + " totaliva=" + totaliva + " total=" + total + '}';
+        String sOut = "";
+
+        sOut = "Factura\n"
+                + "Fecha : " + this.fecha + "\n"
+                + "Numero : " + this.numero + "\n"
+                + "Tipo : " + this.tipo + "\n"
+                + "************************************\n"
+                + "Cliente\n" + cliente
+                + "\n************************************\n"
+                + "Detalles" + "\n";
+
+        for (DetalleFactura df : this.getDetalles()) {
+            sOut += df.toString() + "\n";
+        }
+
+        sOut += "************************************\n"
+                + "Total Neto : $" + totalneto + "\n"
+                + "Total IVA : $" + totaliva + "\n"
+                + "Total : $" + total;
+        return sOut;
+    }
+
+    public String toString2() {
+        String sOut = "";
+
+        sOut = "Factura\n"
+                + "Fecha : " + this.fecha + "\n"
+                + "Numero : " + this.numero + "\n"
+                + "Tipo : " + this.tipo + "\n"
+                + "************************************\n"
+                + "Cliente\n" + cliente
+                + "\n************************************\n"
+                + "Detalles"
+                + "\n(Cantidad/Producto/Precio/ImporteIVA/TotalLinea)\n";
+        for (DetalleFactura df : this.getDetalles()) {
+            sOut += df.toString2() + "\n";
+        }
+
+        sOut += "************************************\n"
+                + "Total Neto : $" + totalneto + "\n"
+                + "Total IVA : $" + totaliva + "\n"
+                + "Total : $" + total;
+        return sOut;
     }
 
     public TipoFactura getTipo() {

@@ -8,8 +8,13 @@ package maf.controlador;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import maf.core.Core;
+import maf.modelo.DetalleFactura;
+import maf.modelo.Factura;
+import maf.modelo.ObjetoBase;
+import maf.modelo.Producto;
 import maf.modelo.interfaces.IVista;
 import maf.vista.Dialogo;
+import maf.vista.DialogoFacturacionAlta;
 import maf.vista.DialogoFacturacionAltaDetalle;
 
 /**
@@ -23,8 +28,10 @@ public class ControladorDetalles implements ActionListener {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
     private IVista vista;
-    private ControladorGestion gestorAlternativo;
-    private ControladorGestion gestorOriginal;
+    private ActionListener gestorProducto;
+    private ControladorGestion gestorMaestro;
+    private ControladorGestion gestorSecundario;
+    private ObjetoBase objetoDeListado;
 
     //</editor-fold>
     //<editor-fold defaultstate="collapsed" desc="Constructores">
@@ -38,20 +45,28 @@ public class ControladorDetalles implements ActionListener {
         this.vista = vista;
     }
 
-    public ControladorGestion getGestorAlternativo() {
-        return gestorAlternativo;
+    public ActionListener getGestorProducto() {
+        return this.gestorProducto;
     }
 
-    public void setGestorAlternativo(ControladorGestion gestorAlternativo) {
-        this.gestorAlternativo = gestorAlternativo;
+    public void setGestorProducto(ActionListener gestorProducto) {
+        this.gestorProducto = gestorProducto;
     }
 
-    public ControladorGestion getGestorOriginal() {
-        return gestorOriginal;
+    public ControladorGestion getGestorMaestro() {
+        return gestorMaestro;
     }
 
-    public void setGestorOriginal(ControladorGestion gestorOriginal) {
-        this.gestorOriginal = gestorOriginal;
+    public void setGestorMaestro(ControladorGestion gestorMaestro) {
+        this.gestorMaestro = gestorMaestro;
+    }
+
+    public ControladorGestion getGestorSecundario() {
+        return gestorSecundario;
+    }
+
+    public void setGestorSecundario(ControladorGestion gestorSecundario) {
+        this.gestorSecundario = gestorSecundario;
     }
 
     //</editor-fold>
@@ -62,11 +77,23 @@ public class ControladorDetalles implements ActionListener {
         Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de Gestión capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
         switch (sAccion) {
-            case "SETDETALLE":
+            case "NUEVODETALLE":
                 Core.mostrarMensaje("MOSTRAR ALTA DE UN DETALLE");
                 this.seleccionarAlgoritmoABM(sAccion);
+
+                ((Factura) this.getGestorMaestro().getObjeto()).getDetalles().clear();
+                for (ObjetoBase ob : this.getGestorSecundario().getGrupoDeDatos()) {
+                    ((Factura) this.getGestorMaestro().getObjeto()).getDetalles().add((DetalleFactura) ob);
+                }
+                
+                //((DialogoFacturacionAltaDetalle)this.getGestorMaestro().getVista()).setMetaDatos(this.gestorSecundario.getMetaDatosDeObjeto());
+                //-- TODO Actualizar la tabla de detalles con los nuevos detalles en la vista de nuevaFactura
+                ((DialogoFacturacionAlta)this.getGestorMaestro().getVista()).actualizarTablaDatos(this.getGestorSecundario().getGrupoDeDatos());
+                Core.mostrarMensaje("Terminó NUEVO DETALLE");
+                Core.mostrarMensaje(((Factura) this.getGestorMaestro().getObjeto()));
                 break;
-            case "GUARDAR":
+            case "AGREGAR":
+                this.retornarObjeto();
                 break;
             case "OK":
             case "CERRAR":
@@ -81,29 +108,43 @@ public class ControladorDetalles implements ActionListener {
     }
 
     private void seleccionarAlgoritmoABM(String sAccion) {
+        //ControladorGestion c = new ControladorGestion();
+        //c.setModelo("maf.modelo.DetalleFactura");
+        //c.inicializar();
+        //this.setGestorSecundario(c);
+        Dialogo vistaInput = new DialogoFacturacionAltaDetalle(null, true, this.getGestorSecundario());
 
-        ControladorGestion c = new ControladorGestion();
-        c.setModelo("maf.modelo.DetalleFactura");
-        c.inicializar();
-
-        Dialogo vistaInput = new DialogoFacturacionAltaDetalle(null, true);
-        vistaInput.setTituloVentana("Nuevo " + c.getNombre());
+        vistaInput.setTituloVentana("Nuevo " + this.getGestorSecundario().getNombre());
         //Enlazo la vista con el controlador
-        vistaInput.setControlador(c);
-        c.setVista(vistaInput);
+        vistaInput.setControlador(this.getGestorSecundario());
+        this.getGestorSecundario().setVista(vistaInput);
         //Preparo la vista
-        c.getVista().inicializar();
-        c.creaNuevoObjeto();
-        c.getObjeto().inicializar();
-        c.getObjeto().prepararMetaDatos();
-        c.getMetaDatosDeObjeto();
+        this.getGestorSecundario().getVista().inicializar();
+        this.getGestorSecundario().creaNuevoObjeto();
+        this.getGestorSecundario().getObjeto().inicializar();
+        this.getGestorSecundario().getObjeto().prepararMetaDatos();
+        this.getGestorSecundario().getMetaDatosDeObjeto();
         //Le envio los MetaDatos de acuerdo al modelo de Gestión
-        c.getDatosDeObjeto();
-        c.setMetaDatosVista();
+        this.getGestorSecundario().getDatosDeObjeto();
+        this.getGestorSecundario().setMetaDatosVista();
         //Construyo la VISTA_ALTA y la ,muestro
-        c.getVista().construirVista();
-        c.getVista().centrar();
-        c.getVista().mostrar();
+
+        this.getGestorSecundario().setVistaAux((Dialogo) this.getGestorSecundario().getVista());
+
+        this.getGestorSecundario().getVista().construirVista();
+        this.getGestorSecundario().getVista().centrar();
+        this.getGestorSecundario().getVista().mostrar();
+    }
+
+    private void retornarObjeto() {
+
+        this.getGestorSecundario().getVista().recuperarDatosDeGUI();
+        this.getGestorSecundario().getDatosDeVista();
+        this.getGestorSecundario().setDatosAObjeto();
+        ((DetalleFactura) this.getGestorSecundario().getObjeto()).setProducto((Producto) this.getGestorSecundario().getObjeto());
+
+        this.getVista().cerrar();
+
     }
 }
 //

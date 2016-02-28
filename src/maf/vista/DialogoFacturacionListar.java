@@ -6,7 +6,6 @@
 package maf.vista;
 
 import java.awt.event.ActionListener;
-import java.util.HashMap;
 import javax.swing.JFrame;
 import maf.modelo.interfaces.IVista;
 
@@ -81,7 +80,7 @@ public class DialogoFacturacionListar extends Dialogo implements IVista {
     }
 
     @Override
-    public void actualizarDatosDeVista(HashMap hmDatos) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public void actualizarDatosDeVista() {
+        //throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     }

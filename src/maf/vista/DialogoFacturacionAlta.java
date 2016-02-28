@@ -8,10 +8,16 @@ package maf.vista;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
+import javax.swing.table.DefaultTableModel;
+import maf.controlador.ControladorGestion;
+import maf.core.Core.TipoFactura;
+import maf.modelo.Cliente;
+import maf.modelo.Factura;
+import maf.modelo.ObjetoBase;
 import maf.modelo.interfaces.IVista;
 
 /**
@@ -24,15 +30,22 @@ import maf.modelo.interfaces.IVista;
 public class DialogoFacturacionAlta extends Dialogo implements IVista {
 
     //<editor-fold defaultstate="collapsed" desc="Atributos">
-    private JPanel panelDatosCliente = new JPanel();
+    private JPanel panelDatosCliente;
     private PanelContenedorEtiqueta lblFecha;
     private PanelContenedorEtiqueta lblNombreApellidoCliente;
     private PanelContenedorEtiqueta lblCategoriaCliente;
     private PanelBotones btnAgregarCliente;
+
+    private JPanel panelDatosDetalles;
     private PanelBotones agregarDetalle;
-    private PanelContenedorGrilla listadoDetalles;
-    private PanelContenedorEtiqueta subTotal;
-    private PanelContenedorEtiqueta total;
+    private PanelContenedorGrilla panelGrilla;
+
+    private JPanel panelDatosFactura;
+    private PanelContenedorEtiqueta lblSubTotal;
+    private PanelContenedorEtiqueta lblTotal;
+
+    private PanelContenedorCombo cboTipoDeFactura;
+
     private PanelBotones botonesDeVentana;
     private ActionListener controladorListadoClientes;
     private ActionListener controladorDetalles;
@@ -46,13 +59,16 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.lblCategoriaCliente = new PanelContenedorEtiqueta();
         this.btnAgregarCliente = new PanelBotones();
         this.agregarDetalle = new PanelBotones();
-        this.listadoDetalles = new PanelContenedorGrilla();
-        this.subTotal = new PanelContenedorEtiqueta();
-        this.total = new PanelContenedorEtiqueta();
+        this.panelGrilla = new PanelContenedorGrilla();
+        this.lblSubTotal = new PanelContenedorEtiqueta();
+        this.lblTotal = new PanelContenedorEtiqueta();
         this.botonesDeVentana = new PanelBotones();
         this.controladorListadoClientes = controladorListadoClientes;
-        this.controladorDetalles=controladorDetalles;
+        this.controladorDetalles = controladorDetalles;
         this.panelDatosCliente = new JPanel();
+        this.panelDatosDetalles = new JPanel();
+        this.panelDatosFactura = new JPanel();
+        this.cboTipoDeFactura = new PanelContenedorCombo();
     }
 //</editor-fold>
 
@@ -81,28 +97,28 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.agregarDetalle = agregarDetalle;
     }
 
-    public PanelContenedorGrilla getListadoDetalles() {
-        return listadoDetalles;
+    public PanelContenedorGrilla getPanelGrilla() {
+        return panelGrilla;
     }
 
-    public void setListadoDetalles(PanelContenedorGrilla listadoDetalles) {
-        this.listadoDetalles = listadoDetalles;
+    public void setPanelGrilla(PanelContenedorGrilla panelGrilla) {
+        this.panelGrilla = panelGrilla;
     }
 
-    public PanelContenedorEtiqueta getSubTotal() {
-        return subTotal;
+    public PanelContenedorEtiqueta getLblSubTotal() {
+        return lblSubTotal;
     }
 
-    public void setSubTotal(PanelContenedorEtiqueta subTotal) {
-        this.subTotal = subTotal;
+    public void setLblSubTotal(PanelContenedorEtiqueta lblSubTotal) {
+        this.lblSubTotal = lblSubTotal;
     }
 
-    public PanelContenedorEtiqueta getTotal() {
-        return total;
+    public PanelContenedorEtiqueta getLblTotal() {
+        return lblTotal;
     }
 
-    public void setTotal(PanelContenedorEtiqueta total) {
-        this.total = total;
+    public void setLblTotal(PanelContenedorEtiqueta lblTotal) {
+        this.lblTotal = lblTotal;
     }
 
     public PanelBotones getBotonesDeVentana() {
@@ -128,20 +144,20 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
     public void setControladorDetalles(ActionListener controladorDetalles) {
         this.controladorDetalles = controladorDetalles;
     }
-    
+
     //</editor-fold>
-    
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void inicializar() {
         super.inicializar();
         this.construirVista();
 
-        panelDatosCliente.setLayout(new GridLayout(3, 1));
+        this.panelDatosCliente.setLayout(new GridLayout(4, 1));
 
+        //this.panelDatosDetalles.setLayout(new GridLayout(1, 1));
         this.lblFecha.inicializar();
-        SimpleDateFormat formato= new SimpleDateFormat("dd/MM/yyyy");
-        
+        SimpleDateFormat formato = new SimpleDateFormat("dd/MM/yyyy");
+
         this.lblFecha.setEtiqueta("Fecha:" + formato.format(new Date()));
         this.panelDatosCliente.add(this.lblFecha);
 
@@ -153,30 +169,47 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
         this.lblCategoriaCliente.setEtiqueta("Categoria del Cliente");
         this.panelDatosCliente.add(this.lblCategoriaCliente);
 
+        this.cboTipoDeFactura.inicializar();
+        this.cboTipoDeFactura.setEtiqueta("Tipo de Factura");
+        this.cboTipoDeFactura.setValor(TipoFactura.A);
+
+        this.panelDatosCliente.add(cboTipoDeFactura);
+
         this.getPanelSuperior().add(this.panelDatosCliente);
-        
-        
+
         String sBotones1[] = {"Seleccionar un Cliente"};
         this.btnAgregarCliente.inicializar(this.controladorListadoClientes, sBotones1, true);
         this.btnAgregarCliente.setComandoBoton("setCliente", 0);
         this.getPanelSuperior().add(this.btnAgregarCliente);
 
-        this.getPanelCentral().setLayout(new GridLayout(4, 1));
+        //this.getPanelCentral().setLayout(new GridLayout(3, 1));
+        this.panelGrilla.inicializar();
+        this.panelDatosDetalles.add(this.panelGrilla);
+
+        this.prepararTblTablaDatos();
 
         String sBotones2[] = {"Agregar Detalle"};
         this.agregarDetalle.inicializar(this.controladorDetalles, sBotones2, true);
-        this.agregarDetalle.setComandoBoton("setDetalle", 0);
-        this.getPanelCentral().add(this.agregarDetalle);
+        this.agregarDetalle.setComandoBoton("nuevoDetalle", 0);
+        this.panelDatosDetalles.add(this.agregarDetalle);
 
-        this.getPanelCentral().add(this.listadoDetalles);
-        this.getPanelCentral().add(this.subTotal);
-        this.getPanelCentral().add(this.total);
+        this.lblSubTotal.inicializar();
+        this.lblSubTotal.setEtiqueta("Sub Total : ");
+        this.lblTotal.inicializar();
+        this.lblTotal.setEtiqueta("Total : ");
 
-        String sBotones3[] = {"Guardar","Cancelar"};
+        this.getPanelCentral().add(this.panelDatosDetalles);
+
+        this.panelDatosFactura.add(this.lblSubTotal);
+        this.panelDatosFactura.add(this.lblTotal);
+
+        this.getPanelInferior().add(this.panelDatosFactura);
+
+        String sBotones3[] = {"Guardar", "Cancelar"};
         this.botonesDeVentana.inicializar(this.getControlador(), sBotones3, true);
         this.getPanelInferior().add(this.botonesDeVentana);
-        
-        this.setSize(500, 400);
+
+        //    this.setSize(500, 400);
         this.pack();
     }
 
@@ -187,19 +220,92 @@ public class DialogoFacturacionAlta extends Dialogo implements IVista {
 
     @Override
     public void recuperarDatosDeGUI() {
-
+        ControladorGestion c=(ControladorGestion)this.getControlador();
+        Factura f=(Factura)c.getObjeto();
+        
+        f.setTotalneto();
+        f.setTotaliva();
+        f.setTotal();
+        
+        c.getDatosDeObjeto();
+        
+        this.getDatos().putAll(((ControladorGestion)this.getControlador()).getDatos());
+        
+        this.getDatos().put("TIPO", this.cboTipoDeFactura.getValor());
+        this.getDatos().put("TOTALNETO", f.getTotalneto());
+        this.getDatos().put("TOTALIVA", f.getTotaliva());
+        this.getDatos().put("TOTAL", f.getTotal());
     }
 
     @Override
-    public void actualizarDatosDeVista(HashMap hmDatos) {
-        this.lblNombreApellidoCliente.setEtiqueta("Nombre, Apellido: " + String.valueOf(hmDatos.get("ETIQUETA1")));
-        this.lblCategoriaCliente.setEtiqueta("Categoria: " + String.valueOf(hmDatos.get("ETIQUETA2")));
+    public void actualizarDatosDeVista() {
+        ControladorGestion c=(ControladorGestion)this.getControlador();
+        Factura f=(Factura)c.getObjeto();
+        Cliente cliente=f.getCliente();
+        
+        
+        f.setTotalneto();
+        f.setTotaliva();
+        f.setTotal();
+        
+        this.lblNombreApellidoCliente.setEtiqueta("Nombre, Apellido: " + cliente.getNombre() + ", " + cliente.getApellido());
+        this.lblCategoriaCliente.setEtiqueta("Categoria: " + cliente.getCategoria());
+        
+        java.text.DecimalFormat formato=new java.text.DecimalFormat("##0.0##");
+        
+        
+        this.lblSubTotal.setEtiqueta("Sub Total (ImporteIVA): " + formato.format(f.getTotalneto())+"("+formato.format(f.getTotaliva())+")");
+        this.lblTotal.setEtiqueta("Total : " + formato.format(f.getTotal()));
+        
     }
 
     @Override
-    public void setListaDeAtributos(PanelContenedor[] paneles) {}
+    public void setListaDeAtributos(PanelContenedor[] paneles) {
+    }
 
     @Override
-    public PanelContenedor[] getListaDeAtributos() {return null;}
+    public PanelContenedor[] getListaDeAtributos() {
+        return null;
+    }
+
+    public void prepararTblTablaDatos() {
+
+        ControladorGestion cg = new ControladorGestion();
+        cg.setModelo("maf.modelo.DetalleFactura");
+        cg.inicializar();
+        cg.creaNuevoObjeto();
+        cg.inicializarObjeto();
+        cg.getMetaDatosDeObjeto();
+        cg.setVista(this);
+        cg.setMetaDatosVista();
+
+        String sEtiqueta[] = String.valueOf(this.getMetaDatos().get("ATRIBUTOS")).split(",");
+
+        DefaultTableModel modelo = new DefaultTableModel();
+
+        this.panelGrilla.getTblGrilla().setModel(modelo);
+
+        for (String s : sEtiqueta) {
+            modelo.addColumn(s);
+        }
+    }
+
+    public void actualizarTablaDatos(ArrayList<ObjetoBase> listaDeObjetos) {
+        if (listaDeObjetos != null) {
+            this.prepararTblTablaDatos();
+            DefaultTableModel modelo = (DefaultTableModel) this.panelGrilla.getTblGrilla().getModel();
+            for (ObjetoBase ob : listaDeObjetos) {
+                String sEtiqueta[] = String.valueOf(ob.getMetaDatos().get("ATRIBUTOS")).split(",");
+                Object[] fila = new Object[sEtiqueta.length];
+                for (int i = 0; i < sEtiqueta.length; i++) {
+                    fila[i] = ob.getDatos().get(sEtiqueta[i]);
+                }
+                modelo.addRow(fila);
+            }
+            this.panelGrilla.getTblGrilla().setModel(modelo);
+            this.actualizarDatosDeVista();
+        }
+    }
+
     //</editor-fold>
 }
