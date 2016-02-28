@@ -5,7 +5,6 @@
  */
 package maf.vista;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.event.ActionListener;
@@ -75,7 +74,7 @@ public class PanelBotones extends JPanel {
             layout.setAlignment(FlowLayout.CENTER);
             layout.setHgap(20);
             this.setLayout(layout);
-            this.setBackground(Color.BLACK);
+            //this.setBackground(Color.BLACK);
             for (JButton btn : this.btnBotones) {
                 this.add(btn);
             }
@@ -85,7 +84,7 @@ public class PanelBotones extends JPanel {
             layout.setRows(this.btnBotones.length);
             layout.setVgap(20);
             this.setLayout(layout);
-            this.setBackground(Color.BLACK);
+            //this.setBackground(Color.BLACK);
             for (JButton btn : this.btnBotones) {
                 this.add(btn);
             }

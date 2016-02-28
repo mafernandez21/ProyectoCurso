@@ -74,11 +74,11 @@ public class ControladorDetalles implements ActionListener {
     //</editor-fold>
     @Override
     public void actionPerformed(ActionEvent e) {
-        Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de Gestión capturó " + e.getActionCommand());
+        //Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de Gestión capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
         switch (sAccion) {
             case "NUEVODETALLE":
-                Core.mostrarMensaje("MOSTRAR ALTA DE UN DETALLE");
+                //Core.mostrarMensaje("MOSTRAR ALTA DE UN DETALLE");
                 this.seleccionarAlgoritmoABM(sAccion);
 
                 ((Factura) this.getGestorMaestro().getObjeto()).getDetalles().clear();
@@ -89,8 +89,8 @@ public class ControladorDetalles implements ActionListener {
                 //((DialogoFacturacionAltaDetalle)this.getGestorMaestro().getVista()).setMetaDatos(this.gestorSecundario.getMetaDatosDeObjeto());
                 //-- TODO Actualizar la tabla de detalles con los nuevos detalles en la vista de nuevaFactura
                 ((DialogoFacturacionAlta)this.getGestorMaestro().getVista()).actualizarTablaDatos(this.getGestorSecundario().getGrupoDeDatos());
-                Core.mostrarMensaje("Terminó NUEVO DETALLE");
-                Core.mostrarMensaje(((Factura) this.getGestorMaestro().getObjeto()));
+                //Core.mostrarMensaje("Terminó NUEVO DETALLE");
+                //Core.mostrarMensaje(((Factura) this.getGestorMaestro().getObjeto()));
                 break;
             case "AGREGAR":
                 this.retornarObjeto();

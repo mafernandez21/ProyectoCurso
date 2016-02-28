@@ -72,7 +72,7 @@ public class ControladorListadoClientes implements ActionListener {
     //<editor-fold defaultstate="collapsed" desc="Implementaciones">
     @Override
     public void actionPerformed(ActionEvent e) {
-        Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de Gestión capturó " + e.getActionCommand());
+        //Core.mostrarMensaje("Controlador (" + this.getClass().getSimpleName() + ") de Gestión capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
         switch (sAccion) {
             case "SETCLIENTE":

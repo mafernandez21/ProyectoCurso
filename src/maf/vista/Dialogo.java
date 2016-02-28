@@ -6,7 +6,6 @@
 package maf.vista;
 
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
@@ -46,8 +45,8 @@ public abstract class Dialogo extends JDialog implements IVista {
     public Dialogo(JFrame ventanaPrincipal, boolean modal) {
         super(ventanaPrincipal, modal);
         this.ventanaPrincipal = ventanaPrincipal;
-        
-                this.panelPrincipal = new JPanel();
+
+        this.panelPrincipal = new JPanel();
         this.panelSuperior = new JPanel();
         this.panelIzquierdo = new JPanel();
         this.panelDerecho = new JPanel();
@@ -66,13 +65,13 @@ public abstract class Dialogo extends JDialog implements IVista {
 
         BorderLayout layout = new BorderLayout();
         this.panelPrincipal.setLayout(layout);
-        this.panelPrincipal.setBackground(new java.awt.Color(102, 153, 0));
+        //this.panelPrincipal.setBackground(new java.awt.Color(102, 153, 0));
 
-        this.panelSuperior.setBackground(Color.YELLOW);
-        this.panelIzquierdo.setBackground(Color.BLACK);
-        this.panelDerecho.setBackground(Color.BLACK);
-        this.panelInferior.setBackground(Color.YELLOW);
-        this.panelCentral.setBackground(Color.RED);
+        //this.panelSuperior.setBackground(Color.YELLOW);
+        //this.panelIzquierdo.setBackground(Color.BLACK);
+        //this.panelDerecho.setBackground(Color.BLACK);
+        //this.panelInferior.setBackground(Color.YELLOW);
+        //this.panelCentral.setBackground(Color.RED);
 
         this.panelPrincipal.add(this.panelSuperior, BorderLayout.NORTH);
         this.panelPrincipal.add(this.panelIzquierdo, BorderLayout.WEST);
@@ -82,7 +81,7 @@ public abstract class Dialogo extends JDialog implements IVista {
 
         this.add(this.panelPrincipal);
         this.pack();
-        
+
     }
     //</editor-fold>
 

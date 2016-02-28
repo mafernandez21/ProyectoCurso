@@ -6,7 +6,6 @@
 
 package maf.vista;
 
-import java.awt.Color;
 import java.awt.FlowLayout;
 import javax.swing.JPanel;
 
@@ -40,6 +39,6 @@ public abstract class PanelContenedor extends JPanel{
         layout.setHgap(5);
         layout.setVgap(5);
         this.setLayout(layout);
-        this.setBackground(new Color(0, 204, 255));
+        //this.setBackground(new Color(0, 204, 255));
     }
 }

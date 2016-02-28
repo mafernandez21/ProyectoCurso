@@ -70,20 +70,22 @@ public class DetalleFactura extends ObjetoBase {
 
     @Override
     public String toString() {
+         java.text.DecimalFormat formato=new java.text.DecimalFormat("##0.0##");
         return "(Cantidad/Producto/Precio/ImporteIVA/TotalLinea)\n"
-                +cantidad + " \t\t\t\t "
+                + cantidad + " \t\t\t\t "
                 + producto.toString2() + " \t\t\t\t $"
-                + precioUnitario + " \t\t\t\t $"
-                + importeiva + " \t\t\t\t $"
-                + totallinea;
+                + formato.format(precioUnitario) + " \t\t\t\t $"
+                + formato.format(importeiva) + " \t\t\t\t $"
+                + formato.format(totallinea);
     }
 
     public String toString2() {
+        java.text.DecimalFormat formato=new java.text.DecimalFormat("##0.0##");
         return  cantidad + " \t\t\t\t "
                 + producto.toString2() + " \t\t\t\t $"
-                + precioUnitario + " \t\t\t\t $"
-                + importeiva + " \t\t\t\t $"
-                + totallinea;
+                + formato.format(precioUnitario) + " \t\t\t\t $"
+                + formato.format(importeiva) + " \t\t\t\t $"
+                + formato.format(totallinea);
     }
     //</editor-fold>
 

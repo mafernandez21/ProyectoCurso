@@ -24,6 +24,7 @@ public class VentanaAcerca extends javax.swing.JDialog {
         this.txtareaAutores.setText(Core.AUTOR_SISTEMA.split(",")[0]
                               +"\n"
                               +Core.AUTOR_SISTEMA.split(",")[1]);
+        this.setLocationRelativeTo(null);
     }
 
     /**
@@ -35,18 +36,48 @@ public class VentanaAcerca extends javax.swing.JDialog {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        btnAceptar = new javax.swing.JButton();
-        lblSistema = new javax.swing.JLabel();
-        lblVersionSistema = new javax.swing.JLabel();
-        lblAutor = new javax.swing.JLabel();
+        jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         txtareaAutores = new javax.swing.JTextArea();
+        lblAutor = new javax.swing.JLabel();
+        lblVersionSistema = new javax.swing.JLabel();
+        lblSistema = new javax.swing.JLabel();
+        btnAceptar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Acerca...");
         setAlwaysOnTop(true);
-        setBackground(new java.awt.Color(255, 204, 0));
+        setBackground(new java.awt.Color(0, 0, 255));
         setModal(true);
+
+        jPanel1.setBackground(new java.awt.Color(0, 0, 255));
+
+        txtareaAutores.setEditable(false);
+        txtareaAutores.setBackground(new java.awt.Color(0, 0, 255));
+        txtareaAutores.setColumns(20);
+        txtareaAutores.setFont(new java.awt.Font("Arial Black", 3, 18)); // NOI18N
+        txtareaAutores.setRows(5);
+        txtareaAutores.setBorder(null);
+        txtareaAutores.setDisabledTextColor(new java.awt.Color(0, 0, 0));
+        txtareaAutores.setEnabled(false);
+        txtareaAutores.setSelectedTextColor(new java.awt.Color(0, 0, 0));
+        txtareaAutores.setSelectionColor(new java.awt.Color(0, 0, 0));
+        jScrollPane1.setViewportView(txtareaAutores);
+
+        lblAutor.setBackground(new java.awt.Color(0, 0, 255));
+        lblAutor.setFont(new java.awt.Font("Monospaced", 3, 18)); // NOI18N
+        lblAutor.setText("Autores");
+        lblAutor.setOpaque(true);
+
+        lblVersionSistema.setBackground(new java.awt.Color(0, 0, 255));
+        lblVersionSistema.setFont(new java.awt.Font("Monospaced", 3, 18)); // NOI18N
+        lblVersionSistema.setText("Version del Sistema");
+        lblVersionSistema.setOpaque(true);
+
+        lblSistema.setBackground(new java.awt.Color(0, 0, 255));
+        lblSistema.setFont(new java.awt.Font("Monospaced", 3, 18)); // NOI18N
+        lblSistema.setText("Nombre del Sistema");
+        lblSistema.setOpaque(true);
 
         btnAceptar.setText("Aceptar");
         btnAceptar.addActionListener(new java.awt.event.ActionListener() {
@@ -55,47 +86,28 @@ public class VentanaAcerca extends javax.swing.JDialog {
             }
         });
 
-        lblSistema.setFont(new java.awt.Font("Monospaced", 3, 18)); // NOI18N
-        lblSistema.setText("Nombre del Sistema");
-
-        lblVersionSistema.setFont(new java.awt.Font("Monospaced", 3, 18)); // NOI18N
-        lblVersionSistema.setText("Version del Sistema");
-
-        lblAutor.setFont(new java.awt.Font("Monospaced", 3, 18)); // NOI18N
-        lblAutor.setText("Autores");
-
-        txtareaAutores.setEditable(false);
-        txtareaAutores.setColumns(20);
-        txtareaAutores.setFont(new java.awt.Font("Arial Black", 3, 18)); // NOI18N
-        txtareaAutores.setRows(5);
-        txtareaAutores.setBorder(null);
-        txtareaAutores.setEnabled(false);
-        txtareaAutores.setOpaque(false);
-        txtareaAutores.setSelectionColor(new java.awt.Color(0, 0, 0));
-        jScrollPane1.setViewportView(txtareaAutores);
-
-        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
-        getContentPane().setLayout(layout);
-        layout.setHorizontalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jScrollPane1, javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addComponent(lblAutor)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane1)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblSistema)
                             .addComponent(lblVersionSistema)
-                            .addComponent(lblSistema))
+                            .addComponent(lblAutor))
                         .addGap(0, 0, Short.MAX_VALUE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
                         .addComponent(btnAceptar)))
                 .addContainerGap())
         );
-        layout.setVerticalGroup(
-            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
                 .addComponent(lblSistema)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -103,9 +115,26 @@ public class VentanaAcerca extends javax.swing.JDialog {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(lblAutor)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 140, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnAceptar)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -161,6 +190,7 @@ public class VentanaAcerca extends javax.swing.JDialog {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAceptar;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JLabel lblAutor;
     private javax.swing.JLabel lblSistema;

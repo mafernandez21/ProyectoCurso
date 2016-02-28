@@ -275,7 +275,7 @@ public class ControladorGestion implements IControladorGestion {
 
     @Override
     public void actionPerformed(ActionEvent e) {
-        Core.mostrarMensaje("Controlador (" + this.getNombre() + ") de Gestión capturó " + e.getActionCommand());
+        //Core.mostrarMensaje("Controlador (" + this.getNombre() + ") de Gestión capturó " + e.getActionCommand());
         String sAccion = e.getActionCommand().toUpperCase();
         switch (sAccion) {
             case "ALTA":
@@ -300,7 +300,7 @@ public class ControladorGestion implements IControladorGestion {
                 this.getVista().cerrar();
                 break;
             case "CONFIRMAR":
-                Core.mostrarMensaje("CONFIRMó");
+                //Core.mostrarMensaje("CONFIRMó");
                 Factura f = new Factura();
                 f.inicializar();
                 for (ObjetoBase df : this.getGrupoDeDatos()) {
