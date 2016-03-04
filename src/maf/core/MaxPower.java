@@ -136,7 +136,7 @@ public class MaxPower {
     public static void main(String[] args) {
         MaxPower sistemaMaxPower = new MaxPower();
 
-        sistemaMaxPower.poblar(5);
+        sistemaMaxPower.poblar(100);
 
         String sModulos[] = sistemaMaxPower.getModulos();
 
